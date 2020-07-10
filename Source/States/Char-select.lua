@@ -1,11 +1,14 @@
 
-Inicio = Class{__includes = BaseState}
+Charselect = Class{__includes = BaseState}
 
-local jugar = 1
-local menu = 2
-local salir = 3
+local player1 = 1
+local player2 = 2
+local player3 = 3
+local sprite1 = love.graphics.newImage('Imagen/Sprites/D-10.png')
+local sprite2 = love.graphics.newImage('Imagen/Sprites/AX-2.png')
+local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
 
-function Inicio:enter(params)
+function Charselect:enter(params)
 
     --Cargamos el fondo
     load_background()
@@ -14,7 +17,7 @@ function Inicio:enter(params)
     sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
 
     --Cargar Menu Inicio
-    self.menu = love.graphics.newImage('Imagen/Menus/Inicio.png')
+    self.menu = love.graphics.newImage('Imagen/Menus/charselect.png')
 
     --Cargar Selector de menu
     self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
@@ -22,20 +25,27 @@ function Inicio:enter(params)
     self.target = Anim(0,0,60,60,5,5,10)
     self.opc = jugar
     self.targetY = 480
+    -- Agregamos las naves como seleccionables
+    self.sprite_sheet = sprite1
+    self.sprite = love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet:getDimensions())
+    self.nave = Anim(0, 0, 58, 40, 2, 2, 10)
 
-    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, 'stream')
+    self.player = player1
 
 end
 
 
 --Lo que se va a calcular frame a frame
-function Inicio:update(dt)
+function Charselect:update(dt)
 
 	--calculamos el loop de las estrellas de fondo
 	animate_background(dt)
 
 	--cargamos las estrellas de alex
     sky:update (dt)
+
+    --Cargamos las animaciones de las naves
+    self.nave:update (dt,self.sprite)
     
     --Animacion de target
     self.target:update(dt, self.target_sprite)
@@ -54,28 +64,26 @@ function Inicio:update(dt)
     end
 
     if self.targetY == 480 then
-        self.opc = jugar
+        self.sprite_sheet = sprite1
+        self.player = player1
     elseif self.targetY == 540 then
-        self.opc = menu
+        self.sprite_sheet = sprite2
+        self.player = player2
     elseif self.targetY == 600 then
-        self.opc = salir
+        self.sprite_sheet = sprite3
+        self.player = player3
     end
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        if self.opc == jugar then
-            gStateMachine:change('charselect', {})
-        elseif self.opc == menu then
-            --gStateMachine:change('menu', {})
-        elseif self.opc == salir then
-            love.event.quit()
-        end 
+        gStateMachine:change('play', {player=self.player})
+        
     end
 
     --ponemos la musica del menu
 
 end
 
-function Inicio:render()
+function Charselect:render()
 	render_background()
 
 	--Dibujamos las estrellas de alex
@@ -84,5 +92,5 @@ function Inicio:render()
     love.graphics.draw(self.menu, 0, 0)
 
     love.graphics.draw(self.target_sheet, self.target_sprite, 420, self.targetY)
-
+    love.graphics.draw(self.sprite_sheet, self.sprite, 540, 200, 0, 3, 3)
 end

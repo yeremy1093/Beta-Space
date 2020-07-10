@@ -5,7 +5,7 @@ puntaje = 0
 escudo_nave = false
 
 function Play:enter(params)
-    self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2)
+    self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, params.player)
     self.balas = {}
 
     --Agregar listas vacías para enemigos, powerups, etc.

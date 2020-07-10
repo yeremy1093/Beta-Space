@@ -1,12 +1,23 @@
 --Declaramos que es una clase
 Nave = Class{}
 
+local sprite1 = love.graphics.newImage('Imagen/Sprites/D-10.png')
+local sprite2 = love.graphics.newImage('Imagen/Sprites/AX-2.png')
+local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
+
 timer_escudo = 10
 
 --Escribimos las funciones, primero la de inicio
-function Nave:init(x, y)
+function Nave:init(x, y, player)
 	--Elementos necesarios para animar
-	self.sprite_sheet = love.graphics.newImage('Imagen/Sprites/D-10.png')
+	if player == 1 then
+		self.sprite_sheet = sprite1
+	elseif player == 2 then	
+		self.sprite_sheet = sprite2
+	elseif player == 3 then	
+		self.sprite_sheet = sprite3
+	end
+
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet:getDimensions())
 	self.anim = Anim(0, 0, 58, 40, 2, 2, 10)
 
