@@ -1,0 +1,48 @@
+-Meteorito 10
+-Dron 50
+-Caza basico 100
+-Lancer 100
+-Hunter 200
+-Crucero 1000
+-Meteoro Grande 100
+
+--Nivel 1: Puntuacion a siguiente nivel: 2000
+-Meteorito 1/s
+-Caza basico 1/s
+
+--Nivel 2: Caracterisca: Aumenta al doble el numero de enemigos. Puntuacion a siguiente nivel: 8000
+-Meteorito 1/s
+-Caza basico 2/s
+-Meteoro Grande 0.5/s
+
+--Nivel 3: Caracterisca: Aumenta al doble el numero de enemigos. Puntuacion a siguiente nivel: 20000
+-Meteorito 1/s
+-Caza basico 4/s
+-Meteoro Grande 0.5/s
+-Lancer 1/2s
+-Dron 1/2s
+
+--Nivel 4: Caracterisca: Aumenta al doble el numero de enemigos. Puntuacion a siguiente nivel: 40000
+-Meteorito 1/s
+-Caza basico 8/s
+-Meteoro Grande 0.5/s
+-Lancer 2/2s
+-Dron 2/2s
+-Crucero 1/10s
+
+--Nivel 5: Caracterisca: Aumenta al doble el numero de enemigos. Puntuacion a siguiente nivel: 80000
+-Meteorito 1/s
+-Caza basico 16/s
+-Meteoro Grande 0.5/s
+-Lancer 4/2s
+-Dron 4/2s
+-Crucero 2/10s
+-Hunter 1/5s
+
+--Nivel 6: Caracterisca: Aumenta al doble el numero de enemigos y aumenta el doble de velocidad de los mismos. Puntuacion a siguiente nivel: 200000
+-Caza basico 8/s
+-Meteoro Grande 0.5/s
+-Lancer 4/2s
+-Dron 4/2s
+-Crucero 2/10s
+-Hunter 1/5s

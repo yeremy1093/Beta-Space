@@ -1,0 +1,13 @@
+efectos de sonido de diego, fondo del espacio y nave de german agregados
+nueva dinamica, balas multidireccional special de german
+Fondo de estrellas incluido de alex
+
+Separados colisiones en otro archivo
+Nuevos sprites de naves, meteoros, enemigos, etc
+Nueva librería de animación
+escudos
+
+Acomodado y agregado sprites de enemigos y destruccion de crucero
+Sprite para State Inicio y sprite de selector
+
+Menu de inicio alñadido, funcion para ir a menu stage no esta funcionando aun
