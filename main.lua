@@ -14,7 +14,8 @@ function love.load()
     --Creamos la maquina de estados
     gStateMachine = StateMachine {
         ['inicio'] = function() return Inicio() end,
-        ['play'] = function() return Play() end
+        ['play'] = function() return Play() end,
+        ['charselect'] = function() return Charselect() end
     }
 
     --Ponemos el primer estado

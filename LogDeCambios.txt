@@ -11,3 +11,6 @@ Acomodado y agregado sprites de enemigos y destruccion de crucero
 Sprite para State Inicio y sprite de selector
 
 Menu de inicio alñadido, funcion para ir a menu stage no esta funcionando aun
+
+Agregamos la seleccion de personajes
+Ventanas para menus limpias
