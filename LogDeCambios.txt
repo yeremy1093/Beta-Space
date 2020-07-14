@@ -14,3 +14,4 @@ Menu de inicio alñadido, funcion para ir a menu stage no esta funcionando aun
 
 Agregamos la seleccion de personajes
 Ventanas para menus limpias
+Prueba general GIT
