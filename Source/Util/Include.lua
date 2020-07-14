@@ -23,6 +23,7 @@ require 'Source/Util/colisiones'
 require 'Source/Util/animacion'
 require 'Source/Util/escudos'
 require 'Source/Util/tesound'
+require 'Source/Util/escribir'
 
 --Archivos de la maquina de estados
 require 'Source/States/StateMachine'
