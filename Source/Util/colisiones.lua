@@ -74,3 +74,14 @@ function update_asteroides(dt, asteroides, balas, nave)
 		end
 	end
 end
+
+function update_cazas_basicos(balas, player, asteroides)
+	--checamos si el cazaBasic salio de la pantalla y la borramos
+	for i, cazaBasic in pairs(self.navesBasic) do
+		cazaBasic:update(dt)
+		
+		if cazaBasic.y > WINDOW_HEIGHT or cazaBasic.x > WINDOW_WIDTH or cazaBasic.x < -cazaBasic.width or cazaBasic.y < -35 then
+			table.remove(self.navesBasic, i)
+		end
+	end
+end
