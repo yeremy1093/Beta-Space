@@ -8,6 +8,9 @@ function Enemy:init()
 
 	self.asteroides = {}
 	self.chance_asteroides = 8
+
+	self.navesBasic = {}
+	self.chance_naveBasic = 8
 end
 
 function Enemy:update(dt, puntuacion)
@@ -24,6 +27,22 @@ function Enemy:update(dt, puntuacion)
 	end
 
 	self:ajuste_nivel(dt)
+	--checamos si el asteroide salio de la pantalla y la borramos
+	for i, asteroide in pairs(self.asteroides) do
+		asteroide:update(dt)
+		
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -35 then
+			table.remove(self.asteroides, i)
+		end
+	end
+	--checamos si el cazaBasic salio de la pantalla y la borramos
+	for i, cazaBasic in pairs(self.navesBasic) do
+		cazaBasic:update(dt)
+		
+		if cazaBasic.y > WINDOW_HEIGHT or cazaBasic.x > WINDOW_WIDTH or cazaBasic.x < -cazaBasic.width or cazaBasic.y < -35 then
+			table.remove(self.navesBasic, i)
+		end
+	end
 	
 end
 
@@ -32,27 +51,36 @@ function Enemy:render()
 	for i, asteroide in pairs(self.asteroides) do
 		asteroide:render()
 	end
+	for i, cazaBasic in pairs(self.navesBasic) do
+		cazaBasic:render()
+	end
 end
 
 function Enemy:ajuste_nivel(dt)
 	if self.nivel == 1 then
 		self.chance_asteroides = 99
+		self.chance_naveBasic = 98
 	elseif self.nivel == 2 then
 		self.chance_asteroides = 98
+		self.chance_naveBasic = 96
 	elseif self.nivel == 3 then
 		self.chance_asteroides = 96
+		self.chance_naveBasic = 92
 	elseif self.nivel == 4 then
 		self.chance_asteroides = 92
+		self.chance_naveBasic = 84
 	elseif self.nivel == 5 then
 		self.chance_asteroides = 84
+		self.chance_naveBasic = 84
 	elseif self.nivel == 6 then
 		self.chance_asteroides = 92
+		self.chance_naveBasic = 84
 	end
 
-	self:create_asteroide(dt)
+	self:create_enemy(dt)
 end
 
-function Enemy:create_asteroide(dt)
+function Enemy:create_enemy(dt)
 	enemy_timer = enemy_timer - dt
 	if enemy_timer <= 0 then
 		if math.random(0,100) >= self.chance_asteroides and self.nivel < 6 then
@@ -60,7 +88,12 @@ function Enemy:create_asteroide(dt)
 		elseif math.random(0,100) >= self.chance_asteroides then
 			table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-100, 100), math.random(40, 200)))
 		end
-	enemy_timer = 0.05
+		if math.random(0,100) >= self.chance_naveBasic and self.nivel < 6 then
+			table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 50))
+		elseif math.random(0,100) >= self.chance_naveBasic then
+			table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 100))
+		end
+		enemy_timer = 0.05
 	end
 end
 

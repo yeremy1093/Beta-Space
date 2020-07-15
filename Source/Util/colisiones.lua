@@ -1,14 +1,6 @@
 --Aqui van las funsiones que checan colisiones entre objetos como asteroides, enemigos, balas, etc.
 
 function collisions_asteroide(dt, asteroides, balas, nave)
-	--checamos si el asteroide salio de la pantalla y la borramos
-	for i, asteroide in pairs(asteroides) do
-		asteroide:update(dt)
-		
-		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -35 then
-			table.remove(asteroides, i)
-		end
-	end
 
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do

@@ -9,6 +9,7 @@ require 'Source/Player/nave'
 
 --Archivos de los enemigos, de distintos tipos
 require 'Source/Enemy/asteroide'
+require 'Source/Enemy/cazaBasic'
 require 'Source/Enemy/EngineEnemy/enemyManager'
 
 --Archivos de fondo de pantalla
