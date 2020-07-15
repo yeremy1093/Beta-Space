@@ -37,10 +37,7 @@ function Play:update(dt)
 	move_bala(dt, self.balas)
 
 	--Hacemos el update de los enemigos
-	self.enemyManager:update(dt, puntaje)
-
-	--Checamos cuando debemos remover o mover los asteroides
-	update_asteroides(dt, self.enemyManager.asteroides, self.balas, self.player)
+	self.enemyManager:update(dt, puntaje, self.balas, self.player)
 
 	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
     	table.insert(self.balas, Bala(self.player.x + self.player.width/2 - 3, self.player.y, BULLET_SPEED, 0, 0))
