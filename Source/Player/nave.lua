@@ -19,7 +19,9 @@ function Nave:init(x, y, player)
 	end
 
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet:getDimensions())
-	self.anim = Anim(0, 0, 58, 40, 2, 2, 10)
+	self.anim = {['idle'] = Anim(0, 0, 58, 40, 2, 2, 10),
+				['izq'] = Anim(116, 0, 58, 40, 2, 2, 10),
+				['der'] = Anim(232, 0, 58, 40, 2, 2, 10)}
 
 	--elementos de posicion y tamaño para otras funciones
 	self.x = x
@@ -68,7 +70,14 @@ function Nave:update(dt)
 	end
 
 	--Funcion para animar la nave
-	self.anim:update(dt, self.sprite)
+	if self.dirX > 0 then
+		self.anim['der']:update(dt, self.sprite)
+	elseif self.dirX < 0 then
+		self.anim['izq']:update(dt, self.sprite)
+	else
+		self.anim['idle']:update(dt, self.sprite)
+	end
+	
 
 	if (love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D')) and self.escudo_act == 0 then
 		table.insert(self.escudos, Escudo(self.x, self.y, 10, 100))
