@@ -14,15 +14,15 @@ function Enemy:init()
 end
 
 function Enemy:update(dt, puntuacion, balas, player)
-	if puntuacion >= 500 then
+	if puntuacion >= 200000 then
 		self.nivel = 6
-	elseif puntuacion >= 400 then
+	elseif puntuacion >= 80000 then
 		self.nivel = 5
-	elseif puntuacion >= 300 then
+	elseif puntuacion >= 20000 then
 		self.nivel = 4
-	elseif puntuacion >= 200 then
+	elseif puntuacion >= 8000 then
 		self.nivel = 3
-	elseif puntuacion >= 100 then
+	elseif puntuacion >= 2000 then
 		self.nivel = 2
 	end
 
@@ -31,14 +31,8 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover o mover los asteroides
 	update_asteroides(dt, self.asteroides, balas, player)
 
-	--checamos si el cazaBasic salio de la pantalla y la borramos
-	for i, cazaBasic in pairs(self.navesBasic) do
-		cazaBasic:update(dt)
-		
-		if cazaBasic.y > WINDOW_HEIGHT or cazaBasic.x > WINDOW_WIDTH or cazaBasic.x < -cazaBasic.width or cazaBasic.y < -35 then
-			table.remove(self.navesBasic, i)
-		end
-	end
+	--Checamos cuando debemos remover o mover los cazas
+	update_cazas_basicos(dt, self.navesBasic, balas, player)
 	
 end
 

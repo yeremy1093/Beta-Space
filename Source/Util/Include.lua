@@ -11,6 +11,7 @@ require 'Source/Player/nave'
 require 'Source/Enemy/asteroide'
 require 'Source/Enemy/cazaBasic'
 require 'Source/Enemy/EngineEnemy/enemyManager'
+require 'Source/Enemy/EngineEnemy/updateEnemigos'
 
 --Archivos de fondo de pantalla
 require 'Source/Background/background'
@@ -20,7 +21,6 @@ require 'Source/Background/sky/star'
 --Archivos de funciones varias, o que unen muchas clases diferentes
 require 'Source/Util/constantes'
 require 'Source/Util/util'
-require 'Source/Util/colisiones'
 require 'Source/Util/animacion'
 require 'Source/Util/escudos'
 require 'Source/Util/tesound'
