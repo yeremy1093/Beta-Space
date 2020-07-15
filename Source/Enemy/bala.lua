@@ -1,3 +1,0 @@
-Bala = Class{}
-
---function 

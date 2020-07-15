@@ -38,17 +38,8 @@ function Star:update(dt)
     end
 
     --Movimiento de estrella a traves del espacio en x y con velocidades dx dy
-    if self.dx > 0 then
-		self.x = self.x + self.dx * dt
-	elseif self.dx < 0 then
-		self.x = self.x + self.dx * dt
-    end
-    
-    if self.dx < 0 then
-		self.y = self.y + self.dy * dt
-	elseif self.dy > 0 then
-		self.y = self.y + self.dy * dt
-    end
+    self.x = self.x + self.dx * dt
+    self.y = self.y + self.dy * dt
 
 end
 

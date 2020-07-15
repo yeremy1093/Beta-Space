@@ -1,29 +1,24 @@
-CazaBasic = Class{}
+BalaEnemy = Class{}
 
-local sprite_sheet_caz = love.graphics.newImage('Imagen/SpritesEnemys/caza1.png')
+local sprite_sheet_bala = love.graphics.newImage('Imagen/Sprites/laser.png')
 
-function CazaBasic:init(x, y, dx, dy)
-	self.x = x
+function BalaEnemy:init(x, y, dx, dy)
+    self.x = x
 	self.y = y
 	self.dx = dx
 	self.dy = dy
-	self.width = 58
-	self.height = 40
-	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_caz:getDimensions())
+	self.width = 6
+	self.height = 15
+	self.sprite = sprite_sheet_bala
 	self.fps = math.random(6, 10)
-
-	self.anim = Anim(0, 0, self.width, self.height, 2, 2, self.fps)
 end
 
---Funcion de update
-function CazaBasic:update(dt)
-	self.y = self.y + self.dy * dt
+function BalaEnemy:update(dt)
+    self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
-
-	self.anim:update(dt, self.sprite)
 end
 
-function CazaBasic:collides(objeto)
+function BalaEnemy:collides(objeto)
     -- first, check to see if the left edge of either is farther to the right
     -- than the right edge of the other
     if self.x > objeto.x + objeto.width or objeto.x > self.x + self.width then
@@ -40,6 +35,6 @@ function CazaBasic:collides(objeto)
     return true
 end
 
-function CazaBasic:render()
-	love.graphics.draw(sprite_sheet_caz, self.sprite, self.x, self.y)
+function BalaEnemy:render()
+    love.graphics.draw(self.sprite, self.x, self.y)
 end
