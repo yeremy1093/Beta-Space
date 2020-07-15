@@ -11,6 +11,9 @@ function love.load()
         vsync = true
     })
 
+    --Ponemos el titulo de la ventana
+    love.window.setTitle('Beta Space Project')
+
     --Creamos la maquina de estados
     gStateMachine = StateMachine {
         ['inicio'] = function() return Inicio() end,
@@ -47,9 +50,9 @@ function love.load()
 
     --numeros para el puntaje mientras juegas
     gFonts = {
-        ['small'] = love.graphics.newFont('Font/font.ttf', 8),
-        ['medium'] = love.graphics.newFont('Font/font.ttf', 16),
-        ['large'] = love.graphics.newFont('Font/font.ttf', 32)
+        ['small'] = love.graphics.newFont('Font/font.ttf', 16),
+        ['medium'] = love.graphics.newFont('Font/font.ttf', 32),
+        ['large'] = love.graphics.newFont('Font/font.ttf', 48)
     }
 
     love.graphics.setFont(gFonts['large'])

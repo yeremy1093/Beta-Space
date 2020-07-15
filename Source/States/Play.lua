@@ -5,6 +5,9 @@ puntaje = 0
 escudo_nave = false
 
 function Play:enter(params)
+    --Agregamos el fondo unico de play
+    self.ui = love.graphics.newImage('Imagen/Sprites States/Play.png')
+
     self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, params.player)
     self.balas = {}
 
@@ -75,8 +78,14 @@ function Play:render()
 	--Dibujamos las estrellas de alex
 	sky:render()
 
-	--Dibujamos la nave dependiendo de su posicion
-	self.player:render()
+    --Ponemos el puntaje en la pantalla
+    love.graphics.print(tostring(puntaje), 30, 25)
+
+    --Dibujamos la interfaz de usuario
+    love.graphics.draw(self.ui, 0, 0)
+
+    --Dibujamos la nave dependiendo de su posicion
+    self.player:render()
 
 	--Dibujamos las balas en un ciclo
 	for i, bala in pairs(self.balas) do
@@ -85,6 +94,4 @@ function Play:render()
 
 	self.enemyManager:render()
 
-	--Ponemos el puntaje en la pantalla
-	love.graphics.print(tostring(puntaje), 10, 10)
 end
