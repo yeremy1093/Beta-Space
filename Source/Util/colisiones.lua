@@ -1,13 +1,23 @@
 --Aqui van las funsiones que checan colisiones entre objetos como asteroides, enemigos, balas, etc.
 
-function collisions_asteroide(dt, asteroides, balas, nave)
+function update_asteroides(dt, asteroides, balas, nave)
+	--checamos si el asteroide salio de la pantalla y la borramos
+	for i, asteroide in pairs(asteroides) do
+		if false == asteroide:update(dt) then
+			table.remove(asteroides, i)
+		end
+		
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -35 then
+			table.remove(asteroides, i)
+		end
+	end
 
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) then
+			if asteroide:collides(bala) and asteroide.destruible == false then
 				puntaje = puntaje + 10
-				table.remove(asteroides, j)
+				asteroide.destruible = true
 				table.remove(balas, i)
 				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
 					'static',
@@ -52,8 +62,8 @@ function collisions_asteroide(dt, asteroides, balas, nave)
 
 	--Checamos si el asteroide choca con la nave
 	for j, asteroide in pairs(asteroides) do
-		if asteroide:collides(nave) then
-			table.remove(asteroides, j)
+		if asteroide:collides(nave) and asteroide.destruible == false then
+			asteroide.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 5
 				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
