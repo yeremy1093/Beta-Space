@@ -2,7 +2,9 @@
 
 Asteroide = Class{}
 
+--Variables para guardar los sprite sheet de las animaciones
 local sprite_sheet_ast = love.graphics.newImage('Imagen/Sprites/asteroideAnimado.png')
+local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion.png')
 
 function Asteroide:init(x, y, dx, dy)
 	self.x = x
@@ -12,9 +14,13 @@ function Asteroide:init(x, y, dx, dy)
 	self.width = 41
 	self.height = 41
 	self.sprite = love.graphics.newQuad(0, 0, 41, 41, sprite_sheet_ast:getDimensions())
+	self.sprite_ex = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
 	self.fps = math.random(6, 10)
-
-	self.anim = Anim(0, 0, self.width, self.height, 6, 6, self.fps)
+	--variable para saber cuando el asteroide explotó y se puede borrar
+	self.destruible = false
+	--Aqui van todas las animaciones posibles
+	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 6, 6, self.fps),
+				['explosion'] = Anim(0, 0, 76, 76, 5, 5, self.fps)}
 end
 
 --Funcion de update
@@ -22,7 +28,14 @@ function Asteroide:update(dt)
 	self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
 
-	self.anim:update(dt, self.sprite)
+	if self.destruible == false then 
+		self.anim['idle']:update(dt, self.sprite)
+	else
+		if 5 == self.anim['explosion']:update(dt, self.sprite_ex) then
+			return false
+		end
+	end
+	return true
 end
 
 function Asteroide:collides(objeto)
@@ -44,5 +57,9 @@ end
 
 
 function Asteroide:render()
-	love.graphics.draw(sprite_sheet_ast, self.sprite, self.x, self.y)
+	if self.destruible == false then
+		love.graphics.draw(sprite_sheet_ast, self.sprite, self.x, self.y)
+	else
+		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
+	end
 end
