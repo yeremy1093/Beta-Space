@@ -7,7 +7,8 @@ local img_escudo_dact = love.graphics.newImage('Imagen/Sprites/DactShield.png')
 function Escudo:init(x, y, timer, health)
 	self.x = x
 	self.y = y
-	self.timer = timer
+	self.timer = timer/6
+	self.timer_total = timer
 	self.health = health
 	self.total_health = health
 	self.idle = false
@@ -52,7 +53,7 @@ function Escudo:idle_anim(dt)
 	self.animations['idle']:update(dt, self.sprite_idle)
 end
 
-function Escudo:update(dt)
+function Escudo:update_activo(dt)
 	self.timer = self.timer - dt
 
 	if self.timer <= 0 then
