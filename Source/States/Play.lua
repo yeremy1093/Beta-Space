@@ -2,7 +2,6 @@
 Play = Class{__includes = BaseState}
 timer_asteroide = 0
 puntaje = 0
-escudo_nave = false
 
 function Play:enter(params)
     --Agregamos el fondo unico de play
@@ -42,33 +41,7 @@ function Play:update(dt)
 	--Hacemos el update de los enemigos
 	self.enemyManager:update(dt, puntaje, self.balas, self.player)
 
-	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
-    	table.insert(self.balas, Bala(self.player.x + self.player.width/2 - 3, self.player.y, BULLET_SPEED, 0, 0))
-    	TEsound.play('Soundtrack/Effect/soundLaser1.wav', 'static')
-    end
-    if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') then
-    	if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 8))
-    	elseif love.keyboard.isDown('up') and  love.keyboard.isDown('right') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 5))
-    	elseif love.keyboard.isDown('down') and  love.keyboard.isDown('left') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 7))
-    	elseif love.keyboard.isDown('down') and  love.keyboard.isDown('right') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 6))
-    	elseif love.keyboard.isDown('up') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 1))
-    	elseif love.keyboard.isDown('down') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 2))
-    	elseif love.keyboard.isDown('left') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 4))
-    	elseif love.keyboard.isDown('right') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 3))
-    	else
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 1))
-    	end
-    	TEsound.play('Soundtrack/Effect/soundLaser2.wav', 'static')
-
-    end
+	self:disparar_nave()
 
 end
 
@@ -94,4 +67,34 @@ function Play:render()
 
 	self.enemyManager:render()
 
+end
+
+function Play:disparar_nave()
+    if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
+        table.insert(self.balas, Bala(self.player.x + self.player.width/2 - 3, self.player.y, BULLET_SPEED, 0, 0))
+        TEsound.play('Soundtrack/Effect/soundLaser1.wav', 'static')
+    end
+    if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') then
+        if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 8))
+        elseif love.keyboard.isDown('up') and  love.keyboard.isDown('right') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 5))
+        elseif love.keyboard.isDown('down') and  love.keyboard.isDown('left') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 7))
+        elseif love.keyboard.isDown('down') and  love.keyboard.isDown('right') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 6))
+        elseif love.keyboard.isDown('up') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 1))
+        elseif love.keyboard.isDown('down') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 2))
+        elseif love.keyboard.isDown('left') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 4))
+        elseif love.keyboard.isDown('right') then
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 3))
+        else
+            table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 1))
+        end
+        TEsound.play('Soundtrack/Effect/soundLaser2.wav', 'static')
+
+    end
 end

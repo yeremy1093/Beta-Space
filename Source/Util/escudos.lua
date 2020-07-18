@@ -7,10 +7,15 @@ local img_escudo_dact = love.graphics.newImage('Imagen/Sprites/DactShield.png')
 function Escudo:init(x, y, timer, health)
 	self.x = x
 	self.y = y
-	self.timer = timer
+	--El tiempo se divide en cuartos, ya que cada vez que pasa un cuarto del tiempo total la vida del escudo se reduce 25%
+	self.timer = timer / 6
+	self.timer_total = timer
 	self.health = health
+	self.total_healh = health
 	self.idle = false
+	--Variable para saber si el escudo se esta desactivando, y poner la animacion de desactivar antes de borrar el escudo
 	self.desactivando = false
+	--Variable para saber si el escudo puede ser borrado, si acabo su ciclo de vida y animaciones
 	self.done = false
 	self.frame = 1
 
@@ -41,12 +46,18 @@ function Escudo:idle_anim(dt)
 	self.animations['idle']:update(dt, self.sprite_idle)
 end
 
-function Escudo:update(dt)
+function Escudo:update_activo(dt)
 	self.timer = self.timer - dt
+
+	if self.timer <= 0 then
+		self:golpe_escudo(self.total_healh / 6)
+		self.timer = self.timer_total/6
+	end
 
 	if self.desactivando == true then
 		self.sprite_sheet = img_escudo_dact
 		self:desactivar(dt)
+		self.idle = false
 	elseif self.idle == false then
 		self.sprite_sheet = img_escudo_act
 		self:activar(dt)
@@ -56,14 +67,56 @@ function Escudo:update(dt)
 	end
 
 	if self.done == false then
-		if self.health <= 0 or self.timer <= 0 then
+		if self.health <= 0 then
 			self.desactivando = true
 		end
 	else
 		TEsound.play({'Soundtrack/Effect/EscudoDact.wav',
     	'Soundtrack/Effect/EscudoDact2.wav'}, 'static', {'escudo'}, 0.3)
 	end
+
 	return self.done
+end
+
+function Escudo:update_inactivo(dt)
+	self.timer = self.timer - dt
+
+	if self.timer <= 0 then
+		if self.health < self.total_healh then
+			self.health = self.health + self.total_healh / 6
+		end
+		self.timer = self.timer_total/6
+	end
+
+	if self.health > self.total_healh / 6 then
+		self.done = false
+	end
+end
+
+function Escudo:desactivar_escudo()
+	self.desactivando = true
+end
+
+--funcion para disminuir la vida del escudo
+function Escudo:golpe_escudo(damage)
+	self.health = self.health - damage
+end
+
+--funcion para ver cuanta vida tiene este escudo, solo devuelve cuantos cuartos de vida le quedan
+function Escudo:checar_escudo()
+	if self.health <= self.total_healh/6 then
+		return 5
+	elseif self.health <= 2 * self.total_healh/6 then
+		return 4
+	elseif self.health <= self.total_healh/3 then
+		return 3
+	elseif self.health <= 2 * self.total_healh/3 then
+		return 2
+	elseif self.health <= 5 * self.total_healh/6 then
+		return 1
+	else
+		return 0
+	end
 end
 
 function Escudo:render(x, y)
