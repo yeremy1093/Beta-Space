@@ -7,15 +7,11 @@ local img_escudo_dact = love.graphics.newImage('Imagen/Sprites/DactShield.png')
 function Escudo:init(x, y, timer, health)
 	self.x = x
 	self.y = y
-	--El tiempo se divide en cuartos, ya que cada vez que pasa un cuarto del tiempo total la vida del escudo se reduce 25%
-	self.timer = timer / 6
-	self.timer_total = timer
+	self.timer = timer
 	self.health = health
 	self.total_health = health
 	self.idle = false
-	--Variable para saber si el escudo se esta desactivando, y poner la animacion de desactivar antes de borrar el escudo
 	self.desactivando = false
-	--Variable para saber si el escudo puede ser borrado, si acabo su ciclo de vida y animaciones
 	self.done = false
 	self.frame = 1
 
@@ -56,7 +52,7 @@ function Escudo:idle_anim(dt)
 	self.animations['idle']:update(dt, self.sprite_idle)
 end
 
-function Escudo:update_activo(dt)
+function Escudo:update(dt)
 	self.timer = self.timer - dt
 
 	if self.timer <= 0 then
@@ -82,7 +78,6 @@ function Escudo:update_activo(dt)
 			self.desactivando = true
 		end
 	end
-
 	return self.done
 end
 
