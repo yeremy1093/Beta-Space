@@ -105,7 +105,6 @@ function Nave:manager_escudo(dt)
 		if escudo_nave == false then
 			escudo_nave = true
 		else
-			escudo_nave = false
 			self.escudo:desactivar_escudo()
 		end
 	end

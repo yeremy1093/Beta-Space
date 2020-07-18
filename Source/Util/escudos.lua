@@ -11,7 +11,7 @@ function Escudo:init(x, y, timer, health)
 	self.timer = timer / 6
 	self.timer_total = timer
 	self.health = health
-	self.total_healh = health
+	self.total_health = health
 	self.idle = false
 	--Variable para saber si el escudo se esta desactivando, y poner la animacion de desactivar antes de borrar el escudo
 	self.desactivando = false
@@ -27,17 +27,27 @@ function Escudo:init(x, y, timer, health)
 
 	self.animations = {['act'] = Anim(0, 0, 64, 64, 4, 4, 10), ['idle'] = Anim(0, 0, 64, 64, 15, 15, 10), ['dact'] = Anim(0, 0, 64, 64, 4, 4, 10)}
 
-	TEsound.play({'Soundtrack/Effect/EscudoAct.wav',
-    	'Soundtrack/Effect/EscudoAct2.wav'}, 'static', {'escudo'}, 0.3)
+	self.act_sound = true
+	self.dact_sound = true
 
 end
 
 function Escudo:activar(dt)
+	if self.act_sound == true then
+		TEsound.play({'Soundtrack/Effect/EscudoAct.wav',
+    	'Soundtrack/Effect/EscudoAct2.wav'}, 'static', {'escudo'}, 0.3)
+    	self.act_sound = false
+	end
 	self.frame = self.animations['act']:update(dt, self.sprite_act)
 	if self.frame == 4 then self.idle = true end
 end
 
 function Escudo:desactivar(dt)
+	if self.dact_sound == true then
+		TEsound.play({'Soundtrack/Effect/EscudoDact.wav',
+    	'Soundtrack/Effect/EscudoDact2.wav'}, 'static', {'escudo'}, 0.3)
+    	self.dact_sound = false
+	end
 	self.frame = self.animations['dact']:update(dt, self.sprite_dact)
 	if self.frame == 4 then self.done = true end
 end
@@ -50,29 +60,27 @@ function Escudo:update_activo(dt)
 	self.timer = self.timer - dt
 
 	if self.timer <= 0 then
-		self:golpe_escudo(self.total_healh / 6)
+		self:golpe_escudo(self.total_health / 6)
 		self.timer = self.timer_total/6
 	end
 
-	if self.desactivando == true then
-		self.sprite_sheet = img_escudo_dact
-		self:desactivar(dt)
-		self.idle = false
-	elseif self.idle == false then
-		self.sprite_sheet = img_escudo_act
-		self:activar(dt)
-	else
-		self.sprite_sheet = img_escudo_idle
-		self:idle_anim(dt)
-	end
-
 	if self.done == false then
+
+		if self.desactivando == true then
+			self.sprite_sheet = img_escudo_dact
+			self:desactivar(dt)
+		elseif self.idle == false then
+			self.sprite_sheet = img_escudo_act
+			self:activar(dt)
+		else
+			self.sprite_sheet = img_escudo_idle
+			self:idle_anim(dt)
+		end
+
+	
 		if self.health <= 0 then
 			self.desactivando = true
 		end
-	else
-		TEsound.play({'Soundtrack/Effect/EscudoDact.wav',
-    	'Soundtrack/Effect/EscudoDact2.wav'}, 'static', {'escudo'}, 0.3)
 	end
 
 	return self.done
@@ -82,14 +90,24 @@ function Escudo:update_inactivo(dt)
 	self.timer = self.timer - dt
 
 	if self.timer <= 0 then
-		if self.health < self.total_healh then
-			self.health = self.health + self.total_healh / 6
+		if self.health < self.total_health then
+			self.health = self:boost_escudo(self.total_health / 6)
 		end
 		self.timer = self.timer_total/6
 	end
 
-	if self.health > self.total_healh / 6 then
-		self.done = false
+	if self.health then
+		if self.health > self.total_health / 6 then
+			self.done = false
+			self.idle = false
+			self.desactivando = false
+			self.act_sound = true
+			self.dact_sound = true
+			self.frame = 1
+			self.animations['dact']:reset()
+			self.animations['act']:reset()
+
+		end
 	end
 end
 
@@ -102,20 +120,27 @@ function Escudo:golpe_escudo(damage)
 	self.health = self.health - damage
 end
 
+--funcion para aumentar la vida del escudo
+function Escudo:boost_escudo(boost)
+	self.health = self.health + boost
+end
+
 --funcion para ver cuanta vida tiene este escudo, solo devuelve cuantos cuartos de vida le quedan
 function Escudo:checar_escudo()
-	if self.health <= self.total_healh/6 then
-		return 5
-	elseif self.health <= 2 * self.total_healh/6 then
-		return 4
-	elseif self.health <= self.total_healh/3 then
-		return 3
-	elseif self.health <= 2 * self.total_healh/3 then
-		return 2
-	elseif self.health <= 5 * self.total_healh/6 then
-		return 1
-	else
-		return 0
+	if self.health then
+		if self.health <= self.total_health/6 then
+			return 5
+		elseif self.health <= 2 * self.total_health/6 then
+			return 4
+		elseif self.health <= self.total_health/3 then
+			return 3
+		elseif self.health <= 2 * self.total_health/3 then
+			return 2
+		elseif self.health <= 5 * self.total_health/6 then
+			return 1
+		else
+			return 0
+		end
 	end
 end
 
