@@ -7,6 +7,7 @@ local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
 
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 
+--Aqui van variables de control del escudo, una global para saber en el resto del programa si el escudo esta activo
 escudo_nave = false
 
 --Escribimos las funciones, primero la de inicio
@@ -95,25 +96,28 @@ function Nave:render()
 	end
 	--Dibujamos el icono del estatus de escudo
 	love.graphics.draw(quad_util, self.escudo_quad, 1080, 600)
+	if self.escudo.estado == 'desactivado' then
+		love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
+		love.graphics.rectangle('fill', 1080, 600, 60, 60 )
+		love.graphics.setColor(1, 1, 1, 1)
+	end
 end
 
 function Nave:manager_escudo(dt)
-	local estado_escudo = 'disponible'
 	if love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') then
-		if escudo_nave == false and estado_escudo == 'disponible' then
+		if escudo_nave == false and self.escudo.estado == 'disponible' then
 			escudo_nave = true
 			self.escudo:iniciar_escudo()
-		else
+		elseif self.escudo.estado ~= 'desactivado' then
 			self.escudo:desactivar_escudo()
 		end
 	end
 
 	if escudo_nave == true then
 		self.escudo:update_activo(dt)
-		estado_escudo = self.escudo.estado
-		if estado_escudo == 'desactivado' then escudo_nave = false end
+		if self.escudo.estado == 'desactivado' then escudo_nave = false end
 	else
-		estado_escudo = self.escudo:update_inactivo(dt)
+		self.escudo:update_inactivo(dt)
 	end
 
 
