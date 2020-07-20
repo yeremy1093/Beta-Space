@@ -92,9 +92,6 @@ function Nave:render()
 	love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
 	if escudo_nave == true then
 		self.escudo:render(self.x - 3, self.y - 7)
-		love.graphics.print(self.escudo.estado, 500, 50)
-	else
-		love.graphics.print(self.escudo.estado, 500, 50)
 	end
 	--Dibujamos el icono del estatus de escudo
 	love.graphics.draw(quad_util, self.escudo_quad, 1080, 600)
@@ -107,13 +104,13 @@ function Nave:manager_escudo(dt)
 			escudo_nave = true
 			self.escudo:iniciar_escudo()
 		else
-			escudo_nave = false
 			self.escudo:desactivar_escudo()
 		end
 	end
 
 	if escudo_nave == true then
-		estado_escudo = self.escudo:update_activo(dt)
+		self.escudo:update_activo(dt)
+		estado_escudo = self.escudo.estado
 		if estado_escudo == 'desactivado' then escudo_nave = false end
 	else
 		estado_escudo = self.escudo:update_inactivo(dt)

@@ -44,7 +44,7 @@ function Escudo:desactivar(dt)
     	self.dact_sound = false
 	end
 	self.frame = self.animations['dact']:update(dt, self.sprite_dact)
-	if self.frame == 4 then
+	if self.frame == 3 then
 		self.estado = 'desactivado'
 		self.frame = 1
 	end
@@ -71,12 +71,6 @@ function Escudo:update_activo(dt)
 		self:desactivar(dt)
 	end
 	
-	if self.health <= 0 then
-		self.estado = 'desactivando'
-	end
-
-	return self.estado
-	
 end
 
 function Escudo:update_inactivo(dt)
@@ -84,7 +78,7 @@ function Escudo:update_inactivo(dt)
 
 	if self.timer <= 0 then
 		if self.health < self.total_health then
-			self.health = self:boost_escudo(self.total_health / 6)
+			self:boost_escudo(self.total_health / 6)
 		end
 		self.timer = self.timer_total/6
 	end
@@ -99,7 +93,6 @@ function Escudo:update_inactivo(dt)
 
 	end
 
-	return self.estado
 end
 
 function Escudo:desactivar_escudo()
@@ -113,6 +106,9 @@ end
 --funcion para disminuir la vida del escudo
 function Escudo:golpe_escudo(damage)
 	self.health = self.health - damage
+	if self.health <= 0 then
+		self.estado = 'desactivando'
+	end
 end
 
 --funcion para aumentar la vida del escudo
