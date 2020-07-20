@@ -1,8 +1,6 @@
 
 Play = Class{__includes = BaseState}
-timer_asteroide = 0
 puntaje = 0
-escudo_nave = false
 
 function Play:enter(params)
     --Agregamos el fondo unico de play

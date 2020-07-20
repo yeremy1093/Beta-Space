@@ -68,6 +68,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 				puntaje = puntaje - 5
 				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
 			else
+				nave.escudo:golpe_escudo(20)
 				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static')
 			end
 			break
@@ -111,6 +112,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 				puntaje = puntaje - 50
 				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
 			else
+				nave.escudo:golpe_escudo(20)
 				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static')
 			end
 			break

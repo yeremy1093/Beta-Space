@@ -33,7 +33,7 @@ function Nave:init(x, y, player)
 	self.dirX = 0
 	self.dirY = 0
 
-	self.escudo = Escudo(self.x, self.y, 20, 100)
+	self.escudo = Escudo(20, 100)
 
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
@@ -92,27 +92,33 @@ function Nave:render()
 	love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
 	if escudo_nave == true then
 		self.escudo:render(self.x - 3, self.y - 7)
+		love.graphics.print(self.escudo.estado, 500, 50)
+	else
+		love.graphics.print(self.escudo.estado, 500, 50)
 	end
 	--Dibujamos el icono del estatus de escudo
 	love.graphics.draw(quad_util, self.escudo_quad, 1080, 600)
 end
 
 function Nave:manager_escudo(dt)
+	local estado_escudo = 'disponible'
 	if love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') then
-		if escudo_nave == false then
+		if escudo_nave == false and estado_escudo == 'disponible' then
 			escudo_nave = true
+			self.escudo:iniciar_escudo()
 		else
+			escudo_nave = false
 			self.escudo:desactivar_escudo()
 		end
 	end
 
 	if escudo_nave == true then
-		if true == self.escudo:update_activo(dt) then
-			escudo_nave = false
-		end
+		estado_escudo = self.escudo:update_activo(dt)
+		if estado_escudo == 'desactivado' then escudo_nave = false end
 	else
-		self.escudo:update_inactivo(dt)
+		estado_escudo = self.escudo:update_inactivo(dt)
 	end
+
 
 	--seleccionamos el quad del icono del escudo
 	self.escudo_quad:setViewport(self.escudo:checar_escudo() * 60, 180, 60, 60)
