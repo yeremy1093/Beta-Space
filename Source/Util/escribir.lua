@@ -12,7 +12,13 @@ function Escribir:init(key)
 	self.caracter = love.graphics.newQuad(self.xoffset, self.yoffset, 20, 20, alfabeto:getDimensions())
 end
 
-function Escribir:update()
+function Escribir:update(key)
+	if key then
+		self:seleccion_caracter(key)
+		self.caracter:setViewport(self.xoffset, self.yoffset, 20, 20)
+		return
+	end
+
 	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
 		self.xoffset = 0
 		self.yoffset = 0

@@ -42,6 +42,11 @@ function Play:update(dt)
 	--Hacemos el update de los enemigos
 	self.enemyManager:update(dt, puntaje, self.balas, self.player)
 
+    --checamos si es game over
+    if Numvidas <= 0 then
+        gStateMachine:change('gameOver', {puntos = puntaje})
+    end
+
 	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
     	table.insert(self.balas, Bala(self.player.x + self.player.width/2 - 3, self.player.y, BULLET_SPEED, 0, 0))
     	TEsound.play('Soundtrack/Effect/soundLaser1.wav', 'static')

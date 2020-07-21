@@ -85,8 +85,6 @@ function Charselect:update(dt)
         
     end
 
-    --ponemos la musica del menu
-
 end
 
 function Charselect:render()
