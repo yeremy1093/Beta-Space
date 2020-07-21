@@ -15,6 +15,7 @@ escudo_nave = false
 --Escribimos las funciones, primero la de inicio
 function Nave:init(x, y, player)
 	--Elementos necesarios para animar
+	self.offset_arma = 0
 	if player == 1 then
 		self.sprite_sheet = sprite1
 		self.offset_hp = 120
@@ -32,7 +33,8 @@ function Nave:init(x, y, player)
 	self.anim = {['idle'] = Anim(0, 0, 58, 40, 2, 2, 10),
 				['izq'] = Anim(116, 0, 58, 40, 2, 2, 10),
 				['der'] = Anim(232, 0, 58, 40, 2, 2, 10),
-			['explosion'] = Anim(0, 0, 76, 76, 5, 5, 10)}
+				['explosion'] = Anim(0, 0, 76, 76, 5, 5, 10),
+				['arma'] = Anim(self.offset_arma, 300, 60, 60, 4, 4, 10)}
 
 	--elementos de posicion y tamaño para otras funciones
 	self.x = x
@@ -49,6 +51,7 @@ function Nave:init(x, y, player)
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
 	self.hp_quad = love.graphics.newQuad(0, self.offset_hp , 60, 60, quad_util:getDimensions())
+	self.equip_quad = love.graphics.newQuad(self.offset_arma, 300, 60, 60, quad_util:getDimensions())
 end
 
 function Nave:update(dt)
@@ -105,11 +108,12 @@ function Nave:update(dt)
 		end
 
 	end
+
+	--Ponemos la animacion del tipo de arma que tenemos
+	self.anim['arma']:update(dt, self.equip_quad)
 	
 	self:manager_escudo(dt)
 	self:check_hp ()
-	
-
 
 end
 
@@ -135,8 +139,8 @@ function Nave:render()
 	love.graphics.draw(quad_util, self.hp_quad, 960, 600)
 	--Dibujamos la cantidad de vidas--
 	self.numvidas:render(840, 600, 3, 3)
-	love.graphics.print(tostring(Numvidas), 840, 540)
-
+	--Dibujamos el icono del tipo de arma
+	love.graphics.draw(quad_util, self.equip_quad, 1200, 600)
 end
 
 function Nave:manager_escudo(dt)

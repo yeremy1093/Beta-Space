@@ -3,8 +3,12 @@ Play = Class{__includes = BaseState}
 puntaje = 0
 HPnave = 0
 Numvidas = 3
+tipo_arma = 0
 
 function Play:enter(params)
+
+    Numvidas = 3
+
     --Agregamos el fondo unico de play
     self.ui = love.graphics.newImage('Imagen/Sprites States/Play.png')
 
