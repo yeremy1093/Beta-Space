@@ -1,6 +1,8 @@
 
 Play = Class{__includes = BaseState}
 puntaje = 0
+HPnave = 0
+Numvidas = 3
 
 function Play:enter(params)
     --Agregamos el fondo unico de play

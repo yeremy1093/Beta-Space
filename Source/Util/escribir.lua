@@ -127,10 +127,22 @@ function Escribir:update()
 end
 
 
-function Escribir:render(x, y)
+function Escribir:render(x, y, sx, sy)
 	self.x = x
 	self.y = y
-	love.graphics.draw(alfabeto, self.caracter, self.x, self.y)
+	if not sx then
+		self.sx = 1
+	else 
+		self.sx = sx
+	end
+
+	if not sy then
+		self.sy = 1
+	else 
+		self.sy = sy
+	end
+
+	love.graphics.draw(alfabeto, self.caracter, self.x, self.y, 0, self.sx, self.sy)
 end
 
 function Escribir:seleccion_caracter(key)

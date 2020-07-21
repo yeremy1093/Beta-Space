@@ -4,6 +4,8 @@ Nave = Class{}
 local sprite1 = love.graphics.newImage('Imagen/Sprites/D-10.png')
 local sprite2 = love.graphics.newImage('Imagen/Sprites/AX-2.png')
 local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
+local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion.png')
+
 
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 
@@ -15,16 +17,22 @@ function Nave:init(x, y, player)
 	--Elementos necesarios para animar
 	if player == 1 then
 		self.sprite_sheet = sprite1
+		self.offset_hp = 120
 	elseif player == 2 then	
 		self.sprite_sheet = sprite2
+		self.offset_hp = 0
 	elseif player == 3 then	
 		self.sprite_sheet = sprite3
+		self.offset_hp = 60
 	end
-
+--Agregamos explosion de nave--
+	self.sprite_ex = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
+	self.frame_ex = 1
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet:getDimensions())
 	self.anim = {['idle'] = Anim(0, 0, 58, 40, 2, 2, 10),
 				['izq'] = Anim(116, 0, 58, 40, 2, 2, 10),
-				['der'] = Anim(232, 0, 58, 40, 2, 2, 10)}
+				['der'] = Anim(232, 0, 58, 40, 2, 2, 10),
+			['explosion'] = Anim(0, 0, 76, 76, 5, 5, 10)}
 
 	--elementos de posicion y tamaño para otras funciones
 	self.x = x
@@ -35,9 +43,12 @@ function Nave:init(x, y, player)
 	self.dirY = 0
 
 	self.escudo = Escudo(20, 100)
+	--Agregamos la cantidad de vidas iniciales
+	self.numvidas = Escribir (9)
 
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
+	self.hp_quad = love.graphics.newQuad(0, self.offset_hp , 60, 60, quad_util:getDimensions())
 end
 
 function Nave:update(dt)
@@ -75,25 +86,43 @@ function Nave:update(dt)
 	end
 
 	--Funcion para animar la nave
-	if self.dirX > 0 then
-		self.anim['der']:update(dt, self.sprite)
-	elseif self.dirX < 0 then
-		self.anim['izq']:update(dt, self.sprite)
+	if HPnave <= 9 then
+		if self.dirX > 0 then
+			self.anim['der']:update(dt, self.sprite)
+		elseif self.dirX < 0 then
+			self.anim['izq']:update(dt, self.sprite)
+		else
+			self.anim['idle']:update(dt, self.sprite)
+		end
 	else
-		self.anim['idle']:update(dt, self.sprite)
+		self.frame_ex = self.anim['explosion']:update(dt, self.sprite_ex)
+		if self.frame_ex == 5 then
+			HPnave = 0
+			Numvidas = Numvidas - 1
+			self.frame_ex = 1
+			self.x = WINDOW_WIDTH / 2
+			self.y = WINDOW_HEIGHT /2
+		end
+
 	end
 	
 	self:manager_escudo(dt)
+	self:check_hp ()
 	
 
 
 end
 
 function Nave:render()
-	love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
+	if HPnave <= 9 then
+		love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
+	else
+		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
+	end
 	if escudo_nave == true then
 		self.escudo:render(self.x - 3, self.y - 7)
 	end
+
 	--Dibujamos el icono del estatus de escudo
 	love.graphics.draw(quad_util, self.escudo_quad, 1080, 600)
 	if self.escudo.estado == 'desactivado' then
@@ -101,6 +130,12 @@ function Nave:render()
 		love.graphics.rectangle('fill', 1080, 600, 60, 60 )
 		love.graphics.setColor(1, 1, 1, 1)
 	end
+
+	--Dibujamos el HP de la nave--
+	love.graphics.draw(quad_util, self.hp_quad, 960, 600)
+	--Dibujamos la cantidad de vidas--
+	self.numvidas:render(840, 600, 3, 3)
+
 end
 
 function Nave:manager_escudo(dt)
@@ -123,4 +158,18 @@ function Nave:manager_escudo(dt)
 
 	--seleccionamos el quad del icono del escudo
 	self.escudo_quad:setViewport(self.escudo:checar_escudo() * 60, 180, 60, 60)
+end
+
+function Nave:check_hp( )
+
+	if Numvidas == 3 then
+		self.numvidas:seleccion_caracter (3)
+	elseif Numvidas == 2 then
+		self.numvidas:seleccion_caracter (2)
+	elseif Numvidas == 1 then
+		self.numvidas:seleccion_caracter (1)
+	end
+
+	self.hp_quad:setViewport(HPnave * 60, self.offset_hp, 60, 60)
+	-- body
 end

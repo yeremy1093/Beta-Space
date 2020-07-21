@@ -66,6 +66,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 			asteroide.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 5
+				HPnave = HPnave + 2
 				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
 			else
 				nave.escudo:golpe_escudo(20)
@@ -110,6 +111,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			cazaBasic.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 50
+				HPnave = HPnave + 2
 				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
 			else
 				nave.escudo:golpe_escudo(20)
