@@ -6,6 +6,7 @@ Class = require 'Source/Util/class'
 --Archivos que tienen que ver con la nave del jugador, sus balas y poderes
 require 'Source/Player/bala'
 require 'Source/Player/nave'
+require 'Source/Player/balasJugador'
 
 --Archivos de los enemigos, de distintos tipos
 require 'Source/Enemy/asteroide'
@@ -20,7 +21,6 @@ require 'Source/Background/sky/star'
 
 --Archivos de funciones varias, o que unen muchas clases diferentes
 require 'Source/Util/constantes'
-require 'Source/Util/util'
 require 'Source/Util/animacion'
 require 'Source/Util/escudos'
 require 'Source/Util/tesound'
