@@ -18,7 +18,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 			if asteroide:collides(bala) and asteroide.destruible == false then
 				puntaje = puntaje + 10
 				asteroide.destruible = true
-				table.remove(balas, i)
+				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
 					'static',
 					{'explosion'},
@@ -95,7 +95,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			if cazaBasic:collides(bala) and cazaBasic.destruible == false then
 				puntaje = puntaje + 100
 				cazaBasic.destruible = true
-				table.remove(balas, i)
+				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
 					'static',
 					{'explosion'},
