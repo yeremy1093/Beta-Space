@@ -51,33 +51,8 @@ function Play:update(dt)
         gStateMachine:change('gameOver', {puntos = puntaje})
     end
 
-	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
-    	table.insert(self.balas, Bala(self.player.x + self.player.width/2 - 3, self.player.y, BULLET_SPEED, 0, 0))
-    	TEsound.play('Soundtrack/Effect/soundLaser1.wav', 'static')
-    end
-    if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') then
-    	if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 8))
-    	elseif love.keyboard.isDown('up') and  love.keyboard.isDown('right') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 5))
-    	elseif love.keyboard.isDown('down') and  love.keyboard.isDown('left') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 7))
-    	elseif love.keyboard.isDown('down') and  love.keyboard.isDown('right') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 6))
-    	elseif love.keyboard.isDown('up') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 1))
-    	elseif love.keyboard.isDown('down') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 2))
-    	elseif love.keyboard.isDown('left') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 4))
-    	elseif love.keyboard.isDown('right') then
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 3))
-    	else
-    		table.insert(self.balas, Bala(self.player.x + self.player.width/2 -10, self.player.y, BULLET_SPEED, 1, 1))
-    	end
-    	TEsound.play('Soundtrack/Effect/soundLaser2.wav', 'static')
-
-    end
+    --Checamos si debemos crear balas del jugador
+	disparo_jugador(self.balas, self.player)
 
 end
 
