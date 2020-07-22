@@ -1,6 +1,7 @@
 Enemy = Class{}
 
 local enemy_timer = 0.05
+local shot_timer = 0.05
 
 function Enemy:init()
 	self.nivel = 1
@@ -11,6 +12,8 @@ function Enemy:init()
 
 	self.navesBasic = {}
 	self.chance_naveBasic = 8
+
+	self.engineShot = EngineShot()
 end
 
 function Enemy:update(dt, puntuacion, balas, player)
@@ -33,6 +36,8 @@ function Enemy:update(dt, puntuacion, balas, player)
 
 	--Checamos cuando debemos remover o mover los cazas
 	update_cazas_basicos(dt, self.navesBasic, balas, player)
+
+	self:updateShots(dt, player)
 	
 end
 
@@ -44,6 +49,7 @@ function Enemy:render()
 	for i, cazaBasic in pairs(self.navesBasic) do
 		cazaBasic:render()
 	end
+	self.engineShot:render()
 end
 
 function Enemy:ajuste_nivel(dt)
@@ -85,6 +91,22 @@ function Enemy:create_enemy(dt)
 		end
 		enemy_timer = 0.05
 	end
+end
+
+function Enemy:updateShots(dt, player)
+	shot_timer = shot_timer - dt
+	if shot_timer <= 0 then
+		if math.random(0,100) >= 80 then
+			if table.getn(self.navesBasic) > 0 then
+				target = math.random(1,table.getn(self.navesBasic))
+				self.engineShot:setCannon(self.navesBasic[target].x + 25, self.navesBasic[target].y + 40)
+				target = 0 
+			end
+		end
+		shot_timer = 0.05
+	end
+	self.engineShot:update(dt)
+	self.engineShot:collidesShots(player)
 end
 
 return Enemy
