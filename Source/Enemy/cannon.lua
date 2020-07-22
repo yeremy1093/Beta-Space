@@ -41,6 +41,9 @@ function Cannon:collides(objeto)
         return false
     end 
 
+    if self.destruible then
+        return false
+    end
     -- if the above aren't true, they're overlapping
     return true
 end
