@@ -4,7 +4,7 @@ GameOver = Class{__includes = BaseState}
 
 function GameOver:enter(params)
     --Guardamos el puntaje obtenido y borramos el puntaje global para la siguiente partida
-    self.puntos = params.puntos
+    self.puntos = Escribir(tostring(params.puntos))
     puntaje = 0
 
     --Cargamos el fondo
@@ -52,7 +52,7 @@ function GameOver:render()
     love.graphics.draw(self.menu, 0, 0)
 
     --Dibujamos los puntos en pantalla
-    love.graphics.print(tostring(self.puntos), 540, 400)
+    self.puntos:render(480, 400, 2, 2)
 
     --Dibujamos el target
     love.graphics.draw(self.target_sheet, self.target_sprite, 440, 560)

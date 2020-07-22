@@ -33,7 +33,7 @@ function Charselect:enter(params)
     self.player = player1
 
     --creamos una lista de letras para poner en pantalla
-    self.player_name = {Escribir('d'), Escribir(1), Escribir(0)}
+    self.player_name = Escribir("D10")
 
 end
 
@@ -69,15 +69,15 @@ function Charselect:update(dt)
     if self.targetY == 480 then
         self.sprite_sheet = sprite1
         self.player = player1
-        self.player_name = {Escribir('d'), Escribir(1), Escribir(0)}
+        self.player_name = Escribir("D10")
     elseif self.targetY == 540 then
         self.sprite_sheet = sprite2
         self.player = player2
-        self.player_name = {Escribir('a'), Escribir('x'), Escribir(2)}
+        self.player_name = Escribir("AX2")
     elseif self.targetY == 600 then
         self.sprite_sheet = sprite3
         self.player = player3
-        self.player_name = {Escribir('y'), Escribir('m'), Escribir(9)}
+        self.player_name = Escribir("YM9")
     end
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
@@ -99,7 +99,5 @@ function Charselect:render()
     love.graphics.draw(self.sprite_sheet, self.sprite, 540, 200, 0, 3, 3)
 
     --dibujamos las letras del nombre sobre la nave
-    self.player_name[1]:render(580, 165)
-    self.player_name[2]:render(610, 165)
-    self.player_name[3]:render(640, 165)
+    self.player_name:render(580, 165)
 end

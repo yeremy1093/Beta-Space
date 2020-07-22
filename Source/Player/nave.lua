@@ -46,7 +46,7 @@ function Nave:init(x, y, player)
 
 	self.escudo = Escudo(20, 100)
 	--Agregamos la cantidad de vidas iniciales
-	self.numvidas = Escribir(3)
+	self.numvidas = Escribir("3")
 
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
@@ -138,7 +138,7 @@ function Nave:render()
 	--Dibujamos el HP de la nave--
 	love.graphics.draw(quad_util, self.hp_quad, 960, 600)
 	--Dibujamos la cantidad de vidas--
-	self.numvidas:render(840, 600, 3, 3)
+	self.numvidas:render(780, 600, 3, 3)
 	--Dibujamos el icono del tipo de arma
 	love.graphics.draw(quad_util, self.equip_quad, 1200, 600)
 end
@@ -168,11 +168,11 @@ end
 function Nave:check_hp()
 
 	if Numvidas == 3 then
-		self.numvidas:update(3)
+		self.numvidas = Escribir("3")
 	elseif Numvidas == 2 then
-		self.numvidas:update(2)
+		self.numvidas = Escribir("2")
 	elseif Numvidas == 1 then
-		self.numvidas:update(1)
+		self.numvidas = Escribir("1")
 	end
 
 	self.hp_quad:setViewport(HPnave * 60, self.offset_hp, 60, 60)

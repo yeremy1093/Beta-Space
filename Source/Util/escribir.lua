@@ -2,140 +2,21 @@ Escribir = Class{}
 
 local alfabeto = love.graphics.newImage('Imagen/Menus/AlfabetoSpace.png')
 
-function Escribir:init(key)
-	self.key = key
-	self.x = 0
-	self.y = 0
+function Escribir:init(texto)
+	self.string = texto
 	self.xoffset = 0
 	self.yoffset = 0
-	self:seleccion_caracter(key)
-	self.caracter = love.graphics.newQuad(self.xoffset, self.yoffset, 20, 20, alfabeto:getDimensions())
-end
 
-function Escribir:update(key)
-	if key then
-		self:seleccion_caracter(key)
-		self.caracter:setViewport(self.xoffset, self.yoffset, 20, 20)
-		return
+	self.caracteres = {}
+
+	for i = 1, #self.string do
+		self:seleccion_caracter(self.string:sub(i, i))
+		table.insert(self.caracteres, love.graphics.newQuad(self.xoffset, self.yoffset, 20, 20, alfabeto:getDimensions()))
 	end
 
-	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
-		self.xoffset = 0
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('b') or love.keyboard.wasPressed('B') then
-		self.xoffset = 20
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('c') or love.keyboard.wasPressed('C') then
-		self.xoffset = 40
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') then
-		self.xoffset = 60
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('e') or love.keyboard.wasPressed('E') then
-		self.xoffset = 80
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('f') or love.keyboard.wasPressed('F') then
-		self.xoffset = 100
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('g') or love.keyboard.wasPressed('G') then
-		self.xoffset = 120
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('h') or love.keyboard.wasPressed('H') then
-		self.xoffset = 140
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('i') or love.keyboard.wasPressed('I') then
-		self.xoffset = 160
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('j') or love.keyboard.wasPressed('J') then
-		self.xoffset = 180
-		self.yoffset = 0
-	elseif love.keyboard.wasPressed('k') or love.keyboard.wasPressed('K') then
-		self.xoffset = 0
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('l') or love.keyboard.wasPressed('L') then
-		self.xoffset = 20
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('m') or love.keyboard.wasPressed('M') then
-		self.xoffset = 40
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('n') or love.keyboard.wasPressed('N') then
-		self.xoffset = 60
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('o') or love.keyboard.wasPressed('O') then
-		self.xoffset = 80
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('p') or love.keyboard.wasPressed('P') then
-		self.xoffset = 100
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('q') or love.keyboard.wasPressed('Q') then
-		self.xoffset = 120
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('r') or love.keyboard.wasPressed('R') then
-		self.xoffset = 140
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') then
-		self.xoffset = 160
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('t') or love.keyboard.wasPressed('T') then
-		self.xoffset = 180
-		self.yoffset = 20
-	elseif love.keyboard.wasPressed('u') or love.keyboard.wasPressed('U') then
-		self.xoffset = 0
-		self.yoffset = 40
-	elseif love.keyboard.wasPressed('v') or love.keyboard.wasPressed('V') then
-		self.xoffset = 20
-		self.yoffset = 40
-	elseif love.keyboard.wasPressed('w') or love.keyboard.wasPressed('W') then
-		self.xoffset = 40
-		self.yoffset = 40
-	elseif love.keyboard.wasPressed('x') or love.keyboard.wasPressed('X') then
-		self.xoffset = 60
-		self.yoffset = 40
-	elseif love.keyboard.wasPressed('y') or love.keyboard.wasPressed('Y') then
-		self.xoffset = 80
-		self.yoffset = 40
-	elseif love.keyboard.wasPressed('z') or love.keyboard.wasPressed('Z') then
-		self.xoffset = 100
-		self.yoffset = 40
-	elseif love.keyboard.wasPressed('1') then
-		self.xoffset = 0
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('2') then
-		self.xoffset = 20
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('3') then
-		self.xoffset = 40
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('4') then
-		self.xoffset = 60
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('5') then
-		self.xoffset = 80
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('6') then
-		self.xoffset = 100
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('7') then
-		self.xoffset = 120
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('8') then
-		self.xoffset = 140
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('9') then
-		self.xoffset = 160
-		self.yoffset = 60
-	elseif love.keyboard.wasPressed('0') then
-		self.xoffset = 180
-		self.yoffset = 60
-	end
-
-	self.caracter:setViewport(self.xoffset, self.yoffset, 20, 20)
 end
-
 
 function Escribir:render(x, y, sx, sy)
-	self.x = x
-	self.y = y
 	if not sx then
 		self.sx = 1
 	else 
@@ -148,7 +29,10 @@ function Escribir:render(x, y, sx, sy)
 		self.sy = sy
 	end
 
-	love.graphics.draw(alfabeto, self.caracter, self.x, self.y, 0, self.sx, self.sy)
+	for i = 1, #self.string do
+		x = x + (20 * self.sx)
+		love.graphics.draw(alfabeto, self.caracteres[i], x, y, 0, self.sx, self.sy)
+	end
 end
 
 function Escribir:seleccion_caracter(key)
@@ -230,34 +114,34 @@ function Escribir:seleccion_caracter(key)
 	elseif key == 'z' or key == 'Z' then
 		self.xoffset = 100
 		self.yoffset = 40
-	elseif key == 1 then
+	elseif key == 1 or key == '1' then
 		self.xoffset = 0
 		self.yoffset = 60
-	elseif key == 2 then
+	elseif key == 2 or key == '2' then
 		self.xoffset = 20
 		self.yoffset = 60
-	elseif key == 3 then
+	elseif key == 3 or key == '3' then
 		self.xoffset = 40
 		self.yoffset = 60
-	elseif key == 4 then
+	elseif key == 4 or key == '4' then
 		self.xoffset = 60
 		self.yoffset = 60
-	elseif key == 5 then
+	elseif key == 5 or key == '5' then
 		self.xoffset = 80
 		self.yoffset = 60
-	elseif key == 6 then
+	elseif key == 6 or key == '6' then
 		self.xoffset = 100
 		self.yoffset = 60
-	elseif key == 7 then
+	elseif key == 7 or key == '7' then
 		self.xoffset = 120
 		self.yoffset = 60
-	elseif key == 8 then
+	elseif key == 8 or key == '8' then
 		self.xoffset = 140
 		self.yoffset = 60
-	elseif key == 9 then
+	elseif key == 9 or key == '9' then
 		self.xoffset = 160
 		self.yoffset = 60
-	elseif key == 0 then
+	elseif key == 0  or key == '0' then
 		self.xoffset = 180
 		self.yoffset = 60
 	end
