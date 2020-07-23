@@ -121,3 +121,16 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 		end
 	end
 end
+
+function update_drones(dt, drones, balas, nave)
+	--Checamos si el drone ha salido de pantalla o a colisionado con la nave
+	for i, Drone in pairs(drones) do
+		if false == Drone:update(dt, nave) then
+			table.remove(drones, i)
+		end
+		
+		if Drone.y > WINDOW_HEIGHT or Drone.x > WINDOW_WIDTH or Drone.x < -Drone.width or Drone.y < -35 then
+			table.remove(drones, i)
+		end
+	end
+end

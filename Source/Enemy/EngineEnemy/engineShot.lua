@@ -8,41 +8,39 @@ function EngineShot:init()
     self.listStella = {}
 end
 
---Actualizacion de los proyectiles y eliminacion de proyectiles fuera de pantalla
+--Actualizacion de los proyectiles y eliminacion de proyectiles fuera de pantalla o por impacto
 function EngineShot:update(dt)
     for i, Cannon in pairs(self.listCannon) do
-        if Cannon:update(dt) == false then
-            table.remove(self.listCannon, i)
-        end
-        if (Cannon.x > WINDOW_WIDTH or Cannon.x < 0) and
-        (Cannon.y > WINDOW_HEIGHT or Cannon.y < 0) then
+        if (Cannon:update(dt) == false) or 
+        ((Cannon.x > WINDOW_WIDTH or Cannon.x < 0) or
+        (Cannon.y > WINDOW_HEIGHT or Cannon.y < 0)) then
             table.remove(self.listCannon, i)
         end
     end
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
         DiscEnergy:update(dt)
-        if (DiscEnergy.x > WINDOW_WIDTH or DiscEnergy.x < 0) and
+        if (DiscEnergy.x > WINDOW_WIDTH or DiscEnergy.x < 0) or
         (DiscEnergy.y > WINDOW_HEIGHT or DiscEnergy.y < 0) then
             table.remove(self.listDiscEnergy, i)
         end
     end
     for i, Missil in pairs(self.listMissil) do
         Missil:update(dt)
-        if (Missil.x > WINDOW_WIDTH or Missil.x < 0) and
+        if (Missil.x > WINDOW_WIDTH or Missil.x < 0) or
         (Missil.y > WINDOW_HEIGHT or Missil.y < 0) then
             table.remove(self.listMissil, i)
         end
     end
     for i, PhEnemy in pairs(self.listPhEnemy) do
         PhEnemy:update(dt)
-        if (PhEnemy.x > WINDOW_WIDTH or PhEnemy.x < 0) and
+        if (PhEnemy.x > WINDOW_WIDTH or PhEnemy.x < 0) or
         (PhEnemy.y > WINDOW_HEIGHT or PhEnemy.y < 0) then
             table.remove(self.listPhEnemy, i)
         end
     end
     for i, Stella in pairs(self.listStella) do
         Stella:update(dt)
-        if (Stella.x > WINDOW_WIDTH or Stella.x < 0) and
+        if (Stella.x > WINDOW_WIDTH or Stella.x < 0) or
         (Stella.y > WINDOW_HEIGHT or Stella.y < 0) then
             table.remove(self.listStella, i)
         end

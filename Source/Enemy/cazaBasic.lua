@@ -47,7 +47,11 @@ function CazaBasic:collides(objeto)
     -- edge of the other
     if self.y > objeto.y + objeto.height or objeto.y > self.y + self.height then
         return false
-    end 
+	end 
+	
+	if self.destruible then
+        return false
+    end
 
     -- if the above aren't true, they're overlapping
     return true
