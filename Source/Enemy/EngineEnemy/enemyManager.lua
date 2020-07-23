@@ -108,9 +108,9 @@ function Enemy:create_enemy(dt, player)
 		end
 		--Creacion de Drones
 		if math.random(0,100) >= self.chance_drones and self.nivel < 6 then
-			table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), math.random(0, (WINDOW_HEIGHT/2) -50), 3, player)) 
+			table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player)) 
 		elseif math.random(0,100) >= self.chance_drones then
-			table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), math.random(0, (WINDOW_HEIGHT/2) -50), 3, player))
+			table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
 		end
 		enemy_timer = 0.05
 	end

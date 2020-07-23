@@ -3,10 +3,9 @@ Drone = Class{}
 local sprite_sheet_drone = love.graphics.newImage('Imagen/SpritesEnemys/Drone.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function Drone:init(x, y, timeToTarget, player)
+function Drone:init(x, y, velocity, player)
 	self.x = x
 	self.y = y
-    self.timeToTarget = 1/timeToTarget
 	self.width = 20
 	self.height = 16
 	self.sprite = love.graphics.newQuad(0, 0, 20, 16, sprite_sheet_drone:getDimensions())
@@ -29,6 +28,9 @@ function Drone:init(x, y, timeToTarget, player)
     end
     self.lastDistance = (self.distancex^2 + self.distancey^2)^0.5
 
+    --Tiempo inicial medido que le tomara llegar al objetivo desde el sitio de aparicion apartir de una velocidad dada
+    self.timeToTarget = velocity/self.lastDistance
+
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
 	--Aqui van todas las animaciones posibles
@@ -38,24 +40,28 @@ end
 
 --Funcion de update
 function Drone:update(dt, player)
-    if self.y <= (player.y + (player.height/2)) then -- Drone esta arriba del jugador
-        self.distancey = player.y + (player.height/2) - self.y
-        self.y = self.y + self.distancey * dt * self.timeToTarget 
-    else -- Drone esta abajo del jugador
-        self.distancey = self.y + (player.height/2) - player.y
-        self.y = self.y - self.distancey * dt * self.timeToTarget 
-    end
+    --Si el drone no esta destruido, actualiza la direccion para seguir al objetivo
+    if self.destruible == false then
+        if self.y <= (player.y + (player.height/2)) then -- Drone esta arriba del jugador
+            self.distancey = player.y + (player.height/2) - self.y
+            self.y = self.y + self.distancey * dt * self.timeToTarget 
+        else -- Drone esta abajo del jugador
+            self.distancey = self.y + (player.height/2) - player.y
+            self.y = self.y - self.distancey * dt * self.timeToTarget 
+        end
 
-    if self.x <= (player.x + (player.width/2)) then -- Drone esta a la izquierda del jugador
-        self.distancex = player.x + (player.width/2) - self.x
-        self.x = self.x + self.distancex * dt * self.timeToTarget 
-    else -- Drone esta a la derecha del jugador
-        self.distancex = self.x + (player.width/2) - player.x
-        self.x = self.x - self.distancex * dt * self.timeToTarget 
+        if self.x <= (player.x + (player.width/2)) then -- Drone esta a la izquierda del jugador
+            self.distancex = player.x + (player.width/2) - self.x
+            self.x = self.x + self.distancex * dt * self.timeToTarget 
+        else -- Drone esta a la derecha del jugador
+            self.distancex = self.x + (player.width/2) - player.x
+            self.x = self.x - self.distancex * dt * self.timeToTarget 
+        end
+        --Actualizacion de tiempo requerido para llegar al objetivo
+        new_distance = (self.distancex^2 + self.distancey^2)^0.5
+        self.timeToTarget = (self.lastDistance / new_distance) * self.timeToTarget
+        self.lastDistance = new_distance
     end
-    new_distance = (self.distancex^2 + self.distancey^2)^0.5
-    self.timeToTarget = (self.lastDistance / new_distance) * self.timeToTarget
-    self.lastDistance = new_distance
 
 	if self.destruible == false then 
 		self.anim['idle']:update(dt, self.sprite)

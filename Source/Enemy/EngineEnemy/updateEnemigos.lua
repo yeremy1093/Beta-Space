@@ -133,4 +133,36 @@ function update_drones(dt, drones, balas, nave)
 			table.remove(drones, i)
 		end
 	end
+
+	--Aqui checamos las colisiones entre cazas y balas del jugador
+	for i, bala in pairs(balas) do
+		for j, Drone in pairs(drones) do
+			if Drone:collides(bala) and Drone.destruible == false then
+				puntaje = puntaje + 150
+				Drone.destruible = true
+				bala.destruible = true
+				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
+					'static',
+					{'explosion'},
+					0.5)
+				break
+			end
+		end
+	end
+
+	--Checamos si el caza choca con la nave
+	for j, Drone in pairs(drones) do
+		if Drone:collides(nave) and Drone.destruible == false then
+			Drone.destruible = true
+			if escudo_nave == false then
+				puntaje = puntaje - 20
+				HPnave = HPnave + 2
+				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
+			else
+				nave.escudo:golpe_escudo(10)
+				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static')
+			end
+			break
+		end
+	end
 end
