@@ -13,7 +13,7 @@ function Play:enter(params)
     self.ui = love.graphics.newImage('Imagen/Sprites States/Play.png')
 
     self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, params.player)
-    self.balas = {}
+    self.shotManager = PlayerShot()
 
     --Agregar listas vacías para enemigos, powerups, etc.
     self.enemyManager = Enemy()
@@ -41,10 +41,10 @@ function Play:update(dt)
 	self.player:update(dt)
 
 	--Funcion con el codigo para mover la bala
-	move_bala(dt, self.balas)
+	self.shotManager:disparo_jugador(self.player)
 
 	--Hacemos el update de los enemigos
-	self.enemyManager:update(dt, puntaje, self.balas, self.player)
+	self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player)
 
     --checamos si es game over
     if Numvidas <= 0 then
@@ -52,7 +52,7 @@ function Play:update(dt)
     end
 
     --Checamos si debemos crear balas del jugador
-	disparo_jugador(self.balas, self.player)
+	self.shotManager:mover_balas_jugador(dt)
 
 end
 
@@ -72,9 +72,7 @@ function Play:render()
     self.player:render()
 
 	--Dibujamos las balas en un ciclo
-	for i, bala in pairs(self.balas) do
-		bala:render()
-	end
+	self.shotManager:render()
 
 	self.enemyManager:render()
 
