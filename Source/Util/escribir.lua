@@ -30,8 +30,8 @@ function Escribir:render(x, y, sx, sy)
 	end
 
 	for i = 1, #self.string do
-		x = x + (20 * self.sx)
 		love.graphics.draw(alfabeto, self.caracteres[i], x, y, 0, self.sx, self.sy)
+		x = x + (20 * self.sx)
 	end
 end
 

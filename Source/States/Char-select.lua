@@ -99,5 +99,5 @@ function Charselect:render()
     love.graphics.draw(self.sprite_sheet, self.sprite, 540, 200, 0, 3, 3)
 
     --dibujamos las letras del nombre sobre la nave
-    self.player_name:render(580, 165)
+    self.player_name:render(600, 165)
 end
