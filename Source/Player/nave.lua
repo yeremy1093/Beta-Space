@@ -142,7 +142,7 @@ function Nave:render()
 	--Dibujamos el HP de la nave--
 	love.graphics.draw(quad_util, self.hp_quad, 960, 600)
 	--Dibujamos la cantidad de vidas--
-	self.numvidas:render(780, 600, 3, 3)
+	self.numvidas:render(840, 600, 3, 3)
 	--Dibujamos el icono del tipo de arma
 	love.graphics.draw(quad_util, self.equip_quad, 1200, 600)
 end
