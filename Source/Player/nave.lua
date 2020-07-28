@@ -49,7 +49,7 @@ function Nave:init(x, y, player)
 	--Agregamos la cantidad de vidas iniciales
 	self.numvidas = Escribir("3")
 	--Agregamos el tipo de arma que tenemos equipada
-	self.power_up = 'pulsar'
+	self.power_up = 'direccional'
 
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
@@ -188,4 +188,12 @@ function Nave:check_hp()
 
 	self.hp_quad:setViewport(HPnave * 60, self.offset_hp, 60, 60)
 	-- body
+end
+
+function Nave:update_power_up(power_up)
+	if power_up == 1 then
+		self.power_up = 'direccional'
+	elseif power_up == 2 then
+		self.power_up = 'pulsar'
+	end
 end
