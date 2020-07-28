@@ -4,6 +4,9 @@ Play = Class{__includes = BaseState}
 
 function Play:enter(params)
 
+    self.pickup_timer = PICKUP_TIMER
+    self.pickups = {}
+
     Numvidas = 3
 
     --Agregamos el fondo unico de play
@@ -51,6 +54,10 @@ function Play:update(dt)
     --Checamos si debemos crear balas del jugador
 	self.shotManager:mover_balas_jugador(dt, self.player)
 
+    --hacemos lo de los pickups para las armas y poderes
+    self:generar_pickup(dt)
+    self:update_pickups(dt)
+
 end
 
 function Play:render()
@@ -73,4 +80,35 @@ function Play:render()
 
 	self.enemyManager:render()
 
+    for i, pickup in pairs(self.pickups) do
+        pickup:render()
+    end
+
+end
+
+function Play:generar_pickup(dt)
+    self.pickup_timer = self.pickup_timer - dt
+
+    if self.pickup_timer <= 0 then
+        table.insert(self.pickups, Pickup(math.random(0, WINDOW_WIDTH -50), -34, math.random(-50, 50), math.random(20, 100)))
+        self.pickup_timer = PICKUP_TIMER
+    end
+end
+
+function Play:update_pickups(dt)
+    for i, pickup in pairs(self.pickups) do
+        pickup:update(dt)
+        --checamos si la bala salio de la pantalla y la borramos
+        if pickup.y < 0 - pickup.height or pickup.y > WINDOW_HEIGHT or pickup.x < 0 - pickup.width or pickup.x > WINDOW_WIDTH then
+            table.remove(self.pickups, i)
+        end
+    end
+
+    for i, pickup in pairs(self.pickups) do
+        if pickup:collides(self.player) then
+            self.player:update_power_up(pickup.tipo)
+            table.remove(self.pickups, i)
+            TEsound.play({'Soundtrack/Effect/PowerUp1.wav', 'Soundtrack/Effect/PowerUp2.wav', 'Soundtrack/Effect/PowerUp3.wav'}, 'static')
+        end
+    end
 end

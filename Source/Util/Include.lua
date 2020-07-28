@@ -9,6 +9,7 @@ require 'Source/Player/disparoDireccional'
 require 'Source/Player/pulsar'
 require 'Source/Player/nave'
 require 'Source/Player/playerShotManager'
+require 'Source/Player/pickup'
 
 --Archivos de los enemigos, de distintos tipos
 require 'Source/Enemy/asteroide'

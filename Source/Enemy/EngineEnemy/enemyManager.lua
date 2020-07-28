@@ -1,8 +1,5 @@
 Enemy = Class{}
 
-local enemy_timer = 0.05
-local shot_timer = 0.05
-
 function Enemy:init()
 	self.nivel = 1
 	self.tipos_enemigos = {'asteroide_small'}
