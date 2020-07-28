@@ -49,7 +49,7 @@ function Play:update(dt)
     end
 
     --Checamos si debemos crear balas del jugador
-	self.shotManager:mover_balas_jugador(dt)
+	self.shotManager:mover_balas_jugador(dt, self.player)
 
 end
 

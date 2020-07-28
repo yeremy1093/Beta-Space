@@ -44,9 +44,12 @@ function Nave:init(x, y, player)
 	self.dirX = 0
 	self.dirY = 0
 
+	--La nave tiene un objeto tipo escudo
 	self.escudo = Escudo(20, 100)
 	--Agregamos la cantidad de vidas iniciales
 	self.numvidas = Escribir("3")
+	--Agregamos el tipo de arma que tenemos equipada
+	self.power_up = 'pulsar'
 
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())

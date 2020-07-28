@@ -6,6 +6,7 @@ Class = require 'Source/Util/class'
 --Archivos que tienen que ver con la nave del jugador, sus balas y poderes
 require 'Source/Player/bala'
 require 'Source/Player/disparoDireccional'
+require 'Source/Player/pulsar'
 require 'Source/Player/nave'
 require 'Source/Player/playerShotManager'
 
