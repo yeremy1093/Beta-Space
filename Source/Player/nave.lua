@@ -89,7 +89,7 @@ function Nave:update(dt)
 	end
 
 	--Funcion para animar la nave
-	if HPnave <= 9 then
+	if HPnave <= 8 then
 		if self.dirX > 0 then
 			self.anim['der']:update(dt, self.sprite)
 		elseif self.dirX < 0 then

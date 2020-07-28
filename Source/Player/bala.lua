@@ -12,8 +12,8 @@ function Bala:init(x, y, speed)
 	self.y = y
 	self.speed = speed
 	self.sprite = imgBala
-	self.width = self.sprite:getWidth ()
-	self.height = self.sprite:getHeight ()
+	self.width = self.sprite:getWidth()
+	self.height = self.sprite:getHeight()
 
 	self.spriteExplotion = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
     self.destruible = false

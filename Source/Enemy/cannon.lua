@@ -8,9 +8,9 @@ function Cannon:init(x, y)
 	self.y = y
 	self.dx = 0
 	self.dy = 350
-	self.width = 8
-	self.height = 8
     self.sprite = sprite_sheet_bala
+    self.width = self.sprite:getWidth()
+    self.height = self.sprite:getHeight()
     self.spriteExplotion = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
     self.destruible = false
     self.explotionAnim = Anim(0, 0, 25, 25, 4, 4, 10)

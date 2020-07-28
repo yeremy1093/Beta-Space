@@ -11,10 +11,10 @@ function Asteroide:init(x, y, dx, dy)
 	self.y = y
 	self.dx = dx
 	self.dy = dy
-	self.width = 41
-	self.height = 41
 	self.sprite = love.graphics.newQuad(0, 0, 41, 41, sprite_sheet_ast:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
+	self.width = 41
+	self.height = 41
 	self.fps = math.random(6, 10)
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false

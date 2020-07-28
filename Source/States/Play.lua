@@ -1,9 +1,6 @@
 
 Play = Class{__includes = BaseState}
-puntaje = 0
-HPnave = 0
-Numvidas = 3
-tipo_arma = 0
+
 
 function Play:enter(params)
 
