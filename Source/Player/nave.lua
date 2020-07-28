@@ -15,7 +15,6 @@ escudo_nave = false
 --Escribimos las funciones, primero la de inicio
 function Nave:init(x, y, player)
 	--Elementos necesarios para animar
-	self.offset_arma = 0
 	if player == 1 then
 		self.sprite_sheet = sprite1
 		self.offset_hp = 120
@@ -34,7 +33,8 @@ function Nave:init(x, y, player)
 				['izq'] = Anim(116, 0, 58, 40, 2, 2, 10),
 				['der'] = Anim(232, 0, 58, 40, 2, 2, 10),
 				['explosion'] = Anim(0, 0, 76, 76, 5, 5, 10),
-				['arma'] = Anim(self.offset_arma, 300, 60, 60, 4, 4, 10)}
+				['arma1'] = Anim(0, 300, 60, 60, 4, 4, 10),
+				['arma2'] = Anim(240, 300, 60, 60, 4, 4, 10)}
 
 	--elementos de posicion y tamaño para otras funciones
 	self.x = x
@@ -54,7 +54,7 @@ function Nave:init(x, y, player)
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
 	self.hp_quad = love.graphics.newQuad(0, self.offset_hp , 60, 60, quad_util:getDimensions())
-	self.equip_quad = love.graphics.newQuad(self.offset_arma, 300, 60, 60, quad_util:getDimensions())
+	self.equip_quad = love.graphics.newQuad(0, 300, 60, 60, quad_util:getDimensions())
 end
 
 function Nave:update(dt)
@@ -117,7 +117,11 @@ function Nave:update(dt)
 	end
 
 	--Ponemos la animacion del tipo de arma que tenemos
-	self.anim['arma']:update(dt, self.equip_quad)
+	if self.power_up == 'direccional' then
+		self.anim['arma1']:update(dt, self.equip_quad)
+	elseif self.power_up == 'pulsar' then
+		self.anim['arma2']:update(dt, self.equip_quad)
+	end
 	
 	self:manager_escudo(dt)
 	self:check_hp ()

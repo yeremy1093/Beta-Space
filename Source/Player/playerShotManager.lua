@@ -81,4 +81,10 @@ function PlayerShot:render()
     for i, bala in pairs(self.balas) do
         bala:render()
     end
+
+    if  self.pulsar == 'desactivado' then
+        love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
+        love.graphics.rectangle('fill', 1200, 600, 60, 60 )
+        love.graphics.setColor(1, 1, 1, 1)
+    end
 end
