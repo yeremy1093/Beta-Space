@@ -15,7 +15,7 @@ function Pulsar:init(x, y, speed)
     self.destruible = false
     self.cargando = true
     self.anim = {['cargando'] = Anim(0, 0, 300, 300, 6, 6, 6),
-    			['idle'] = Anim(1200, 0, 300, 300, 2, 2, 10)}
+    			['idle'] = Anim(900, 0, 300, 300, 2, 2, 8)}
 
 
 end
