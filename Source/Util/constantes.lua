@@ -8,8 +8,8 @@ BULLET_SPEED = 1000
 TIMER_PULSAR = 5
 
 --Variables globales usadas en el estado PLAY
-PICKUP_TIMER = 10
-puntaje = 0
+PICKUP_TIMER = 15
+puntaje = 0 
 HPnave = 0
 Numvidas = 3
 tipo_arma = 0
