@@ -5,6 +5,7 @@ WINDOW_HEIGHT = 720
 --Velocidad de movimiento de la nave y del disparo
 SHIP_SPEED = 300
 BULLET_SPEED = 1000
+BULLET_XSPEED = 100
 TIMER_PULSAR = 5
 
 --Variables globales usadas en el estado PLAY

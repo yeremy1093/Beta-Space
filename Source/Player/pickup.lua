@@ -14,7 +14,11 @@ function Pickup:init(x, y, dx, dy)
 	self.width = 60
 	self.height = 60
 	self.fps = math.random(6, 10)
-	self.tipo = math.random(1, 2)
+	if love.math.random(1, 2) == 1 then
+		self.tipo = 'direccional'
+	else
+		self.tipo = 'pulsar'
+	end
 	--Aqui van todas las animaciones posibles
 	self.anim = {['arma1'] = Anim(0, 300, self.width, self.height, 4, 4, self.fps),
 				['arma2'] = Anim(240, 300, self.width, self.height, 4, 4, self.fps)}
@@ -25,9 +29,9 @@ function Pickup:update(dt)
 	self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
 
-	if self.tipo == 1 then 
+	if self.tipo == 'direccional' then 
 		self.anim['arma1']:update(dt, self.sprite)
-	elseif self.tipo == 2 then 
+	elseif self.tipo == 'pulsar' then 
 		self.anim['arma2']:update(dt, self.sprite)
 	end
 end

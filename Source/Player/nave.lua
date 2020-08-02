@@ -50,6 +50,8 @@ function Nave:init(x, y, player)
 	self.numvidas = Escribir("3")
 	--Agregamos el tipo de arma que tenemos equipada
 	self.power_up = 'direccional'
+	--Las armas tienen niveles, que se trackean en esta variable
+	self.power_level = 1
 
 	--creamos los quads para la interfaz de usuario
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
@@ -109,6 +111,7 @@ function Nave:update(dt)
 				0.8)
 			HPnave = 0
 			Numvidas = Numvidas - 1
+			self.power_level = 1
 			self.frame_ex = 1
 			self.x = WINDOW_WIDTH / 2
 			self.y = WINDOW_HEIGHT /2
@@ -191,9 +194,10 @@ function Nave:check_hp()
 end
 
 function Nave:update_power_up(power_up)
-	if power_up == 1 then
-		self.power_up = 'direccional'
-	elseif power_up == 2 then
-		self.power_up = 'pulsar'
+	if power_up == self.power_up and self.power_level < 3 then
+		self.power_level = self.power_level + 1
+	else
+		self.power_up = power_up
+		self.power_level = 1
 	end
 end
