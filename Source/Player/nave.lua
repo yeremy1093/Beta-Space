@@ -120,6 +120,7 @@ function Nave:update(dt)
 			self.power_level = 1
 			self.power_state = 0
 			self.power_laser = 1
+			self.power_up_timer = POWER_UP_TIMER
 			self.frame_ex = 1
 			self.x = WINDOW_WIDTH / 2
 			self.y = WINDOW_HEIGHT /2
