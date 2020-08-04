@@ -5,14 +5,13 @@ Pulsar = Class{}
 
 local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Pulsar.png')
 
-function Pulsar:init(x, y, speed, nivel)
+function Pulsar:init(x, y, speed)
 	self.x = x
 	self.y = y
 	self.speed = speed
 	self.sprite = love.graphics.newQuad(0, 0, 300, 300, sprite_sheet:getDimensions())
-	self.nivel = nivel
-	self.width = 100 * self.nivel
-	self.height = 100 * self.nivel
+	self.width = 300
+	self.height = 300
     self.destruible = false
     self.cargando = true
     self.anim = {['cargando'] = Anim(0, 0, 300, 300, 6, 6, 8),
@@ -24,8 +23,8 @@ end
 --Funcion de update
 function Pulsar:update(dt, nave)
 	if self.cargando == true then
-		self.y = nave.y - (self.height / 2)
-		self.x = nave.x - (self.width / 2 - 29)
+		self.y = nave.y - 150
+		self.x = nave.x - 121
 		if 6 == self.anim['cargando']:update(dt, self.sprite) then
 			self.cargando = false
 		end
@@ -37,5 +36,5 @@ function Pulsar:update(dt, nave)
 end
 
 function Pulsar:render()
-	love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y, 0, self.nivel / 3)
+	love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y)
 end

@@ -7,10 +7,9 @@ imgBala = love.graphics.newImage('Imagen/Sprites/laser.png')
 
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function Bala:init(x, y, xspeed, speed)
+function Bala:init(x, y, speed)
 	self.x = x
 	self.y = y
-	self.xspeed = xspeed
 	self.speed = speed
 	self.sprite = imgBala
 	self.width = self.sprite:getWidth()
@@ -29,7 +28,6 @@ function Bala:update(dt)
 		end
 	else
 		self.y = self.y - self.speed * dt
-		self.x = self.x + self.xspeed * dt
 	end
 	return true	
 end

@@ -4,7 +4,7 @@ PlayerShot = Class{}
 
 function PlayerShot:init()
     self.balas = {} --lista para hacer seguimiento de las balas
-    self.power_up = 'direccional' --variable para saber que tipo de balas tenemos equipadas
+    self.power_up = 'pulsar' --variable para saber que tipo de balas tenemos equipadas
     self.pulsar_timer = TIMER_PULSAR
     self.pulsar = 'activado'
 end
@@ -34,7 +34,8 @@ end
 function PlayerShot:disparo_jugador(player)
     self.power_up = player.power_up
 	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
-        self:disparo_normal(player)
+    	table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_SPEED))
+    	TEsound.play('Soundtrack/Effect/soundLaser1.wav', 'static')
     end
     if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') then
         if self.power_up == 'direccional' then
@@ -45,23 +46,8 @@ function PlayerShot:disparo_jugador(player)
     end
 end
 
-function PlayerShot:disparo_normal(player)
-    if player.power_level == 1 then
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED))
-    elseif player.power_level == 2 then
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED))
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED))
-    elseif player.power_level == 3 then
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED))
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED))
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED))
-    end
-    TEsound.play('Soundtrack/Effect/soundLaser1.wav', 'static')
-end
-
 function PlayerShot:disparo_direccional(player)
-    if player.power_level == 1 then
-        if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
+    if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8))
         elseif love.keyboard.isDown('up') and  love.keyboard.isDown('right') then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5))
@@ -80,49 +66,12 @@ function PlayerShot:disparo_direccional(player)
         else
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
         end
-    elseif player.power_level == 2 then
-        if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right')) then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6))
-        elseif (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7))
-        elseif love.keyboard.isDown('up') or love.keyboard.isDown('down') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
-        elseif love.keyboard.isDown('left') or love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
-        else
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
-        end
-    elseif player.power_level == 3 then
-        if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right'))
-            or (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7))
-        elseif love.keyboard.isDown('up') or love.keyboard.isDown('down') or love.keyboard.isDown('left') or love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
-        else
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
-        end
-    end
-
-    TEsound.play('Soundtrack/Effect/soundLaser2.wav', 'static')
+        TEsound.play('Soundtrack/Effect/soundLaser2.wav', 'static')
 end
 
 function PlayerShot:disparo_pulsar(player)
     if self.pulsar == 'activado' then 
-        table.insert(self.balas, Pulsar(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
+        table.insert(self.balas, Pulsar(player.x + player.width/2, player.y, BULLET_SPEED/2))
         TEsound.play('Soundtrack/Effect/LaserLargo.wav', 'static')
         self.pulsar = 'desactivado'
     end
