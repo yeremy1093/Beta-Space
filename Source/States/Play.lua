@@ -10,7 +10,7 @@ function Play:enter(params)
     Numvidas = 3
 
     --Agregamos el fondo unico de play
-    self.ui = love.graphics.newImage('Imagen/Sprites States/Play.png')
+    self.ui = love.graphics.newImage('Imagen/Menus/Play.png')
 
     self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, params.player)
     self.shotManager = PlayerShot()

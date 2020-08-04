@@ -46,12 +46,12 @@ function PlayerShot:disparo_jugador(player)
 end
 
 function PlayerShot:disparo_normal(player)
-    if player.power_level == 1 then
+    if player.power_laser == 1 then
         table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED))
-    elseif player.power_level == 2 then
+    elseif player.power_laser == 2 then
         table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED))
         table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED))
-    elseif player.power_level == 3 then
+    elseif player.power_laser == 3 then
         table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED))
         table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED))
         table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED))
