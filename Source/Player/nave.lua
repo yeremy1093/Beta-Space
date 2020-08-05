@@ -210,7 +210,19 @@ end
 
 function Nave:check_hp()
 
-	if Numvidas == 3 then
+	if Numvidas == 9 then
+		self.numvidas = Escribir("9")
+	elseif Numvidas == 8 then
+		self.numvidas = Escribir("8")
+	elseif Numvidas == 7 then
+		self.numvidas = Escribir("7")
+	elseif Numvidas == 6 then
+		self.numvidas = Escribir("6")
+	elseif Numvidas == 5 then
+		self.numvidas = Escribir("5")
+	elseif Numvidas == 4 then
+		self.numvidas = Escribir("4")
+	elseif Numvidas == 3 then
 		self.numvidas = Escribir("3")
 	elseif Numvidas == 2 then
 		self.numvidas = Escribir("2")
@@ -235,6 +247,10 @@ function Nave:update_power_up(power_up)
 		self.power_up = power_up
 	elseif power_up == 'pulsar' and self.power_up ~= 'pulsar' then
 		self.power_up = power_up
+	elseif power_up == 'salud' then
+		HPnave = 0
+	elseif power_up == 'vida' and Numvidas <= 9 then
+		Numvidas = Numvidas + 1
 	end
 end
 

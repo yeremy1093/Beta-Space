@@ -9,7 +9,7 @@ BULLET_XSPEED = 100
 TIMER_PULSAR = 5
 
 --Variables globales usadas en el estado PLAY
-PICKUP_TIMER = 10
+PICKUP_TIMER = 5
 POWER_UP_TIMER = 2
 puntaje = 0 
 HPnave = 0
