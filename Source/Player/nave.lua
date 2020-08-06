@@ -251,6 +251,9 @@ function Nave:update_power_up(power_up)
 		HPnave = 0
 	elseif power_up == 'vida' and Numvidas <= 9 then
 		Numvidas = Numvidas + 1
+	elseif power_up == 'escudo' then
+		self.escudo:boost_escudo(100)
+		self.escudo.timer_react = 0
 	end
 end
 
