@@ -58,6 +58,11 @@ function Play:update(dt)
     self:generar_pickup(dt)
     self:update_pickups(dt)
 
+    --Agregamos la boton para pausar el juego
+    if love.keyboard.wasPressed('escape') then
+        gStateMachine:change('Pause', {state = self})
+    end
+
 end
 
 function Play:render()

@@ -19,7 +19,8 @@ function love.load()
         ['inicio'] = function() return Inicio() end,
         ['play'] = function() return Play() end,
         ['charselect'] = function() return Charselect() end,
-        ['gameOver'] = function() return GameOver() end  
+        ['gameOver'] = function() return GameOver() end,
+        ['pause'] = function() return Pause() end  
     }
 
     --Ponemos el primer estado
