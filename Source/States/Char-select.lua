@@ -11,7 +11,7 @@ local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
 function Charselect:enter(params)
 
     --Cargamos el fondo
-    load_background()
+    self.background = Background()
 
     --cargamos estellas de alex
     sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
@@ -42,7 +42,7 @@ end
 function Charselect:update(dt)
 
 	--calculamos el loop de las estrellas de fondo
-	animate_background(dt)
+	self.background:animate_background(dt)
 
 	--cargamos las estrellas de alex
     sky:update (dt)
@@ -81,14 +81,14 @@ function Charselect:update(dt)
     end
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        gStateMachine:change('play', {player=self.player})
+        gStateMachine:change('play', {type=self.player})
         
     end
 
 end
 
 function Charselect:render()
-	render_background()
+	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
     sky:render()

@@ -8,7 +8,7 @@ local salir = 3
 function Inicio:enter(params)
 
     --Cargamos el fondo
-    load_background()
+    self.background = Background()
 
     --cargamos estellas de alex
     sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
@@ -32,7 +32,7 @@ end
 function Inicio:update(dt)
 
 	--calculamos el loop de las estrellas de fondo
-	animate_background(dt)
+	self.background:animate_background(dt)
 
 	--cargamos las estrellas de alex
     sky:update (dt)
@@ -76,7 +76,7 @@ function Inicio:update(dt)
 end
 
 function Inicio:render()
-	render_background()
+	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
     sky:render()

@@ -11,7 +11,16 @@ end
 
 
 function Pause:update(dt)
-   
+    if love.keyboard.wasPressed('escape') then
+        gStateMachine:change('play', {pickup_timer = self.play.pickup_timer,
+                                      pickups = self.play.pickups,
+                                      vidas = Numvidas,
+                                      player = self.play.player,
+                                      shotManager = self.play.shotManager,
+                                      enemyManager = self.play.enemyManager,
+                                      background = self.play.background,
+                                      sky = self.play.sky})
+    end
 end
 
 function Pause:render()

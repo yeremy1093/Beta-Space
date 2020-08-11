@@ -4,27 +4,57 @@ Play = Class{__includes = BaseState}
 
 function Play:enter(params)
 
-    self.pickup_timer = PICKUP_TIMER
-    self.pickups = {}
+    if params.pickup_timer then
+        self.pickup_timer = params.pickup_timer
+    else
+        self.pickup_timer = PICKUP_TIMER
+    end
+    if params.pickups then
+        self.pickups =  params.pickups
+    else
+        self.pickups = {}
+    end
 
-    Numvidas = 3
+    if params.vidas then
+        Numvidas = params.vidas
+    else
+        Numvidas = 3
+    end
 
     --Agregamos el fondo unico de play
     self.ui = love.graphics.newImage('Imagen/Menus/Play.png')
 
-    self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, params.player)
-    self.shotManager = PlayerShot()
+    if params.player then
+        self.player = params.player
+    else
+        self.player = Nave(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, params.type)
+    end
+    if params.shotManager then
+        self.shotManager = params.shotManager
+    else
+        self.shotManager = PlayerShot()
+    end
 
     --Agregar listas vacías para enemigos, powerups, etc.
-    self.enemyManager = Enemy()
+    if params.enemyManager then
+        self.enemyManager = params.enemyManager
+    else
+        self.enemyManager = Enemy()
+    end
 
     --Cargamos el fondo
-    load_background()
+    if params.background then
+        self.background = params.background
+    else
+        self.background = Background()
+    end
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 10)
-
-
+    if params.sky then
+        self.sky = params.sky
+    else
+        self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 10)
+    end
 end
 
 
@@ -32,10 +62,10 @@ end
 function Play:update(dt)
 
 	--calculamos el loop de las estrellas de fondo
-	animate_background(dt)
+	self.background:animate_background(dt)
 
 	--cargamos las estrellas de alex
-	sky:update (dt)
+	self.sky:update (dt)
 
 	--Funcion con el codigo para mover y animar la nave
 	self.player:update(dt)
@@ -60,16 +90,16 @@ function Play:update(dt)
 
     --Agregamos la boton para pausar el juego
     if love.keyboard.wasPressed('escape') then
-        gStateMachine:change('Pause', {state = self})
+        gStateMachine:change('pause', {state = self})
     end
 
 end
 
 function Play:render()
-	render_background()
+	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
-	sky:render()
+	self.sky:render()
 
     --Ponemos el puntaje en la pantalla
     love.graphics.print(tostring(puntaje), 30, 25)

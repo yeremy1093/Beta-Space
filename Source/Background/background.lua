@@ -1,24 +1,25 @@
 --imagenes de fondo
+Background = Class{}
 
-function load_background()
-	loopingStars = love.graphics.newImage('Imagen/Background/Space-2.png')
-	scrollspeed = 10
-	loopingpoint = 0
-	backgroundscroll = -2880
+local scrollspeed = 10
+local loopingpoint = 0
+
+function Background:init()
+	self.loopingStars = love.graphics.newImage('Imagen/Background/Space-2.png')
+	self.backgroundscroll = -2880
 end
 
-function animate_background(dt)
-	if backgroundscroll <= loopingpoint then 
-		backgroundscroll = (backgroundscroll + scrollspeed * dt)
+function Background:animate_background(dt)
+	if self.backgroundscroll <= loopingpoint then 
+		self.backgroundscroll = (self.backgroundscroll + scrollspeed * dt)
 	else
-		backgroundscroll = -2880
-
+		self.backgroundscroll = -2880
 	end	
 end 
 
-function render_background()
+function Background:render_background()
 	--rendereamos las estrellas sobre el fondo
-	love.graphics.draw(loopingStars, 0, backgroundscroll)
+	love.graphics.draw(self.loopingStars, 0, self.backgroundscroll)
 end
 
 
