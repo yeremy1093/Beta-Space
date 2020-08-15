@@ -3,6 +3,10 @@ GameOver = Class{__includes = BaseState}
 
 
 function GameOver:enter(params)
+
+    --cargamos los puntajes altos
+    self.highScores = params.highScores
+
     --Guardamos el puntaje obtenido y borramos el puntaje global para la siguiente partida
     self.puntos = Escribir(tostring(params.puntos))
     puntaje = 0
