@@ -7,6 +7,9 @@ local salir = 3
 
 function Inicio:enter(params)
 
+    --cargamos los puntajes solo para pasarlos a los otros estados
+    self.highScores = params.highScores
+
     --Cargamos el fondo
     self.background = Background()
 
@@ -63,7 +66,7 @@ function Inicio:update(dt)
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
         if self.opc == jugar then
-            gStateMachine:change('charselect', {})
+            gStateMachine:change('charselect', {highScores = self.highScores})
         elseif self.opc == menu then
             --gStateMachine:change('menu', {})
         elseif self.opc == salir then

@@ -10,6 +10,9 @@ local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
 
 function Charselect:enter(params)
 
+    --cargamos los puntajes altos para pasarlos al siguiente estado
+    self.highScores = params.highScores
+
     --Cargamos el fondo
     self.background = Background()
 
@@ -81,7 +84,7 @@ function Charselect:update(dt)
     end
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        gStateMachine:change('play', {type=self.player})
+        gStateMachine:change('play', {type=self.player, highScores=self.highScores})
         
     end
 

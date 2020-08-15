@@ -3,6 +3,8 @@ Play = Class{__includes = BaseState}
 
 
 function Play:enter(params)
+    --cargamos los puntajes altos
+    self.highScores = params.highScores
 
     if params.pickup_timer then
         self.pickup_timer = params.pickup_timer
@@ -78,7 +80,7 @@ function Play:update(dt)
 
     --checamos si es game over
     if Numvidas <= 0 then
-        gStateMachine:change('gameOver', {puntos = puntaje})
+        gStateMachine:change('gameOver', {puntos = puntaje, highScores = self.highScores})
     end
 
     --Checamos si debemos crear balas del jugador
