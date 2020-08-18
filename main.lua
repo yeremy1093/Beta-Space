@@ -20,7 +20,8 @@ function love.load()
         ['play'] = function() return Play() end,
         ['charselect'] = function() return Charselect() end,
         ['gameOver'] = function() return GameOver() end,
-        ['pause'] = function() return Pause() end  
+        ['pause'] = function() return Pause() end,
+        ['puntaje_alto'] = function() return PuntajeAlto() end
     }
 
     --Ponemos el primer estado
@@ -138,3 +139,4 @@ function loadHighScores()
 
     return scores
 end
+

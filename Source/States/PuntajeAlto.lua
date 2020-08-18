@@ -1,16 +1,17 @@
 
-GameOver = Class{__includes = BaseState}
+PuntajeAlto = Class{__includes = BaseState}
 
 
-function GameOver:enter(params)
+function PuntajeAlto:enter(params)
 
     --cargamos los puntajes altos
     self.highScores = params.highScores
 
     --Guardamos el puntaje obtenido y borramos el puntaje global para la siguiente partida
-    self.puntos = Escribir(tostring(params.puntos))
-    self.score = params.puntos
-    puntaje = 0
+    self.puntos = Escribir(tostring(params.score))
+    self.score = params.score
+
+    self.scoreIndex = params.scoreIndex
 
     --Cargamos el fondo
     self.background = Background()
@@ -30,7 +31,7 @@ end
 
 
 --Lo que se va a calcular frame a frame
-function GameOver:update(dt)
+function PuntajeAlto:update(dt)
 
 	--calculamos el loop de las estrellas de fondo
 	self.background:animate_background(dt)
@@ -42,34 +43,12 @@ function GameOver:update(dt)
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
         TEsound.stop('musica_menu')
-
-
-        -- see if score is higher than any in the high scores table
-        local highScore = false
-
-        for i = 10, 1, -1 do
-            local score = self.highScores[i].score or 0
-            if self.score > score then
-                highScoreIndex = i
-                highScore = true
-            end
-        end
-
-        if highScore then
-            gStateMachine:change('puntaje_alto', {
-                highScores = self.highScores,
-                score = self.score,
-                scoreIndex = highScoreIndex
-            }) 
-        else 
-            gStateMachine:change('inicio', {highScores = self.highScores})
-        end
-
+        gStateMachine:change('inicio', {highScores = self.highScores})
     end
 
 end
 
-function GameOver:render()
+function PuntajeAlto:render()
 	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
@@ -80,6 +59,8 @@ function GameOver:render()
 
     --Dibujamos los puntos en pantalla
     self.puntos:render(480, 400, 2, 2)
+
+    love.graphics.print("PuntajeAlto!!!!", 30, 25)
 
     --Dibujamos el target
     love.graphics.draw(self.target_sheet, self.target_sprite, 440, 560)
