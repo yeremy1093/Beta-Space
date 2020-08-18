@@ -24,6 +24,8 @@ function love.load()
         ['puntaje_alto'] = function() return PuntajeAlto() end
     }
 
+    puntaje = 9999
+
     --Ponemos el primer estado
     gStateMachine:change('inicio', {highScores = loadHighScores()})
 
@@ -101,8 +103,8 @@ function loadHighScores()
     if not love.filesystem.exists('betaSpace.lst') then
         local scores = ''
         for i = 10, 1, -1 do
-            scores = scores .. 'CTO\n'
-            scores = scores .. tostring(i * 1000) .. '\n'
+            scores = scores .. 'CTO1\n'
+            scores = scores .. tostring(i * 100) .. '\n'
         end
 
         love.filesystem.write('betaSpace.lst', scores)
@@ -127,7 +129,7 @@ function loadHighScores()
     -- iterate over each line in the file, filling in names and scores
     for line in love.filesystem.lines('betaSpace.lst') do
         if name then
-            scores[counter].name = string.sub(line, 1, 3)
+            scores[counter].name = string.sub(line, 1, 4)
         else
             scores[counter].score = tonumber(line)
             counter = counter + 1

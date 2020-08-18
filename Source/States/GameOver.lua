@@ -43,27 +43,7 @@ function GameOver:update(dt)
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
         TEsound.stop('musica_menu')
 
-
-        -- see if score is higher than any in the high scores table
-        local highScore = false
-
-        for i = 10, 1, -1 do
-            local score = self.highScores[i].score or 0
-            if self.score > score then
-                highScoreIndex = i
-                highScore = true
-            end
-        end
-
-        if highScore then
-            gStateMachine:change('puntaje_alto', {
-                highScores = self.highScores,
-                score = self.score,
-                scoreIndex = highScoreIndex
-            }) 
-        else 
-            gStateMachine:change('inicio', {highScores = self.highScores})
-        end
+        gStateMachine:change('inicio', {highScores = self.highScores})
 
     end
 

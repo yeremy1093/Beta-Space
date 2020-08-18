@@ -144,6 +144,9 @@ function Escribir:seleccion_caracter(key)
 	elseif key == 0  or key == '0' then
 		self.xoffset = 180
 		self.yoffset = 60
+	elseif key == ' ' then
+		self.xoffset = 0
+		self.yoffset = 80
 	end
 end
 

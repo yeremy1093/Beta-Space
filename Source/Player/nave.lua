@@ -15,6 +15,7 @@ escudo_nave = false
 
 --Escribimos las funciones, primero la de inicio
 function Nave:init(x, y, player)
+	self.nave = player
 	--Elementos necesarios para animar
 	if player == 1 then
 		self.sprite_sheet = sprite1

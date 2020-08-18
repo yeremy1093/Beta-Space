@@ -80,7 +80,28 @@ function Play:update(dt)
 
     --checamos si es game over
     if Numvidas <= 0 then
-        gStateMachine:change('gameOver', {puntos = puntaje, highScores = self.highScores})
+
+         -- see if score is higher than any in the high scores table
+        local highScore = false
+
+        for i = 10, 1, -1 do
+            local score = self.highScores[i].score or 0
+            if self.score > score then
+                highScoreIndex = i
+                highScore = true
+            end
+        end
+
+        if highScore then
+            gStateMachine:change('puntaje_alto', {
+                highScores = self.highScores,
+                score = self.score,
+                scoreIndex = highScoreIndex,
+                nave = self.player.nave
+            }) 
+        else 
+            gStateMachine:change('gameOver', {puntos = puntaje, highScores = self.highScores})
+        end
     end
 
     --Checamos si debemos crear balas del jugador
