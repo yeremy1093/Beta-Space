@@ -127,9 +127,14 @@ function Nave:update(dt)
 		end
 
 	end
-
+	--Reducimos el poder del arma con el tiempo, caso especial con el arma 2
 	if self.power_level > 1 then
-		self.power_up_timer = self.power_up_timer - dt
+		if self.power_up == 'pulsar' then
+			self.power_up_timer = self.power_up_timer - dt/2
+
+		else
+			self.power_up_timer = self.power_up_timer - dt
+		end
 		if self.power_up_timer <= 0 then
 			self.power_state = self.power_state - 1
 			self.power_up_timer = POWER_UP_TIMER
