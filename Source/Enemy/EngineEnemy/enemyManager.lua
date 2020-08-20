@@ -14,6 +14,9 @@ function Enemy:init()
 	self.populate_drones = 0
 
 	self.engineShot = EngineShot()
+
+	self.hunter = 0
+
 end
 
 function Enemy:update(dt, puntuacion, balas, player)
@@ -44,6 +47,12 @@ function Enemy:update(dt, puntuacion, balas, player)
 
 	self:updateShots(dt, player)
 	
+	if self.hunter == 0 then
+		self.hunter = HunterMaster(WINDOW_WIDTH/2,0,player,50,WINDOW_WIDTH,WINDOW_HEIGHT,300)
+	else
+		self.hunter:update(dt,player)
+	end
+	
 end
 
 function Enemy:render()
@@ -58,6 +67,9 @@ function Enemy:render()
 		Drone:render()
 	end
 	self.engineShot:render()
+	if self.hunter ~= 0 then
+		self.hunter:render()
+	end
 end
 
 function Enemy:ajuste_nivel(dt)
