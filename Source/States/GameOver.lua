@@ -3,8 +3,13 @@ GameOver = Class{__includes = BaseState}
 
 
 function GameOver:enter(params)
+
+    --cargamos los puntajes altos
+    self.highScores = params.highScores
+
     --Guardamos el puntaje obtenido y borramos el puntaje global para la siguiente partida
     self.puntos = Escribir(tostring(params.puntos))
+    self.score = params.puntos
     puntaje = 0
 
     --Cargamos el fondo
@@ -37,7 +42,9 @@ function GameOver:update(dt)
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
         TEsound.stop('musica_menu')
-        gStateMachine:change('inicio', {})
+
+        gStateMachine:change('inicio', {highScores = self.highScores})
+
     end
 
 end

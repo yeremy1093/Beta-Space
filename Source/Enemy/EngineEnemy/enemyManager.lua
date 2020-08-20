@@ -1,17 +1,22 @@
 Enemy = Class{}
 
+local MAX_CHANCE = 100
+
 function Enemy:init()
 	self.nivel = 1
 	self.tipos_enemigos = {'asteroide_small'}
 
 	self.asteroides = {}
 	self.populate_asteroides = 0
+	self.chance_asteroides = 0
 
 	self.navesBasic = {}
 	self.populate_naveBasic = 0
+	self.chance_naveBasic = 0
 
 	self.drones = {}
 	self.populate_drones = 0
+	self.chance_drones = 0
 
 	self.engineShot = EngineShot()
 
@@ -20,7 +25,7 @@ function Enemy:init()
 end
 
 function Enemy:update(dt, puntuacion, balas, player)
-	if puntuacion >= 200000 then
+	if puntuacion >= 150000 then
 		self.nivel = 6
 	elseif puntuacion >= 80000 then
 		self.nivel = 5
@@ -66,6 +71,7 @@ function Enemy:render()
 	for i, Drone in pairs(self.drones) do
 		Drone:render()
 	end
+	love.graphics.print(tostring(self.nivel), 600, 25)
 	self.engineShot:render()
 	if self.hunter ~= 0 then
 		self.hunter:render()
@@ -75,28 +81,45 @@ end
 function Enemy:ajuste_nivel(dt)
 	if self.nivel == 1 then
 		self.populate_asteroides = 10
+		self.chance_asteroides = 10
 		self.populate_naveBasic = 5
+		self.chance_naveBasic = 10
 		self.populate_drones = 0
+		self.chance_drones = 0
 	elseif self.nivel == 2 then
 		self.populate_asteroides = 10
+		self.chance_asteroides = 20
 		self.populate_naveBasic = 10
+		self.chance_naveBasic = 20
 		self.populate_drones = 0
+		self.chance_drones = 0
 	elseif self.nivel == 3 then
 		self.populate_asteroides = 10
-		self.populate_naveBasic = 20
+		self.chance_asteroides = 30
+		self.populate_naveBasic = 10
+		self.chance_naveBasic = 20
 		self.populate_drones = 5
+		self.chance_drones = 20
 	elseif self.nivel == 4 then
 		self.populate_asteroides = 10
-		self.populate_naveBasic = 25
+		self.chance_asteroides = 30
+		self.populate_naveBasic = 15
+		self.chance_naveBasic = 30
 		self.populate_drones = 10
+		self.chance_drones = 30
 	elseif self.nivel == 5 then
 		self.populate_asteroides = 10
-		self.populate_naveBasic = 30
+		self.chance_asteroides = 30
+		self.populate_naveBasic = 15
 		self.populate_drones = 15
+		self.chance_drones = 30
 	elseif self.nivel == 6 then
 		self.populate_asteroides = 10
-		self.populate_naveBasic = 30
+		self.chance_asteroides = 30
+		self.populate_naveBasic = 15
+		self.chance_naveBasic = 40
 		self.populate_drones = 15
+		self.chance_drones = 40
 	end
 end
 
@@ -105,23 +128,35 @@ function Enemy:create_enemy(dt, player)
 	if enemy_timer <= 0 then
 		--Creacion de Asteroides
 		if table.getn(self.asteroides) <= self.populate_asteroides and self.nivel < 6 then
-			table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-50, 50), math.random(20, 100)))
+			if (MAX_CHANCE - self.chance_asteroides) < love.math.random(MAX_CHANCE) then
+				table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-50, 50), math.random(20, 100)))
+			end
 		elseif table.getn(self.asteroides) <= self.populate_asteroides then
-			table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-100, 100), math.random(40, 200)))
+			if (MAX_CHANCE - self.chance_asteroides) < love.math.random(MAX_CHANCE) then
+				table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-100, 100), math.random(40, 200)))
+			end
 		end
 		--Creacion de Naves Basicas
 		if table.getn(self.navesBasic) <= self.populate_naveBasic and self.nivel < 6 then
-			table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 50))
+			if (MAX_CHANCE - self.chance_naveBasic) < love.math.random(MAX_CHANCE) then
+				table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 50))
+			end
 		elseif table.getn(self.navesBasic) <= self.populate_naveBasic then
-			table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 100))
+			if (MAX_CHANCE - self.chance_naveBasic) < love.math.random(MAX_CHANCE) then
+				table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 100))
+			end
 		end
 		--Creacion de Drones
 		if table.getn(self.drones) <= self.populate_drones and self.nivel < 6 then
-			table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player)) 
+			if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
+				table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
+			end
 		elseif math.random(0,100) <= self.populate_drones then
-			table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
+			if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
+				table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
+			end
 		end
-		enemy_timer = 0.05
+		enemy_timer = 0.25
 	end
 end
 

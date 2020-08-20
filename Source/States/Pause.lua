@@ -44,10 +44,11 @@ function Pause:update(dt)
 	                                      shotManager = self.play.shotManager,
 	                                      enemyManager = self.play.enemyManager,
 	                                      background = self.play.background,
-	                                      sky = self.play.sky})
+	                                      sky = self.play.sky,
+                                          highScores = self.play.highScores})
 	    else
 	    	TEsound.stop('musica_menu')
-        	gStateMachine:change('inicio', {})
+        	gStateMachine:change('inicio', {highScores = self.play.highScores})
         end
     end
 end

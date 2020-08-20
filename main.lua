@@ -20,11 +20,14 @@ function love.load()
         ['play'] = function() return Play() end,
         ['charselect'] = function() return Charselect() end,
         ['gameOver'] = function() return GameOver() end,
-        ['pause'] = function() return Pause() end  
+        ['pause'] = function() return Pause() end,
+        ['puntaje_alto'] = function() return PuntajeAlto() end
     }
 
+    puntaje = 9999
+
     --Ponemos el primer estado
-    gStateMachine:change('inicio', {})
+    gStateMachine:change('inicio', {highScores = loadHighScores()})
 
     --Creamos una tabla vacía de teclas oprimidas para poder usarlas en otros archivos
     love.keyboard.keysPressed = {}
@@ -88,3 +91,54 @@ function love.draw()
 	gStateMachine:render()
 
 end
+
+--[[
+    Loads high scores from a .lst file, saved in LÖVE2D's default save directory in a subfolder
+    called 'betaSpace'.
+]]
+function loadHighScores()
+    love.filesystem.setIdentity('betaSpace')
+
+    -- if the file doesn't exist, initialize it with some default scores
+    if not love.filesystem.exists('betaSpace.lst') then
+        local scores = ''
+        for i = 10, 1, -1 do
+            scores = scores .. 'CTO1\n'
+            scores = scores .. tostring(i * 100) .. '\n'
+        end
+
+        love.filesystem.write('betaSpace.lst', scores)
+    end
+
+    -- flag for whether we're reading a name or not
+    local name = true
+    local currentName = nil
+    local counter = 1
+
+    -- initialize scores table with at least 10 blank entries
+    local scores = {}
+
+    for i = 1, 10 do
+        -- blank table; each will hold a name and a score
+        scores[i] = {
+            name = nil,
+            score = nil
+        }
+    end
+
+    -- iterate over each line in the file, filling in names and scores
+    for line in love.filesystem.lines('betaSpace.lst') do
+        if name then
+            scores[counter].name = string.sub(line, 1, 4)
+        else
+            scores[counter].score = tonumber(line)
+            counter = counter + 1
+        end
+
+        -- flip the name flag
+        name = not name
+    end
+
+    return scores
+end
+

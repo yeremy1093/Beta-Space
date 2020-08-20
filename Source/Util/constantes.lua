@@ -17,6 +17,6 @@ Numvidas = 3
 tipo_arma = 0
 
 --Variables de los enemigos
-enemy_timer = 0.05
+enemy_timer = 0.25
 shot_timer = 0.05
 
