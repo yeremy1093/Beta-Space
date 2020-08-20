@@ -21,13 +21,13 @@ function love.load()
         ['charselect'] = function() return Charselect() end,
         ['gameOver'] = function() return GameOver() end,
         ['pause'] = function() return Pause() end,
-        ['puntaje_alto'] = function() return PuntajeAlto() end
+        ['puntaje_alto'] = function() return PuntajeAlto() end,
+        ['lista_puntajes'] = function() return ListaPuntajes() end
     }
 
-    puntaje = 9999
-
     --Ponemos el primer estado
-    gStateMachine:change('inicio', {highScores = loadHighScores()})
+    --gStateMachine:change('inicio', {highScores = loadHighScores()})
+    gStateMachine:change('lista_puntajes', {highScores = loadHighScores()})
 
     --Creamos una tabla vacía de teclas oprimidas para poder usarlas en otros archivos
     love.keyboard.keysPressed = {}
@@ -103,7 +103,7 @@ function loadHighScores()
     if not love.filesystem.exists('betaSpace.lst') then
         local scores = ''
         for i = 10, 1, -1 do
-            scores = scores .. 'CTO1\n'
+            scores = scores .. '0001\n'
             scores = scores .. tostring(i * 100) .. '\n'
         end
 

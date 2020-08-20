@@ -62,7 +62,6 @@ function Enemy:render()
 	for i, Drone in pairs(self.drones) do
 		Drone:render()
 	end
-	love.graphics.print(tostring(self.nivel), 600, 25)
 	self.engineShot:render()
 end
 

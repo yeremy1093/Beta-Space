@@ -21,6 +21,7 @@ function PuntajeAlto:enter(params)
     --Guardamos el puntaje obtenido y borramos el puntaje global para la siguiente partida
     self.puntos = Escribir(tostring(params.score))
     self.score = params.score
+    puntaje = 0
 
     self.scoreIndex = params.scoreIndex
 
@@ -135,8 +136,7 @@ function PuntajeAlto:update(dt)
 
         love.filesystem.write('betaSpace.lst', scoresStr)
 
-        TEsound.stop('musica_menu')
-        gStateMachine:change('inicio', {highScores = self.highScores})
+        gStateMachine:change('lista_puntajes', {highScores = self.highScores})
     end
 
     self.animNave:update(dt, self.sprite)
