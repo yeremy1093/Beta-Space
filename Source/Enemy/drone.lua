@@ -18,13 +18,13 @@ function Drone:init(x, y, velocity, player)
     if self.y <= (player.y + (player.height/2)) then -- Drone esta arriba del jugador
         self.distancey = player.y + (player.height/2) - self.y
     else -- Drone esta abajo del jugador
-        self.distancey = self.y + (player.height/2) - player.y
+        self.distancey = self.y - ((player.height/2) + player.y)
     end
 
     if self.x <= (player.x + (player.width/2)) then -- Drone esta a la izquierda del jugador
         self.distancex = player.x + (player.width/2) - self.x
     else -- Drone esta a la derecha del jugador
-        self.distancex = self.x + (player.width/2) - player.x
+        self.distancex = self.x - ((player.width/2) + player.x)
     end
     self.lastDistance = (self.distancex^2 + self.distancey^2)^0.5
 
@@ -46,7 +46,7 @@ function Drone:update(dt, player)
             self.distancey = player.y + (player.height/2) - self.y
             self.y = self.y + self.distancey * dt * self.timeToTarget 
         else -- Drone esta abajo del jugador
-            self.distancey = self.y + (player.height/2) - player.y
+            self.distancey = self.y - ((player.height/2) + player.y)
             self.y = self.y - self.distancey * dt * self.timeToTarget 
         end
 
@@ -54,7 +54,7 @@ function Drone:update(dt, player)
             self.distancex = player.x + (player.width/2) - self.x
             self.x = self.x + self.distancex * dt * self.timeToTarget 
         else -- Drone esta a la derecha del jugador
-            self.distancex = self.x + (player.width/2) - player.x
+            self.distancex = self.x - ((player.width/2) + player.x)
             self.x = self.x - self.distancex * dt * self.timeToTarget 
         end
         --Actualizacion de tiempo requerido para llegar al objetivo
