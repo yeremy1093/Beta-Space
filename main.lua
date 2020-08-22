@@ -22,7 +22,8 @@ function love.load()
         ['gameOver'] = function() return GameOver() end,
         ['pause'] = function() return Pause() end,
         ['puntaje_alto'] = function() return PuntajeAlto() end,
-        ['lista_puntajes'] = function() return ListaPuntajes() end
+        ['lista_puntajes'] = function() return ListaPuntajes() end,
+        ['menu'] = function() return Menu() end
     }
 
     --Ponemos el primer estado

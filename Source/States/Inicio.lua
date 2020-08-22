@@ -68,7 +68,7 @@ function Inicio:update(dt)
         if self.opc == jugar then
             gStateMachine:change('charselect', {highScores = self.highScores})
         elseif self.opc == menu then
-            --gStateMachine:change('menu', {})
+            gStateMachine:change('menu', {highScores = self.highScores})
         elseif self.opc == salir then
             love.event.quit()
         end 
