@@ -55,7 +55,7 @@ function Enemy:update(dt, puntuacion, balas, player)
 	if self.hunter == 0 then
 		self.hunter = HunterMaster(WINDOW_WIDTH/2,0,player,50,WINDOW_WIDTH,WINDOW_HEIGHT,300)
 	else
-		self.hunter:update(dt,player)
+		self.hunter:update(dt,player,balas)
 	end
 	
 end
