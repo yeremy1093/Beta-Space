@@ -86,7 +86,7 @@ function Play:update(dt)
 
         for i = 10, 1, -1 do
             local score = self.highScores[i].score or 0
-            if self.score > score then
+            if puntaje > score then
                 highScoreIndex = i
                 highScore = true
             end
@@ -95,7 +95,7 @@ function Play:update(dt)
         if highScore then
             gStateMachine:change('puntaje_alto', {
                 highScores = self.highScores,
-                score = self.score,
+                score = puntaje,
                 scoreIndex = highScoreIndex,
                 nave = self.player.nave
             }) 

@@ -21,10 +21,10 @@ function love.load()
         ['charselect'] = function() return Charselect() end,
         ['gameOver'] = function() return GameOver() end,
         ['pause'] = function() return Pause() end,
-        ['puntaje_alto'] = function() return PuntajeAlto() end
+        ['puntaje_alto'] = function() return PuntajeAlto() end,
+        ['lista_puntajes'] = function() return ListaPuntajes() end,
+        ['menu'] = function() return Menu() end
     }
-
-    puntaje = 9999
 
     --Ponemos el primer estado
     gStateMachine:change('inicio', {highScores = loadHighScores()})
@@ -103,7 +103,7 @@ function loadHighScores()
     if not love.filesystem.exists('betaSpace.lst') then
         local scores = ''
         for i = 10, 1, -1 do
-            scores = scores .. 'CTO1\n'
+            scores = scores .. '0001\n'
             scores = scores .. tostring(i * 100) .. '\n'
         end
 
@@ -137,6 +137,12 @@ function loadHighScores()
 
         -- flip the name flag
         name = not name
+    end
+
+    for i=1, 10 do
+        if scores[i].name:sub(4,4) ~= '1' and scores[i].name:sub(4,4) ~= '2' and scores[i].name:sub(4,4) ~= '3' then
+            scores[i].name = scores[i].name .. '1'
+        end
     end
 
     return scores
