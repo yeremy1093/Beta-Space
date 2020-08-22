@@ -57,6 +57,15 @@ function ListaPuntajes:enter(params)
         table.insert(self.numeros, Escribir(tostring(i)))
     end
 
+    self.puntajes = {}
+    for i=1, 10 do
+        if self.highScores[i].name then
+            table.insert(self.siglas, Escribir(tostring(self.highScores[i].score)))
+        else
+            table.insert(self.siglas, Escribir("00000"))
+        end
+    end
+
 end
 
 
@@ -97,12 +106,14 @@ function ListaPuntajes:render()
         self.numeros[i]:render(280, 240 + ((i-1) * 60))
         self.siglas[i]:render(320, 240 + ((i-1) * 60))
         love.graphics.draw(self.sprite_sheet[i], self.sprite_nave[i], 400, 240 + ((i-1) * 60),0 , 0.7, 0.7)
+        self.puntajes[i]:render(450, 240 + ((i-1) * 60))
     end
 
     for i=6, 10 do
         self.numeros[i]:render(650, 240 + ((i-6) * 60))
         self.siglas[i]:render(690, 240 + ((i-6) * 60))
         love.graphics.draw(self.sprite_sheet[i], self.sprite_nave[i], 770, 240 + ((i-6) * 60),0 , 0.7, 0.7)
+        self.puntajes[i]:render(820, 240 + ((i-6) * 60))
     end
 
 end
