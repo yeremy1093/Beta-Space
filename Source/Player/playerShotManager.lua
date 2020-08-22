@@ -143,7 +143,7 @@ function PlayerShot:disparo_tercer_disparo(player)
     if self.pulsar == 'activado' then
         if player.nave == 1 then
             table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
-            TEsound.play('Soundtrack/Effect/LaserLargo.wav', 'static')
+            TEsound.play('Soundtrack/Effect/Pulso.wav', 'static')
         end
         self.pulsar = 'desactivado'
     end
