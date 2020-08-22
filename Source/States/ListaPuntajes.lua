@@ -60,9 +60,9 @@ function ListaPuntajes:enter(params)
     self.puntajes = {}
     for i=1, 10 do
         if self.highScores[i].name then
-            table.insert(self.siglas, Escribir(tostring(self.highScores[i].score)))
+            table.insert(self.puntajes, Escribir(tostring(self.highScores[i].score)))
         else
-            table.insert(self.siglas, Escribir("00000"))
+            table.insert(self.puntajes, Escribir("00000"))
         end
     end
 
