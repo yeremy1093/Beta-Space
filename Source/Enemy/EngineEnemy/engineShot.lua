@@ -87,7 +87,7 @@ function EngineShot:setStella(x, y)
 end
 
 --Funcion para dectectar colision con jugador y eliminar objecto
-function EngineShot:collidesShots(player)
+function EngineShot:collidesShots(player, balas)
     for i, Cannon in pairs(self.listCannon) do
         if Cannon:collides(player) then
             --Animacion final de objecto
@@ -102,12 +102,24 @@ function EngineShot:collidesShots(player)
             Cannon.destruible = true
             return true
         end
+        for i, bala in pairs(balas) do
+            if Cannon:collides(bala) and bala.clase == 'pulso' then
+                Cannon.destruible = true
+                return true
+            end
+        end
     end
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
         if DiscEnergy:collides(player) then
             --Animacion final de objecto
             table.remove(self.listDiscEnergy, i)
             return true
+        end
+        for i, bala in pairs(balas) do
+            if DiscEnergy:collides(bala) and bala.clase == 'pulso' then
+                DiscEnergy.destruible = true
+                return true
+            end
         end
     end
     for i, Missil in pairs(self.listMissil) do
@@ -116,6 +128,12 @@ function EngineShot:collidesShots(player)
             table.remove(self.listMissil, i)
             return true
         end
+        for i, bala in pairs(balas) do
+            if Missil:collides(bala) and bala.clase == 'pulso' then
+                Missil.destruible = true
+                return true
+            end
+        end
     end
     for i, PhEnemy in pairs(self.listPhEnemy) do
         if PhEnemy:collides(player) then
@@ -123,12 +141,24 @@ function EngineShot:collidesShots(player)
             table.remove(self.listPhEnemy, i)
             return true
         end
+        for i, bala in pairs(balas) do
+            if PhEnemy:collides(bala) and bala.clase == 'pulso' then
+                PhEnemy.destruible = true
+                return true
+            end
+        end
     end
     for i, Stella in pairs(self.listStella) do
         if Stella:collides(player) then
             --Animacion final de objecto
             table.remove(self.listStella, i)
             return true
+        end
+        for i, bala in pairs(balas) do
+            if Stella:collides(bala) and bala.clase == 'pulso' then
+                Stella.destruible = true
+                return true
+            end
         end
     end
     return false

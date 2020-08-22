@@ -50,7 +50,7 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover los drones
 	update_drones(dt, self.drones, balas, player)
 
-	self:updateShots(dt, player)
+	self:updateShots(dt, player, balas)
 	
 	if self.hunter == 0 then
 		self.hunter = HunterMaster(WINDOW_WIDTH/2,0,player,50,WINDOW_WIDTH,WINDOW_HEIGHT,300)
@@ -159,7 +159,7 @@ function Enemy:create_enemy(dt, player)
 	end
 end
 
-function Enemy:updateShots(dt, player)
+function Enemy:updateShots(dt, player, balas)
 	shot_timer = shot_timer - dt
 	if shot_timer <= 0 then
 		if math.random(0,100) >= 80 then
@@ -172,7 +172,7 @@ function Enemy:updateShots(dt, player)
 		shot_timer = 0.05
 	end
 	self.engineShot:update(dt)
-	self.engineShot:collidesShots(player)
+	self.engineShot:collidesShots(player, balas)
 end
 
 return Enemy

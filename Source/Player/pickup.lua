@@ -14,7 +14,7 @@ function Pickup:init(x, y, dx, dy)
 	self.width = 60
 	self.height = 60
 	self.fps = math.random(6, 10)
-	self.num = love.math.random(1, 6)
+	self.num = love.math.random(1, 7)
 	if self.num == 1 then
 		self.tipo = 'laser'
 	elseif self.num == 2 then
@@ -27,6 +27,8 @@ function Pickup:init(x, y, dx, dy)
 		self.tipo = 'pulsar'
 	elseif self.num == 6 then
 		self.tipo = 'escudo'
+	elseif self.num == 7 then
+		self.tipo = 'tercer_disparo'
 	end
 	--Aqui van todas las animaciones posibles
 	self.anim = {['laser'] = Anim(480, 240, self.width, self.height, 4, 4, self.fps),
@@ -34,7 +36,8 @@ function Pickup:init(x, y, dx, dy)
 				['vida'] = Anim(240, 240, self.width, self.height, 4, 4, self.fps),
 				['direccional'] = Anim(0, 300, self.width, self.height, 4, 4, self.fps),
 				['pulsar'] = Anim(240, 300, self.width, self.height, 4, 4, self.fps),
-				['escudo'] = Anim(0, 360, self.width, self.height, 4, 4, self.fps)}
+				['escudo'] = Anim(0, 360, self.width, self.height, 4, 4, self.fps),
+				['tercer_disparo'] = Anim(480, 300, self.width, self.height, 4, 4, self.fps)}
 end
 
 --Funcion de update
@@ -54,6 +57,8 @@ function Pickup:update(dt)
 		self.anim['pulsar']:update(dt, self.sprite)
 	elseif self.tipo == 'escudo' then 
 		self.anim['escudo']:update(dt, self.sprite)
+	elseif self.tipo == 'tercer_disparo' then 
+		self.anim['tercer_disparo']:update(dt, self.sprite)
 	end
 end
 

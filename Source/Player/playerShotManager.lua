@@ -7,6 +7,8 @@ function PlayerShot:init()
     self.power_up = 'direccional' --variable para saber que tipo de balas tenemos equipadas
     self.pulsar_timer = TIMER_PULSAR
     self.pulsar = 'activado'
+    self.timer_tercer_disparo = TIMER_TERCER_DISPARO
+    self.tercer_disparo = 'activado'
 end
 
 --Funciones que tienen que ver con listas de objetos en distintos estados
@@ -28,6 +30,13 @@ function PlayerShot:mover_balas_jugador(dt, player)
             self.pulsar_timer = TIMER_PULSAR
         end
     end
+    if self.tercer_disparo == 'desactivado' then
+        self.timer_tercer_disparo = self.timer_tercer_disparo - dt
+        if self.timer_tercer_disparo <= 0 then 
+            self.tercer_disparo = 'activado'
+            self.timer_tercer_disparo = TIMER_TERCER_DISPARO
+        end
+    end
 
 end
 
@@ -41,6 +50,8 @@ function PlayerShot:disparo_jugador(player)
             self:disparo_direccional(player)
         elseif self.power_up == 'pulsar' then
              self:disparo_pulsar(player)
+        elseif self.power_up == 'tercer_disparo' then
+             self:disparo_tercer_disparo(player)
         end
     end
 end
@@ -124,6 +135,16 @@ function PlayerShot:disparo_pulsar(player)
     if self.pulsar == 'activado' then 
         table.insert(self.balas, Pulsar(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
         TEsound.play('Soundtrack/Effect/LaserLargo.wav', 'static')
+        self.pulsar = 'desactivado'
+    end
+end
+
+function PlayerShot:disparo_tercer_disparo(player)
+    if self.pulsar == 'activado' then
+        if player.nave == 1 then
+            table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
+            TEsound.play('Soundtrack/Effect/LaserLargo.wav', 'static')
+        end
         self.pulsar = 'desactivado'
     end
 end

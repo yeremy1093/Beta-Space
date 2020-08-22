@@ -36,7 +36,8 @@ function Nave:init(x, y, player)
 				['der'] = Anim(232, 0, 58, 40, 2, 2, 10),
 				['explosion'] = Anim(0, 0, 76, 76, 5, 5, 10),
 				['arma1'] = Anim(0, 300, 60, 60, 4, 4, 10),
-				['arma2'] = Anim(240, 300, 60, 60, 4, 4, 10)}
+				['arma2'] = Anim(240, 300, 60, 60, 4, 4, 10),
+				['arma3'] = Anim(480, 300, 60, 60, 4, 4, 10)}
 
 	--elementos de posicion y tamaño para otras funciones
 	self.x = x
@@ -130,7 +131,7 @@ function Nave:update(dt)
 	end
 	--Reducimos el poder del arma con el tiempo, caso especial con el arma 2
 	if self.power_level > 1 then
-		if self.power_up == 'pulsar' then
+		if self.power_up == 'pulsar' or self.power_up == 'tercer_disparo' then
 			self.power_up_timer = self.power_up_timer - dt/2
 
 		else
@@ -153,6 +154,8 @@ function Nave:update(dt)
 		self.anim['arma1']:update(dt, self.equip_quad)
 	elseif self.power_up == 'pulsar' then
 		self.anim['arma2']:update(dt, self.equip_quad)
+	elseif self.power_up == 'tercer_disparo' then
+		self.anim['arma3']:update(dt, self.equip_quad)
 	end
 
 	self:update_power_level_quad()
@@ -247,11 +250,16 @@ function Nave:update_power_up(power_up)
 	elseif power_up == 'pulsar' and self.power_up == 'pulsar' and self.power_level < 3 then
 		self.power_level = self.power_level + 1
 		self:update_power_level()
+	elseif power_up == 'tercer_disparo' and self.power_up == 'tercer_disparo' and self.power_level < 3 then
+		self.power_level = self.power_level + 1
+		self:update_power_level()
 	elseif power_up == 'laser' and self.power_laser < 3 then
 		self.power_laser = self.power_laser + 1
 	elseif power_up == 'direccional' and self.power_up ~= 'direccional' then
 		self.power_up = power_up
 	elseif power_up == 'pulsar' and self.power_up ~= 'pulsar' then
+		self.power_up = power_up
+	elseif power_up == 'tercer_disparo' and self.power_up ~= 'tercer_disparo' then
 		self.power_up = power_up
 	elseif power_up == 'salud' then
 		HPnave = 0
