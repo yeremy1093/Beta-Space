@@ -9,6 +9,13 @@ local entrada = 0
 local combate = 1
 local esquivar = 2
 
+--Cuadrantes
+local ninguno = 0
+local cuadrante1 = 1
+local cuadrante2 = 2
+local cuadrante3 = 3
+local cuadrante4 = 4
+
 function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, velocity)
 	self.x = x
     self.y = y
@@ -67,16 +74,13 @@ function HunterMaster:update(dt, player, playerBalas)
             end
         --Colocate en las coordenadas contrarias al objetivo
         elseif self.movState == combate then
-            if self:detectBalas(playerBalas) then
-                self.movState == esquivar
-            else
-                self.newx = self.spacex - player.x - player.width
-                self.newy = self.spacey - player.y - player.height
-            end
+            self:detectBalas(playerBalas)
+            self.newx = self.spacex - player.x - player.width
+            self.newy = self.spacey - player.y - player.height
         elseif self.movState == esquivar then
             
         end
-        self.moveEngine(dt)
+        self:moveEngine(dt)
     end
 
     if self.destruible == false then 
@@ -127,20 +131,23 @@ function HunterMaster:moveEngine(dt)
 end
 
 function HunterMaster:detectBalas(balas)
+    cuadrante = ninguno
+    dangerBalas = {}
+    --angle = math.deg(math.atan(bala.dy)/(bala.dx))
+    --table.insert(balasInArea, bala)
+    --Revisa cada bala en el area
     for i, bala in pairs(balas) do
-        --Detecta si una bala se encuentra en el areax de seguridad
-        if self.x + self.width*5 <= bala.x or self.x - self.width*4 >= bala.x  then
-            return true
-        end
+        --Detecta si una bala se encuentra en el area de seguridad y en que cuadrante en referencia a la nave
+        if self.x + self.width*5 <= bala.x and self.x + self.width/2 >= bala.x and
+            self.y + self.witdh*4 >= bala.y and self.y + self.width/2 <= bala.y then
+                cuadrante = cuadrante1
+        elseif self.x + self.width*4 > bala.x and self.x + self.width/2 < bala.x and
+            self.y + self.witdh*4 >= bala.y and self.y + self.width/2 <= bala.y then
 
-        --Detecta si una bala se encuentra en el areay de seguridad
-        if self.y + self.height*5 <= bala.y or self.y - self.height*4 >= bala.y then
-            return true
         end
     end
 
     --Ninguna bala esta en el area
-    return false
 end
 
 function HunterMaster:collides(objeto)
