@@ -26,8 +26,7 @@ function love.load()
     }
 
     --Ponemos el primer estado
-    --gStateMachine:change('inicio', {highScores = loadHighScores()})
-    gStateMachine:change('lista_puntajes', {highScores = loadHighScores()})
+    gStateMachine:change('inicio', {highScores = loadHighScores()})
 
     --Creamos una tabla vacía de teclas oprimidas para poder usarlas en otros archivos
     love.keyboard.keysPressed = {}
@@ -137,6 +136,12 @@ function loadHighScores()
 
         -- flip the name flag
         name = not name
+    end
+
+    for i=1, 10 do
+        if scores[i].name:sub(4,4) ~= '1' and scores[i].name:sub(4,4) ~= '2' and scores[i].name:sub(4,4) ~= '3' then
+            scores[i].name = scores[i].name .. '1'
+        end
     end
 
     return scores

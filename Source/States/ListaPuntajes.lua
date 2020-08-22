@@ -35,8 +35,6 @@ function ListaPuntajes:enter(params)
                 table.insert(self.sprite_sheet, love.graphics.newImage('Imagen/Sprites/AX-2.png'))
             elseif self.highScores[i].name:sub(4,4) == '3' then 
                 table.insert(self.sprite_sheet, love.graphics.newImage('Imagen/Sprites/Y9-2.png'))
-            else
-                table.insert(self.sprite_sheet, love.graphics.newImage('Imagen/Sprites/AX-2.png'))
             end
 
             table.insert(self.sprite_nave, love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet[i]:getDimensions()))
@@ -98,11 +96,13 @@ function ListaPuntajes:render()
     for i=1, 5 do
         self.numeros[i]:render(280, 240 + ((i-1) * 60))
         self.siglas[i]:render(320, 240 + ((i-1) * 60))
+        love.graphics.draw(self.sprite_sheet[i], self.sprite_nave[i], 400, 240 + ((i-1) * 60),0 , 0.7, 0.7)
     end
 
     for i=6, 10 do
         self.numeros[i]:render(650, 240 + ((i-6) * 60))
         self.siglas[i]:render(690, 240 + ((i-6) * 60))
+        love.graphics.draw(self.sprite_sheet[i], self.sprite_nave[i], 770, 240 + ((i-6) * 60),0 , 0.7, 0.7)
     end
 
 end
