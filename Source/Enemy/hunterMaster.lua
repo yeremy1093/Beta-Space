@@ -1,4 +1,5 @@
 HunterMaster = Class{}
+--Quiere que le tengas miedo y lo va ha hacer
 
 local sprite_sheet_hunter = love.graphics.newImage('Imagen/SpritesEnemys/Hunter-1.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
@@ -28,15 +29,15 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
     self.distancey = 0
     self.distancex = 0 
     if self.y <= self.newy then -- Hunter esta arriba del jugador
-        self.distancey = self.newy - self.y
+        self.distancey = math.max(0,self.newy - self.y)
     else -- Hunter esta abajo del jugador
-        self.distancey = self.y - self.newy
+        self.distancey = math.max(0,self.y - self.newy)
     end
 
     if self.x <= self.newx then -- Hunter esta a la izquierda del jugador
-        self.distancex = self.newx - self.x
+        self.distancex = math.max(0,self.newx - self.x)
     else -- Hunter esta a la derecha del jugador
-        self.distancex = self.x - self.newx
+        self.distancex = math.max(0,self.x - self.newx)
     end
     self.lastDistance = (self.distancex^2 + self.distancey^2)^0.5
 
@@ -54,8 +55,7 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
 end
 
 --Funcion de update
-function HunterMaster:update(dt, player)
-    
+function HunterMaster:update(dt, player, playerBalas)
     if self.destruible == false then
         --Nave aparece, dirigete a las coordenadas iniciales
         if self.movState == entrada then
@@ -67,43 +67,16 @@ function HunterMaster:update(dt, player)
             end
         --Colocate en las coordenadas contrarias al objetivo
         elseif self.movState == combate then
-            self.newx = self.spacex - player.x - player.width
-            self.newy = self.spacey - player.y - player.height
-        end
-        if self.y <= self.newy then -- Hunter esta arriba del jugador
-            self.distancey = math.max(0,self.newy - self.y)
-            self.y = self.y + self.distancey * dt * self.timeToTarget 
-        else -- Hunter esta abajo del jugador
-            self.distancey = math.max(0,self.y - self.newy)
-            self.y = self.y - self.distancey * dt * self.timeToTarget 
-        end
-
-        if self.x <= self.newx then -- Hunter esta a la izquierda del jugador
-            self.distancex = math.max(0,self.newx - self.x)
-            self.x = self.x + self.distancex * dt * self.timeToTarget 
-        else -- Hunter esta a la derecha del jugador
-            self.distancex = math.max(0,self.x - self.newx)
-            self.x = self.x - self.distancex * dt * self.timeToTarget 
-        end
-        --Actualizacion de tiempo requerido para llegar al objetivo
-        --Calcula la distancia mas corta para llegar al objetivo
-        new_distance = (self.distancex^2 + self.distancey^2)^0.5
-        --Si el objetivo esta a menos de un pixel de distancia, se considerara que la nave ha llegado al objetivo
-        if new_distance <= 1 then
-            self.timeToTarget = 0
-            self.lastDistance = 0
-            self.objetiveApproach = true
-        else --Si la distancia es mayor a un pixel de distancia, hay que calcular el tiempo necesario para llegar en funcion a la velocidad definida
-            --La nave se habia detenido, se recalcula el nuevo viaje
-            if self.objetiveApproach then
-                self.lastDistance = new_distance
-                self.timeToTarget = self.velocity/self.lastDistance
-                self.objetiveApproach = false
-            else --La nave solo ha recorrido parte de la distancia, se calcula el tiempo necesario para llegar para no genrerar cambios de velocidad
-                self.timeToTarget = (self.lastDistance / new_distance) * self.timeToTarget
-                self.lastDistance = new_distance
+            if self:detectBalas(playerBalas) then
+                self.movState == esquivar
+            else
+                self.newx = self.spacex - player.x - player.width
+                self.newy = self.spacey - player.y - player.height
             end
+        elseif self.movState == esquivar then
+            
         end
+        self.moveEngine(dt)
     end
 
     if self.destruible == false then 
@@ -114,6 +87,60 @@ function HunterMaster:update(dt, player)
 		end
 	end
 	return true
+end
+
+function HunterMaster:moveEngine(dt)
+    if self.y <= self.newy then -- Hunter esta arriba del jugador
+        self.distancey = math.max(0,self.newy - self.y)
+        self.y = self.y + self.distancey * dt * self.timeToTarget 
+    else -- Hunter esta abajo del jugador
+        self.distancey = math.max(0,self.y - self.newy)
+        self.y = self.y - self.distancey * dt * self.timeToTarget 
+    end
+
+    if self.x <= self.newx then -- Hunter esta a la izquierda del jugador
+        self.distancex = math.max(0,self.newx - self.x)
+        self.x = self.x + self.distancex * dt * self.timeToTarget 
+    else -- Hunter esta a la derecha del jugador
+        self.distancex = math.max(0,self.x - self.newx)
+        self.x = self.x - self.distancex * dt * self.timeToTarget 
+    end
+    --Actualizacion de tiempo requerido para llegar al objetivo
+    --Calcula la distancia mas corta para llegar al objetivo
+    new_distance = (self.distancex^2 + self.distancey^2)^0.5
+    --Si el objetivo esta a menos de un pixel de distancia, se considerara que la nave ha llegado al objetivo
+    if new_distance <= 1 then
+        self.timeToTarget = 0
+        self.lastDistance = 0
+        self.objetiveApproach = true
+    else --Si la distancia es mayor a un pixel de distancia, hay que calcular el tiempo necesario para llegar en funcion a la velocidad definida
+        --La nave se habia detenido, se recalcula el nuevo viaje
+        if self.objetiveApproach then
+            self.lastDistance = new_distance
+            self.timeToTarget = self.velocity/self.lastDistance
+            self.objetiveApproach = false
+        else --La nave solo ha recorrido parte de la distancia, se calcula el tiempo necesario para llegar para no genrerar cambios de velocidad
+            self.timeToTarget = (self.lastDistance / new_distance) * self.timeToTarget
+            self.lastDistance = new_distance
+        end
+    end
+end
+
+function HunterMaster:detectBalas(balas)
+    for i, bala in pairs(balas) do
+        --Detecta si una bala se encuentra en el areax de seguridad
+        if self.x + self.width*5 <= bala.x or self.x - self.width*4 >= bala.x  then
+            return true
+        end
+
+        --Detecta si una bala se encuentra en el areay de seguridad
+        if self.y + self.height*5 <= bala.y or self.y - self.height*4 >= bala.y then
+            return true
+        end
+    end
+
+    --Ninguna bala esta en el area
+    return false
 end
 
 function HunterMaster:collides(objeto)
