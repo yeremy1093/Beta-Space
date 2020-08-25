@@ -6,6 +6,10 @@ function Pause:enter(params)
 --Agregamos parametro para evitar que se reinicie Play
 self.play = params.state
 
+self.params = params
+
+self.params.ultimoEstado = 'pause'
+
 self.pause_msg = Escribir("Pausa")
 
 --Cargar Selector de menu
@@ -30,8 +34,8 @@ function Pause:update(dt)
     end
     if love.keyboard.wasPressed('down') then
     	self.targetY = self.targetY + 60
-        if self.targetY > (WINDOW_HEIGHT / 2) + 80 then
-            self.targetY = (WINDOW_HEIGHT / 2) + 80
+        if self.targetY > (WINDOW_HEIGHT / 2) + 140 then
+            self.targetY = (WINDOW_HEIGHT / 2) + 140
         end
     end
 
@@ -46,7 +50,9 @@ function Pause:update(dt)
 	                                      background = self.play.background,
 	                                      sky = self.play.sky,
                                           highScores = self.play.highScores})
-	    else
+	    elseif self.targetY == (WINDOW_HEIGHT / 2) + 80 then
+            gStateMachine:change('config', self.params)
+        else
 	    	TEsound.stop('musica_menu')
         	gStateMachine:change('inicio', {highScores = self.play.highScores})
         end
@@ -68,7 +74,9 @@ love.graphics.setFont(gFonts['medium'])
 
 love.graphics.print("Continuar Juego", (WINDOW_WIDTH / 2) - 150, (WINDOW_HEIGHT / 2) + 35)
 
-love.graphics.print("Menu Principal", (WINDOW_WIDTH / 2) - 150, (WINDOW_HEIGHT / 2) + 95)
+love.graphics.print("Configuraciones", (WINDOW_WIDTH / 2) - 150, (WINDOW_HEIGHT / 2) + 95)
+
+love.graphics.print("Menu Principal", (WINDOW_WIDTH / 2) - 150, (WINDOW_HEIGHT / 2) + 155)
 
 love.graphics.setFont(gFonts['large'])
 	

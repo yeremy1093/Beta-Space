@@ -65,7 +65,7 @@ function Menu:update(dt)
         if self.opc == 'puntajes' then
             gStateMachine:change('lista_puntajes', {highScores = self.highScores})
         elseif self.opc == 'config' then
-            --gStateMachine:change('menu', {})
+            gStateMachine:change('config', {highScores = self.highScores, ultimoEstado = 'menu'})
         elseif self.opc == 'salir' then
             TEsound.stop('musica_menu')
             gStateMachine:change('inicio', {highScores = self.highScores})

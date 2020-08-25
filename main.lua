@@ -23,7 +23,8 @@ function love.load()
         ['pause'] = function() return Pause() end,
         ['puntaje_alto'] = function() return PuntajeAlto() end,
         ['lista_puntajes'] = function() return ListaPuntajes() end,
-        ['menu'] = function() return Menu() end
+        ['menu'] = function() return Menu() end,
+        ['config'] = function() return Config() end
     }
 
     --Ponemos el primer estado
