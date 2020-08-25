@@ -4,17 +4,13 @@ HunterMaster = Class{}
 local sprite_sheet_hunter = love.graphics.newImage('Imagen/SpritesEnemys/Hunter-1.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
+--Constantes para esquivar
+local tableOpc = {-90,90}
+
 --Estados de movimiento
 local entrada = 0
 local combate = 1
 local esquivar = 2
-
---Cuadrantes
-local ninguno = 0
-local cuadrante1 = 1
-local cuadrante2 = 2
-local cuadrante3 = 3
-local cuadrante4 = 4
 
 function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, velocity)
 	self.x = x
@@ -58,7 +54,8 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
 	self.destruible = false
 	--Aqui van todas las animaciones posibles
 	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 3, 3, self.fps),
-				['explosion'] = Anim(0, 0, 25, 25, 4, 4, self.fps)}
+                ['explosion'] = Anim(0, 0, 25, 25, 4, 4, self.fps)}
+    self.angle = 0    
 end
 
 --Funcion de update
@@ -74,11 +71,13 @@ function HunterMaster:update(dt, player, playerBalas)
             end
         --Colocate en las coordenadas contrarias al objetivo
         elseif self.movState == combate then
-            self:detectBalas(playerBalas)
             self.newx = self.spacex - player.x - player.width
             self.newy = self.spacey - player.y - player.height
+            self:detectBalasAndAvoid(playerBalas) -- Posibilidad de cambiar de estado a esquivar
         elseif self.movState == esquivar then
-            
+            if self.objetiveApproach then
+                self.movState = combate   --Una vez la nave termine de esquivar, puede regresar al estado de combate
+            end
         end
         self:moveEngine(dt)
     end
@@ -130,20 +129,47 @@ function HunterMaster:moveEngine(dt)
     end
 end
 
-function HunterMaster:detectBalas(balas)
-    cuadrante = ninguno
-    dangerBalas = {}
-    --angle = math.deg(math.atan(bala.dy)/(bala.dx))
-    --table.insert(balasInArea, bala)
+function HunterMaster:detectBalasAndAvoid(balas)
+    local balasInArea = {}
+    local dx = 0
+    local dy = 0
+    local angle = 0 
     --Revisa cada bala en el area
-    for i, bala in pairs(balas) do
-        --Detecta si una bala se encuentra en el area de seguridad y en que cuadrante en referencia a la nave
-        if self.x + self.width*5 <= bala.x and self.x + self.width/2 >= bala.x and
-            self.y + self.witdh*4 >= bala.y and self.y + self.width/2 <= bala.y then
-                cuadrante = cuadrante1
-        elseif self.x + self.width*4 > bala.x and self.x + self.width/2 < bala.x and
-            self.y + self.witdh*4 >= bala.y and self.y + self.width/2 <= bala.y then
-
+    if table.getn(balas) > 0 then
+        for i, bala in pairs(balas) do
+            if bala.x + bala.width/2 >= self.x - self.width*4 and bala.x + bala.width/2 <= self.x + self.width*5 and
+            bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 then
+                table.insert(balasInArea, bala)
+            end
+        end
+        if table.getn(balasInArea) > 0 then
+            for i, bala in pairs(balasInArea) do
+                dx = dx + bala.xspeed
+                dy = dy + bala.speed
+            end
+            if dx == 0 then
+                angle = 90
+            else
+                angle = math.deg(math.atan(math.abs(dy)/math.abs(dx)))
+            end
+            if dx < 0 and dy < 0 then
+                angle = 180 - angle
+            elseif dx < 0 and dy >= 0  then
+                angle = angle + 180
+            elseif dx >= 0 and dy >= 0 then
+                angle =  360 - angle
+            end
+            angle = angle + tableOpc[math.random(#tableOpc)]
+            if angle >= 360 then
+                angle = angle - 360
+            elseif angle < 0 then
+                angle = 360 + angle
+            end
+            self.angle = angle
+            self.newx = self.x + math.min(self.spacex, math.max(0 , math.floor(self.minimalDistance * math.cos(math.rad(angle)))))
+            self.newy = self.y + math.min(self.spacey, math.max(0, math.floor(self.minimalDistance * math.sin(math.rad(angle)))))
+            self.movState = esquivar
+            --calcular nueva posicion con el angulo de esquive, usar math.floor() para obtener pixeles enteros
         end
     end
 
@@ -173,7 +199,10 @@ end
 
 function HunterMaster:render()
 	if self.destruible == false then
-		love.graphics.draw(sprite_sheet_hunter, self.sprite, self.x, self.y)
+        love.graphics.draw(sprite_sheet_hunter, self.sprite, self.x, self.y)
+        love.graphics.print(self.angle, 400, 300)
+        love.graphics.print(self.newx, 400, 400)
+        love.graphics.print(self.newy, 400, 500)
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
 	end
