@@ -9,6 +9,7 @@ function Pulsar:init(x, y, speed, nivel)
 	self.clase = 'pulsar'
 	self.x = x
 	self.y = y
+	self.xspeed = 0
 	self.speed = speed
 	self.sprite = love.graphics.newQuad(0, 0, 300, 300, sprite_sheet:getDimensions())
 	self.nivel = nivel

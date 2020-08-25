@@ -9,6 +9,7 @@ function Pulso:init(x, y, speed, nivel)
 	self.clase = 'pulso'
 	self.x = x
 	self.y = y
+	self.xspeed = speed
 	self.speed = speed
 	self.sprite = love.graphics.newQuad(0, 0, 70, 70, sprite_sheet:getDimensions())
 	self.nivel = nivel

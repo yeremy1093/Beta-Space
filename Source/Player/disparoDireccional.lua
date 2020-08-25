@@ -11,6 +11,7 @@ function Direccional:init(x, y, speed, id)
 	self.clase = 'direccional'
 	self.x = x
 	self.y = y
+	self.xspeed = speed
 	self.speed = speed
 	self.sprite = imgUp1
 	self.id = id
