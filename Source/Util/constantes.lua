@@ -21,3 +21,7 @@ tipo_arma = 0
 enemy_timer = 0.25
 shot_timer = 0.05
 
+--Otras variables
+TIMER_CONTROLES = 3
+VOLUMEN_EFECTOS = 1
+VOLUMEN_MUSICA = 1
