@@ -56,7 +56,7 @@ function love.load()
 
     --numeros para el puntaje mientras juegas
     gFonts = {
-        ['small'] = love.graphics.newFont('Font/font.ttf', 16),
+        ['small'] = love.graphics.newFont('Font/font.ttf', 22),
         ['medium'] = love.graphics.newFont('Font/font.ttf', 32),
         ['large'] = love.graphics.newFont('Font/font.ttf', 48)
     }
