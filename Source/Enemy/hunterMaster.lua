@@ -1,16 +1,10 @@
 HunterMaster = Class{}
 --Quiere que le tengas miedo y lo va ha hacer
 
+local tablePositions = {1/2, 1/3, 2/3, 1/4, 3/4}
+
 local sprite_sheet_hunter = love.graphics.newImage('Imagen/SpritesEnemys/Hunter-1.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
-
---Constantes para esquivar
-local tableOpc = {-90,90}
-
---Estados de movimiento
-local entrada = 0
-local combate = 1
-local esquivar = 2
 
 function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, velocity)
 	self.x = x
@@ -25,8 +19,8 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
     self.fps = math.random(6, 10)
-    self.newx = 0
-    self.newy = 0
+    self.newx = self.spacex * 1/2
+    self.newy = self.spacey * 1/3
 
     --Define distancia inicial
     self.distancey = 0
@@ -54,30 +48,19 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
 	self.destruible = false
 	--Aqui van todas las animaciones posibles
 	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 3, 3, self.fps),
-                ['explosion'] = Anim(0, 0, 25, 25, 4, 4, self.fps)}
-    self.angle = 0    
+                ['explosion'] = Anim(0, 0, 25, 25, 4, 4, self.fps)} 
 end
 
 --Funcion de update
 function HunterMaster:update(dt, player, playerBalas)
+    local coordenadas = {
+        ['valueX'] = 0,
+        ['valueY'] = 0
+    }
     if self.destruible == false then
-        --Nave aparece, dirigete a las coordenadas iniciales
-        if self.movState == entrada then
-            self.newy = self.spacey/4
-            self.newx = self.spacex/2
-            --Nave ha llegado al objetivo, cambia de estado
-            if self.objetiveApproach then
-                self.movState = combate
-            end
-        --Colocate en las coordenadas contrarias al objetivo
-        elseif self.movState == combate then
-            self.newx = self.spacex - player.x - player.width
-            self.newy = self.spacey - player.y - player.height
-            self:detectBalasAndAvoid(playerBalas) -- Posibilidad de cambiar de estado a esquivar
-        elseif self.movState == esquivar then
-            if self.objetiveApproach then
-                self.movState = combate   --Una vez la nave termine de esquivar, puede regresar al estado de combate
-            end
+        if self.objetiveApproach then
+            self.newx = self.spacex * tablePositions[math.random(#tablePositions)]
+            self.newy = self.spacey * tablePositions[math.random(#tablePositions)]
         end
         self:moveEngine(dt)
     end
@@ -94,19 +77,19 @@ end
 
 function HunterMaster:moveEngine(dt)
     if self.y <= self.newy then -- Hunter esta arriba del jugador
-        self.distancey = math.max(0,self.newy - self.y)
+        self.distancey = self.newy - self.y
         self.y = self.y + self.distancey * dt * self.timeToTarget 
     else -- Hunter esta abajo del jugador
-        self.distancey = math.max(0,self.y - self.newy)
-        self.y = self.y - self.distancey * dt * self.timeToTarget 
+        self.distancey = self.y - self.newy
+        self.y = self.y - self.distancey * dt * self.timeToTarget
     end
 
     if self.x <= self.newx then -- Hunter esta a la izquierda del jugador
-        self.distancex = math.max(0,self.newx - self.x)
+        self.distancex = self.newx - self.x
         self.x = self.x + self.distancex * dt * self.timeToTarget 
     else -- Hunter esta a la derecha del jugador
-        self.distancex = math.max(0,self.x - self.newx)
-        self.x = self.x - self.distancex * dt * self.timeToTarget 
+        self.distancex = self.x - self.newx
+        self.x = self.x - self.distancex * dt * self.timeToTarget
     end
     --Actualizacion de tiempo requerido para llegar al objetivo
     --Calcula la distancia mas corta para llegar al objetivo
@@ -142,35 +125,7 @@ function HunterMaster:detectBalasAndAvoid(balas)
                 table.insert(balasInArea, bala)
             end
         end
-        if table.getn(balasInArea) > 0 then
-            for i, bala in pairs(balasInArea) do
-                dx = dx + bala.xspeed
-                dy = dy + bala.speed
-            end
-            if dx == 0 then
-                angle = 90
-            else
-                angle = math.deg(math.atan(math.abs(dy)/math.abs(dx)))
-            end
-            if dx < 0 and dy < 0 then
-                angle = 180 - angle
-            elseif dx < 0 and dy >= 0  then
-                angle = angle + 180
-            elseif dx >= 0 and dy >= 0 then
-                angle =  360 - angle
-            end
-            angle = angle + tableOpc[math.random(#tableOpc)]
-            if angle >= 360 then
-                angle = angle - 360
-            elseif angle < 0 then
-                angle = 360 + angle
-            end
-            self.angle = angle
-            self.newx = self.x + math.min(self.spacex, math.max(0 , math.floor(self.minimalDistance * math.cos(math.rad(angle)))))
-            self.newy = self.y + math.min(self.spacey, math.max(0, math.floor(self.minimalDistance * math.sin(math.rad(angle)))))
-            self.movState = esquivar
-            --calcular nueva posicion con el angulo de esquive, usar math.floor() para obtener pixeles enteros
-        end
+        
     end
 
     --Ninguna bala esta en el area
@@ -200,9 +155,6 @@ end
 function HunterMaster:render()
 	if self.destruible == false then
         love.graphics.draw(sprite_sheet_hunter, self.sprite, self.x, self.y)
-        love.graphics.print(self.angle, 400, 300)
-        love.graphics.print(self.newx, 400, 400)
-        love.graphics.print(self.newy, 400, 500)
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
 	end
