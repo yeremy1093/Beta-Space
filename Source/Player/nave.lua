@@ -115,8 +115,7 @@ function Nave:update(dt)
 		if self.frame_ex == 5 then
 			TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
 				'static',
-				{'explosion'},
-				0.8)
+				{'effect'},	VOLUMEN_EFECTOS)
 			HPnave = 0
 			Numvidas = Numvidas - 1
 			self.power_level = 1

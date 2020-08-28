@@ -26,7 +26,7 @@ function Inicio:enter(params)
     self.opc = jugar
     self.targetY = 480
 
-    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, 'stream', 'musica_menu')
+    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, 'stream', {'musica_menu'},  VOLUMEN_MUSICA)
 
 end
 

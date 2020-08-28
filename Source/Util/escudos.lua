@@ -30,7 +30,7 @@ end
 function Escudo:activar(dt)
 	if self.act_sound == true then
 		TEsound.play({'Soundtrack/Effect/EscudoAct.wav',
-    	'Soundtrack/Effect/EscudoAct2.wav'}, 'static', {'escudo'}, 0.3)
+    	'Soundtrack/Effect/EscudoAct2.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS / 2)
     	self.act_sound = false
 	end
 	self.frame = self.animations['act']:update(dt, self.sprite_act)
@@ -43,7 +43,7 @@ end
 function Escudo:desactivar(dt)
 	if self.dact_sound == true then
 		TEsound.play({'Soundtrack/Effect/EscudoDact.wav',
-    	'Soundtrack/Effect/EscudoDact2.wav'}, 'static', {'escudo'}, 0.3)
+    	'Soundtrack/Effect/EscudoDact2.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS / 2)
     	self.dact_sound = false
 	end
 	self.frame = self.animations['dact']:update(dt, self.sprite_dact)

@@ -20,9 +20,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 				asteroide.destruible = true
 				table.remove(balas, i)
 				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
-					'static',
-					{'explosion'},
-					0.5)
+					'static', {'effect'},	VOLUMEN_EFECTOS / 2)
 				break
 			end
 		end
@@ -66,9 +64,9 @@ function update_asteroides(dt, asteroides, balas, nave)
 			asteroide.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 5
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
+				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static')
+				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
 			end
 			break
 		end
@@ -95,9 +93,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 				cazaBasic.destruible = true
 				table.remove(balas, i)
 				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
-					'static',
-					{'explosion'},
-					0.5)
+					'static', {'effect'},	VOLUMEN_EFECTOS / 2)
 				break
 			end
 		end
@@ -109,9 +105,9 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			cazaBasic.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 50
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
+				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static')
+				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
 			end
 			break
 		end

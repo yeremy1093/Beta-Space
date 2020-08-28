@@ -43,8 +43,8 @@ function Config:enter(params)
     self.target_audio_sheet = love.graphics.newImage('Imagen/Menus/Target small.png')
     self.target_audio_sprite = love.graphics.newQuad(0, 0, 30, 30, self.target_audio_sheet:getDimensions())
     self.target_audio = Anim(0,0,30,30,4,4,10)
-    self.targetX1 = 912 - ((VOLUMEN_MUSICA / 10 - 0.1) * 250)
-    self.targetX2 = 912 - ((VOLUMEN_EFECTOS / 10 - 0.1) * 250)
+    self.targetX1 = 912 - ((1 - VOLUMEN_MUSICA) * 250)
+    self.targetX2 = 912 - ((1 - VOLUMEN_EFECTOS) * 250)
     self.targetY2 = 242
 
     self.tagMenu1 = Escribir("Sonido")
@@ -133,12 +133,20 @@ function Config:update(dt)
                 if self.targetX1 < 662 then
                     self.targetX1 = 662
                 end
+
+                VOLUMEN_MUSICA = VOLUMEN_MUSICA - 0.1
+                if VOLUMEN_MUSICA <= 0 then VOLUMEN_MUSICA = 0 end
+
+                TEsound.volume('musica_menu', VOLUMEN_MUSICA)
             end
             if love.keyboard.wasPressed('right') then
                 self.targetX1 = self.targetX1 + 25
                 if self.targetX1 > 912 then
                     self.targetX1 = 912
                 end
+                VOLUMEN_MUSICA = VOLUMEN_MUSICA + 0.1
+                if VOLUMEN_MUSICA >= 1 then VOLUMEN_MUSICA = 1 end
+                TEsound.volume('musica_menu', VOLUMEN_MUSICA)
             end
         else
             if love.keyboard.wasPressed('left') then
@@ -146,12 +154,16 @@ function Config:update(dt)
                 if self.targetX2 < 662 then
                     self.targetX2 = 662
                 end
+                VOLUMEN_EFECTOS = VOLUMEN_EFECTOS - 0.1
+                if VOLUMEN_EFECTOS <= 0 then VOLUMEN_EFECTOS = 0 end
             end
             if love.keyboard.wasPressed('right') then
                 self.targetX2 = self.targetX2 + 25
                 if self.targetX2 > 912 then
                     self.targetX2 = 912
                 end
+                VOLUMEN_EFECTOS = VOLUMEN_EFECTOS + 0.1
+                if VOLUMEN_EFECTOS >= 1 then VOLUMEN_EFECTOS = 1 end
             end
         end
     end

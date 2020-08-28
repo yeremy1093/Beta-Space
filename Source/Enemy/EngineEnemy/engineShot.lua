@@ -94,10 +94,10 @@ function EngineShot:collidesShots(player, balas)
             if escudo_nave == false then
 				puntaje = puntaje - 10
 				HPnave = HPnave + 1
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static')
+				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
 			else
 				player.escudo:golpe_escudo(10)
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static')
+				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
 			end
             Cannon.destruible = true
             return true
