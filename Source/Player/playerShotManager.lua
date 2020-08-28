@@ -144,6 +144,11 @@ function PlayerShot:disparo_tercer_disparo(player)
         if player.nave == 1 then
             table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
             TEsound.play('Soundtrack/Effect/Pulso.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
+        elseif player.nave == 3 then
+            for i=1, (player.power_level * 3) do
+                table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100)))
+                TEsound.play('Soundtrack/Effect/Pulso.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
+            end
         end
         self.pulsar = 'desactivado'
     end
