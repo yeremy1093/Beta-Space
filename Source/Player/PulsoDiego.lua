@@ -5,8 +5,9 @@ Pulso = Class{}
 
 local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Pulso D-10.png')
 
-function Pulso:init(x, y, speed, nivel)
+function Pulso:init(x, y, speed, nivel, credential)
 	self.clase = 'pulso'
+	self.credential = credential
 	self.x = x
 	self.y = y
 	self.xspeed = speed

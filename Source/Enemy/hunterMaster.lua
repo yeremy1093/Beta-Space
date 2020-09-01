@@ -1,10 +1,13 @@
 HunterMaster = Class{}
 --Quiere que le tengas miedo y lo va ha hacer
 
-local tablePositions = {1/2, 1/3, 2/3, 1/4, 3/4}
-
 local sprite_sheet_hunter = love.graphics.newImage('Imagen/SpritesEnemys/Hunter-1.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
+
+local combatState = 0
+local avoidBalasState = 1
+local avoidPlayerState = 2
+local targetPlayerState = 3
 
 function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, velocity)
 	self.x = x
@@ -21,6 +24,9 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
     self.fps = math.random(6, 10)
     self.newx = self.spacex * 1/2
     self.newy = self.spacey * 1/3
+    self.missionState = combatState
+
+    self.balasCredentials = {}
 
     --Define distancia inicial
     self.distancey = 0
@@ -53,14 +59,17 @@ end
 
 --Funcion de update
 function HunterMaster:update(dt, player, playerBalas)
-    local coordenadas = {
-        ['valueX'] = 0,
-        ['valueY'] = 0
-    }
     if self.destruible == false then
-        if self.objetiveApproach then
-            self.newx = self.spacex * tablePositions[math.random(#tablePositions)]
-            self.newy = self.spacey * tablePositions[math.random(#tablePositions)]
+        if self.missionState == combatState then
+            if self.objetiveApproach then
+                self.newx = self.spacex * (math.random(10,90)/100)
+                self.newy = self.spacey * (math.random(0,80)/100)
+            end
+            self:detectBalasAndAvoid(playerBalas)
+        elseif self.missionState == avoidBalasState then
+            if self.objetiveApproach then
+                self.missionState = combatState
+            end
         end
         self:moveEngine(dt)
     end
@@ -75,20 +84,29 @@ function HunterMaster:update(dt, player, playerBalas)
 	return true
 end
 
+function HunterMaster:resetMoveEngine()
+    self.newx = self.x
+    self.newy = self.y
+    self.timeToTarget = 0
+    self.lastDistance = 0
+    self.objetiveApproach = true
+end
+
+
 function HunterMaster:moveEngine(dt)
     if self.y <= self.newy then -- Hunter esta arriba del jugador
-        self.distancey = self.newy - self.y
+        self.distancey = math.max(0,self.newy - self.y)
         self.y = self.y + self.distancey * dt * self.timeToTarget 
     else -- Hunter esta abajo del jugador
-        self.distancey = self.y - self.newy
+        self.distancey = math.max(0,self.y - self.newy)
         self.y = self.y - self.distancey * dt * self.timeToTarget
     end
 
     if self.x <= self.newx then -- Hunter esta a la izquierda del jugador
-        self.distancex = self.newx - self.x
+        self.distancex = math.max(0,self.newx - self.x)
         self.x = self.x + self.distancex * dt * self.timeToTarget 
     else -- Hunter esta a la derecha del jugador
-        self.distancex = self.x - self.newx
+        self.distancex = math.max(0,self.x - self.newx)
         self.x = self.x - self.distancex * dt * self.timeToTarget
     end
     --Actualizacion de tiempo requerido para llegar al objetivo
@@ -112,22 +130,59 @@ function HunterMaster:moveEngine(dt)
     end
 end
 
+function HunterMaster:isNotBalaDetectedBefore(bala)
+    for i = 1, table.getn(self.balasCredentials) do
+        if bala.credential == self.balasCredentials[i] then
+            return false
+        end
+    end
+    return true
+end
+
 function HunterMaster:detectBalasAndAvoid(balas)
-    local balasInArea = {}
-    local dx = 0
-    local dy = 0
-    local angle = 0 
     --Revisa cada bala en el area
     if table.getn(balas) > 0 then
+        local dangerBalas = {}
         for i, bala in pairs(balas) do
             if bala.x + bala.width/2 >= self.x - self.width*4 and bala.x + bala.width/2 <= self.x + self.width*5 and
-            bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 then
-                table.insert(balasInArea, bala)
+            bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 and
+            self:isNotBalaDetectedBefore(bala) then
+                table.insert(dangerBalas, bala)
+                table.insert(self.balasCredentials, bala.credential)
             end
         end
-        
+        if table.getn(dangerBalas) > 0 then
+            local dx = 0
+            local dy = 0
+            local angle = 0
+            self.combatState = avoidBalasState
+            self:resetMoveEngine()
+            for i, bala in pairs(dangerBalas) do
+                dx = dx + bala.xspeed
+                dy = dy + bala.speed
+            end
+            if dx == 0 then
+                angle = 90
+            else
+                angle = math.deg(math.atan(math.abs(dy)/math.abs(dx)))
+            end
+            if dx < 0 and dy < 0 then
+                angle = 180 - angle
+            elseif dx < 0 and dy >= 0 then
+                angle = angle + 180
+            elseif dx >= 0 and dy >= 0 then
+                angle = 360 - angle
+            end
+            angle = angle + 90
+            if angle >= 360 then
+                anlge = angle - 360
+            elseif angle < 0 then
+                angle = 360 + angle
+            end            
+            self.newx = self.x + math.floor(self.minimalDistance * math.cos(math.rad(angle)))
+            self.newy = self.y + math.floor(self.minimalDistance * math.sin(math.rad(angle)))
+        end 
     end
-
     --Ninguna bala esta en el area
 end
 
