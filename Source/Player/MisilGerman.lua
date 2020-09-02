@@ -38,8 +38,17 @@ function Misil:update(dt, nave, enemigos)
 			self.y = self.y - self.speed * dt
 			self.x = self.x + self.xspeed * dt
 		else
-			self.y = self.y - ((self.targety - self.y) * dt * time_adjust)
-			self.x = self.x - ((self.targetx - self.x) * dt * time_adjust)
+			if self.y <= self.targety then -- Hunter esta arriba del jugador
+		        self.y = self.y + (self.targety - self. y) * dt * time_adjust
+		    else -- Hunter esta abajo del jugador
+		        self.y = self.y - (self.targety - self. y) * dt * time_adjust
+		    end
+
+		    if self.x <= self.targetx then -- Hunter esta a la izquierda del jugador
+		        self.x = self.x + (self.targetx - self.x) * dt * time_adjust
+		    else -- Hunter esta a la derecha del jugador
+		        self.x = self.x - (self.targetx - self.x) * dt * time_adjust
+		    end
 		end
 		self.anim['idle']:update(dt, self.sprite)
 	end
@@ -47,14 +56,14 @@ function Misil:update(dt, nave, enemigos)
 	if self.targetx == 0 and self.targety == 0 then
 		for i, naveBasic in pairs(enemigos.navesBasic) do
 			for j, dron in pairs(enemigos.drones) do
-				if naveBasic.x < self.x + 100 and naveBasic.x > self.x - 100 then
+				if naveBasic.x < (self.x + 500) and naveBasic.x > (self.x - 500) then
 					self.targetx = naveBasic.x
-				elseif dron.x < self.x + 100 and dron.x > self.x - 100 then
+				elseif dron.x < (self.x + 500) and dron.x > (self.x - 500) then
 					self.targetx = dron.x
 				end
-				if naveBasic.y < self.y + 100 and naveBasic.y > self.y - 100 then
+				if naveBasic.y < (self.y + 500) and naveBasic.y > (self.y - 500) then
 					self.targety = naveBasic.y
-				elseif dron.y < self.y + 100 and dron.y > self.y - 100 then
+				elseif dron.y < (self.y + 500) and dron.y > (self.y - 500) then
 					self.targety = dron.y
 				end
 			end
@@ -73,6 +82,5 @@ function Misil:render()
 		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y)
 	end
 
-	love.graphics.print(tostring(self.targetx), 600, 50)
-	love.graphics.print(tostring(self.targety), 700, 50)
+	love.graphics.print(tostring(self.targetx), 600, 100)
 end
