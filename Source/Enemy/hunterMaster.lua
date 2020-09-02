@@ -112,6 +112,21 @@ function HunterMaster:moveEngine(dt)
     end
 end
 
+function HunterMaster:isNotBalaDetectedBefore(bala)
+    for i = 1, table.getn(self.balasCredentials) do
+        if bala.credential == self.balasCredentials[i][1] then
+            if self.balasCredentials[i][2] == false then
+                self.balasCredentials[i][2] = true
+            else
+                table.remove(self.balasCredentials, i)
+            end
+            return false
+        end
+    end
+    table.insert(self.balasCredentials, {bala.credential, false})
+    return true
+end
+
 function HunterMaster:detectBalasAndAvoid(balas)
     local balasInArea = {}
     local dx = 0
@@ -121,11 +136,16 @@ function HunterMaster:detectBalasAndAvoid(balas)
     if table.getn(balas) > 0 then
         for i, bala in pairs(balas) do
             if bala.x + bala.width/2 >= self.x - self.width*4 and bala.x + bala.width/2 <= self.x + self.width*5 and
-            bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 then
-                table.insert(balasInArea, bala)
+            bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 and
+            self:isNotBalaDetectedBefore(bala) then
+                table.insert(dangerBalas, bala)
             end
         end
-        
+        if table.getn(dangerBalas) > 0 then
+            self.combatState = avoidBalasState
+            self:resetMoveEngine()
+            --self.newx = math.min(self.spacex, math.max(0, if self.x >= bala.x then self.x - math.random())
+        end 
     end
 
     --Ninguna bala esta en el area
