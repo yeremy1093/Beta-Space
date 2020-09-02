@@ -55,7 +55,7 @@ function Play:enter(params)
     if params.sky then
         self.sky = params.sky
     else
-        self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 10)
+        self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 500, 0, 10)
     end
 end
 

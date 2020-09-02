@@ -13,7 +13,7 @@ function Menu:enter(params)
     self.background = Background()
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
+    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 500, 0, 0)
 
     --Cargar Menu Inicio
     self.menu = love.graphics.newImage('Imagen/Menus/menu.png')
