@@ -7,9 +7,8 @@ imgUp1 = love.graphics.newImage('Imagen/Sprites/Laser2.png')
 
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function Direccional:init(x, y, speed, id, credential)
+function Direccional:init(x, y, speed, id)
 	self.clase = 'direccional'
-	self.credential = credential
 	self.x = x
 	self.y = y
 	self.xspeed = speed

@@ -7,9 +7,8 @@ imgBala = love.graphics.newImage('Imagen/Sprites/laser.png')
 
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function Bala:init(x, y, xspeed, speed, credential)
+function Bala:init(x, y, xspeed, speed)
 	self.clase = 'laser'
-	self.credential = credential
 	self.x = x
 	self.y = y
 	self.xspeed = xspeed
