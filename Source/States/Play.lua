@@ -73,7 +73,7 @@ function Play:update(dt)
 	self.player:update(dt)
 
 	--Funcion con el codigo para mover la bala
-	self.shotManager:disparo_jugador(self.player)
+	self.shotManager:disparo_jugador(self.player, dt)
 
 	--Hacemos el update de los enemigos
 	self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player)
@@ -105,7 +105,7 @@ function Play:update(dt)
     end
 
     --Checamos si debemos crear balas del jugador
-	self.shotManager:mover_balas_jugador(dt, self.player)
+	self.shotManager:mover_balas_jugador(dt, self.player, self.enemyManager)
 
     --hacemos lo de los pickups para las armas y poderes
     self:generar_pickup(dt)

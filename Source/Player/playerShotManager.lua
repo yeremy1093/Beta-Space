@@ -9,14 +9,16 @@ function PlayerShot:init()
     self.pulsar = 'activado'
     self.timer_tercer_disparo = TIMER_TERCER_DISPARO
     self.tercer_disparo = 'activado'
+    self.misiles = 2
+    self.timer_misiles = 0.3
     self.credential = -1
 end
 
 --Funciones que tienen que ver con listas de objetos en distintos estados
-function PlayerShot:mover_balas_jugador(dt, player)
+function PlayerShot:mover_balas_jugador(dt, player, enemigos)
 		--Hacemos un ciclo en el que se haga update de todas las balas
 	for i, bala in pairs(self.balas) do
-        if bala:update(dt, player) == false then
+        if bala:update(dt, player, enemigos) == false then
             table.remove(self.balas, i)
         end
 		--checamos si la bala salio de la pantalla y la borramos
@@ -36,12 +38,15 @@ function PlayerShot:mover_balas_jugador(dt, player)
         if self.timer_tercer_disparo <= 0 then 
             self.tercer_disparo = 'activado'
             self.timer_tercer_disparo = TIMER_TERCER_DISPARO
+            if player.nave == 3 then
+                self.misiles = player.power_level * 2
+            end
         end
     end
 
 end
 
-function PlayerShot:disparo_jugador(player)
+function PlayerShot:disparo_jugador(player, dt)
     self.power_up = player.power_up
     if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
         self.credential = self.credential + 1
@@ -60,9 +65,14 @@ function PlayerShot:disparo_jugador(player)
         elseif self.power_up == 'pulsar' then
              self:disparo_pulsar(player)
         elseif self.power_up == 'tercer_disparo' then
-             self:disparo_tercer_disparo(player)
+             self:disparo_tercer_disparo(player, dt)
         end
     end
+
+    if self.tercer_disparo == 'desactivado' and player.nave == 3 and self.misiles > 0 then
+        self:disparar_misiles(player, dt)
+    end
+
 end
 
 function PlayerShot:disparo_normal(player)
@@ -148,29 +158,40 @@ function PlayerShot:disparo_pulsar(player)
     end
 end
 
-function PlayerShot:disparo_tercer_disparo(player)
-    if self.pulsar == 'activado' then
+function PlayerShot:disparo_tercer_disparo(player, dt)
+    if self.tercer_disparo == 'activado' then
         if player.nave == 1 then
             table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level, self.credential))
             TEsound.play('Soundtrack/Effect/Pulso.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
         elseif player.nave == 3 then
-            for i=1, (player.power_level * 3) do
-                table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100), self.credential))
-                TEsound.play('Soundtrack/Effect/Pulso.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
-            end
+            table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100), self.credential))
+            TEsound.play('Soundtrack/Effect/soundExplosion2.wav', 'static', {'effect'},  VOLUMEN_EFECTOS / 2)
+            self:disparar_misiles(player, dt)
         end
-        self.pulsar = 'desactivado'
+        self.tercer_disparo = 'desactivado'
     end
 end
 
+function PlayerShot:disparar_misiles(player, dt)
+    if self.misiles > 0 then
+        self.timer_misiles = self.timer_misiles - dt
+        if self.timer_misiles <= 0 then
+            self.timer_misiles = 0.3
+            table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100), self.credential))
+            TEsound.play('Soundtrack/Effect/soundExplosion2.wav', 'static', {'effect'},  VOLUMEN_EFECTOS / 2)
+            self.misiles = self.misiles - 1
+        end
+    end
+end
 function PlayerShot:render()
     for i, bala in pairs(self.balas) do
         bala:render()
     end
 
-    if  self.pulsar == 'desactivado' then
+    if  self.pulsar == 'desactivado' or self.tercer_disparo == 'desactivado' then
         love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
         love.graphics.rectangle('fill', 1200, 600, 60, 60 )
         love.graphics.setColor(1, 1, 1, 1)
     end
+
 end
