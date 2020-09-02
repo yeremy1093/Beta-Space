@@ -31,9 +31,7 @@ end
 --Lo que se va a calcular frame a frame
 function Menu:update(dt)
 
-	--calculamos el loop de las estrellas de fondo
-	self.background:animate_background(dt)
-
+	
 	--cargamos las estrellas de alex
     sky:update (dt)
     
