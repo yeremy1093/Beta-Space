@@ -10,7 +10,7 @@ function PlayerShot:init()
     self.timer_tercer_disparo = TIMER_TERCER_DISPARO
     self.tercer_disparo = 'activado'
     self.misiles = 2
-    self.timer_misiles = 0.3
+    self.timer_misiles = 0.5
     self.credential = -1
 end
 

@@ -10,10 +10,14 @@ function Misil:init(x, y, speed, xspeed)
 	self.clase = 'misil'
 	self.x = x
 	self.y = y
-	self.xspeed = xspeed
 	self.speed = speed
-	self.targetx = 0
-	self.targety = 0
+	self.speedChange = speed * 4
+	self.newx = x
+	self.newy = y - 200
+	self.enemyObj = nil
+	self.xspeed = xspeed
+	self.yspeed = -speed
+	self.angulo = 0
 	self.sprite = love.graphics.newQuad(0, 0, 6, 15, sprite_sheet:getDimensions())
 	self.width = 6
 	self.height = 15
@@ -27,50 +31,94 @@ end
 
 --Funcion de update
 function Misil:update(dt, nave, enemigos)
-	local distance = 1
-	local time_adjust = 1
+	local new_distance = 1
 	if self.destruible == true then 
 		if 4 == self.anim['explotando']:update(dt, self.spriteExplotion) then
 			return false
 		end
 	else
-		if self.targetx == 0 and self.targety == 0 then
-			self.y = self.y - self.speed * dt
+
+		if self.enemyObj == nil then
+			self.y = self.y + self.yspeed * dt
 			self.x = self.x + self.xspeed * dt
 		else
-			if self.y <= self.targety then -- Hunter esta arriba del jugador
-		        self.y = self.y + (self.targety - self. y) * dt * time_adjust
-		    else -- Hunter esta abajo del jugador
-		        self.y = self.y - (self.targety - self. y) * dt * time_adjust
+			self.newx = self.enemyObj.x
+			self.newy = self.enemyObj.y
+
+			if self.y <= self.newy then -- Misil esta arriba del enemigo
+				self.yspeed = math.min(self.yspeed + self.speedChange * dt, self.speed)
+		    else -- Misil esta abajo del enemigo
+		        self.yspeed = math.max(self.yspeed - self.speedChange * dt, -self.speed)
 		    end
 
-		    if self.x <= self.targetx then -- Hunter esta a la izquierda del jugador
-		        self.x = self.x + (self.targetx - self.x) * dt * time_adjust
-		    else -- Hunter esta a la derecha del jugador
-		        self.x = self.x - (self.targetx - self.x) * dt * time_adjust
+		    if self.x <= self.newx then -- Misil esta a la izquierda del enemigo
+		        self.xspeed = math.min(self.xspeed + self.speedChange * dt, self.speed)
+		    else -- Misil esta a la derecha del enemigo
+		        self.xspeed = math.max(self.xspeed - self.speedChange * dt, -self.speed)
+		    end
+
+		    self.y = self.y + self.yspeed * dt
+			self.x = self.x + self.xspeed * dt
+		    --Actualizacion de tiempo requerido para llegar al objetivo
+		    --Calcula la distancia mas corta para llegar al objetivo
+		    --Si el objetivo esta a menos de un pixel de distancia, se considerara que la nave ha llegado al objetivo
+		    if self.newx >= self.x - 10 and self.newx <= self.x + 10 then
+		    	if self.newy >= self.y - 10 and self.newy <= self.y + 10 then
+		        	self.enemyObj = nil
+		        	self.newy = self.y - 10
+		    	end
 		    end
 		end
+
+		if self.xspeed == 0 then
+            self.angulo = 0
+        else
+            self.angulo = math.deg(math.atan(math.abs(self.yspeed)/math.abs(self.xspeed)))
+            self.angulo = self.angulo + 90
+        end
+        if self.xspeed < 0 and self.yspeed < 0 then
+            self.angulo = 180 - self.angulo
+        elseif self.xspeed < 0 and self.yspeed >= 0 then
+            self.angulo = self.angulo + 180
+        elseif self.xspeed >= 0 and self.yspeed >= 0 then
+            self.angulo = 360 - self.angulo
+        end
+
 		self.anim['idle']:update(dt, self.sprite)
 	end
 
-	if self.targetx == 0 and self.targety == 0 then
+	if self.enemyObj == nil then
 		for i, naveBasic in pairs(enemigos.navesBasic) do
-			for j, dron in pairs(enemigos.drones) do
-				if naveBasic.x < (self.x + 500) and naveBasic.x > (self.x - 500) then
-					self.targetx = naveBasic.x
-				elseif dron.x < (self.x + 500) and dron.x > (self.x - 500) then
-					self.targetx = dron.x
+			if naveBasic.x < (self.x + 500) and naveBasic.x > (self.x - 500) then
+				if love.math.random(1, 2) == 1 then
+					self.enemyObj = naveBasic
+					break
 				end
-				if naveBasic.y < (self.y + 500) and naveBasic.y > (self.y - 500) then
-					self.targety = naveBasic.y
-				elseif dron.y < (self.y + 500) and dron.y > (self.y - 500) then
-					self.targety = dron.y
+			end
+
+			if naveBasic.y < (self.y + 500) and naveBasic.y > (self.y - 500) then
+				if love.math.random(1, 2) == 1 then
+					self.enemyObj = naveBasic
+					break
 				end
 			end
 		end
-	else
-		distance = ((self.targetx - self.x)^2 + (self.targety - self.y)^2)^0.5
-		time_adjust = self.speed / distance
+
+		for j, dron in pairs(enemigos.drones) do
+			
+			if dron.x < (self.x + 500) and dron.x > (self.x - 500) then
+				if love.math.random(1, 2) == 1 then
+					self.enemyObj = dron
+					break
+				end
+			end
+			if dron.y < (self.y + 500) and dron.y > (self.y - 500) then
+				if love.math.random(1, 2) == 1 then
+					self.enemyObj = dron
+					break
+				end
+			end
+		end
 	end
 	return true	
 end
@@ -79,8 +127,6 @@ function Misil:render()
 	if self.destruible == true then
 		love.graphics.draw(sprite_sheet_explosion, self.spriteExplotion, self.x, self.y)
 	else
-		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y)
+		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y, math.rad(self.angulo))
 	end
-
-	love.graphics.print(tostring(self.targetx), 600, 100)
 end
