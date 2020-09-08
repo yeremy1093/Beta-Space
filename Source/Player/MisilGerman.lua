@@ -11,10 +11,11 @@ function Misil:init(x, y, speed, xspeed)
 	self.x = x
 	self.y = y
 	self.speed = speed
-	self.speedChange = speed * 4
+	self.speedChange = speed * 6
 	self.newx = x
 	self.newy = y - 200
 	self.enemyObj = nil
+	self.enemyInList = false
 	self.xspeed = xspeed
 	self.yspeed = -speed
 	self.angulo = 0
@@ -59,30 +60,46 @@ function Misil:update(dt, nave, enemigos)
 
 		    self.y = self.y + self.yspeed * dt
 			self.x = self.x + self.xspeed * dt
-		    --Actualizacion de tiempo requerido para llegar al objetivo
-		    --Calcula la distancia mas corta para llegar al objetivo
-		    --Si el objetivo esta a menos de un pixel de distancia, se considerara que la nave ha llegado al objetivo
-		    if self.newx >= self.x - 10 and self.newx <= self.x + 10 then
-		    	if self.newy >= self.y - 10 and self.newy <= self.y + 10 then
-		        	self.enemyObj = nil
-		        	self.newy = self.y - 10
-		    	end
-		    end
+
+			if #enemigos.navesBasic == 0 and #enemigos.drones == 0 then
+				self.yspeed = -self.speed
+				self.xspeed = 0
+				self.enemyObj = nil
+			else
+		 
+			    for i, naveBasic in pairs(enemigos.navesBasic) do
+			    	if naveBasic == self.enemyObj then
+			    		self.enemyInList = true
+						break
+					else
+						self.enemyInList = false
+					end
+				end
+				for j, dron in pairs(enemigos.drones) do
+					if dron == self.enemyObj then
+						self.enemyInList = true
+						break
+					else
+						self.enemyInList = false
+					end
+							
+				end
+			end
+
+			if self.enemyInList ~= true then
+				self.enemyObj = nil
+			end
 		end
 
 		if self.xspeed == 0 then
-            self.angulo = 0
-        else
-            self.angulo = math.deg(math.atan(math.abs(self.yspeed)/math.abs(self.xspeed)))
-            self.angulo = self.angulo + 90
-        end
-        if self.xspeed < 0 and self.yspeed < 0 then
-            self.angulo = 180 - self.angulo
-        elseif self.xspeed < 0 and self.yspeed >= 0 then
-            self.angulo = self.angulo + 180
-        elseif self.xspeed >= 0 and self.yspeed >= 0 then
-            self.angulo = 360 - self.angulo
-        end
+			self.angulo = 0
+		else
+			if self.xspeed > 0 then
+				self.angulo = math.deg(math.atan(self.yspeed/self.xspeed)) + 90
+			else
+				self.angulo = math.deg(math.atan(self.yspeed/self.xspeed)) - 90
+			end
+		end
 
 		self.anim['idle']:update(dt, self.sprite)
 	end
@@ -92,6 +109,7 @@ function Misil:update(dt, nave, enemigos)
 			if naveBasic.x < (self.x + 500) and naveBasic.x > (self.x - 500) then
 				if love.math.random(1, 2) == 1 then
 					self.enemyObj = naveBasic
+					self.enemyInList = true
 					break
 				end
 			end
@@ -99,6 +117,7 @@ function Misil:update(dt, nave, enemigos)
 			if naveBasic.y < (self.y + 500) and naveBasic.y > (self.y - 500) then
 				if love.math.random(1, 2) == 1 then
 					self.enemyObj = naveBasic
+					self.enemyInList = true
 					break
 				end
 			end
@@ -109,12 +128,14 @@ function Misil:update(dt, nave, enemigos)
 			if dron.x < (self.x + 500) and dron.x > (self.x - 500) then
 				if love.math.random(1, 2) == 1 then
 					self.enemyObj = dron
+					self.enemyInList = true
 					break
 				end
 			end
 			if dron.y < (self.y + 500) and dron.y > (self.y - 500) then
 				if love.math.random(1, 2) == 1 then
 					self.enemyObj = dron
+					self.enemyInList = true
 					break
 				end
 			end
@@ -127,6 +148,6 @@ function Misil:render()
 	if self.destruible == true then
 		love.graphics.draw(sprite_sheet_explosion, self.spriteExplotion, self.x, self.y)
 	else
-		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y, math.rad(self.angulo))
+		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y, math.rad(self.angulo), 1, 1, self.width/2, self.height-7)
 	end
 end
