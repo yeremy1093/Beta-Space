@@ -12,6 +12,7 @@ require 'Source/Player/playerShotManager'
 require 'Source/Player/pickup'
 require 'Source/Player/PulsoDiego'
 require 'Source/Player/MisilGerman'
+require 'Source/Player/RayoAlex'
 
 --Archivos de los enemigos, de distintos tipos
 require 'Source/Enemy/asteroide'

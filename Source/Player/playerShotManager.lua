@@ -159,6 +159,9 @@ function PlayerShot:disparo_tercer_disparo(player, dt)
             table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100), self.credential))
             TEsound.play('Soundtrack/Effect/soundExplosion2.wav', 'static', {'effect'},  VOLUMEN_EFECTOS / 2)
             self:disparar_misiles(player, dt)
+        elseif player.nave == 2 then
+            table.insert(self.balas, Rayo(player.x + 30, player.y, BULLET_SPEED, BULLET_SPEED, player.power_level))
+            TEsound.play('Soundtrack/Effect/Pulso.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
         end
         self.tercer_disparo = 'desactivado'
     end
