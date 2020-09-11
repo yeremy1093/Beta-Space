@@ -22,9 +22,11 @@ function PlayerShot:mover_balas_jugador(dt, player, enemigos)
             table.remove(self.balas, i)
         end
 		--checamos si la bala salio de la pantalla y la borramos
-		if bala.y < 0 - bala.height or bala.y > WINDOW_HEIGHT or bala.x < 0 - bala.width or bala.x > WINDOW_WIDTH then
-			table.remove(self.balas, i)
-		end
+        if bala.clase ~= 'pulso' then 
+    		if bala.y < 0 - bala.height or bala.y > WINDOW_HEIGHT or bala.x < 0 - bala.width or bala.x > WINDOW_WIDTH then
+    			table.remove(self.balas, i)
+    		end
+        end
 	end
     if self.pulsar == 'desactivado' then
         self.pulsar_timer = self.pulsar_timer - dt
