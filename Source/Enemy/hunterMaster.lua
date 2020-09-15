@@ -1,10 +1,12 @@
 HunterMaster = Class{}
 --Quiere que le tengas miedo y lo va ha hacer
 
-local tablePositions = {1/2, 1/3, 2/3, 1/4, 3/4}
-
 local sprite_sheet_hunter = love.graphics.newImage('Imagen/SpritesEnemys/Hunter-1.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
+
+local idleState = 0
+local avoidBalasState = 1
+local avoidNaveState = 2
 
 function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, velocity)
 	self.x = x
@@ -21,6 +23,9 @@ function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, veloc
     self.fps = math.random(6, 10)
     self.newx = self.spacex * 1/2
     self.newy = self.spacey * 1/3
+
+    self.combatState = idleState
+    self.balasCredentials = {}
 
     --Define distancia inicial
     self.distancey = 0
@@ -53,14 +58,17 @@ end
 
 --Funcion de update
 function HunterMaster:update(dt, player, playerBalas)
-    local coordenadas = {
-        ['valueX'] = 0,
-        ['valueY'] = 0
-    }
     if self.destruible == false then
-        if self.objetiveApproach then
-            self.newx = self.spacex * tablePositions[math.random(#tablePositions)]
-            self.newy = self.spacey * tablePositions[math.random(#tablePositions)]
+        if self.combatState == idleState then
+            if self.objetiveApproach then
+                self.newx = self.spacex * (math.random(10,90)/100)
+                self.newy = self.spacey * (math.random(10,70)/100)
+            end
+            self:detectBalasAndAvoid(playerBalas)
+        elseif self.combatState == avoidBalasState then
+            if self.objetiveApproach then
+                self.combatState = idleState
+            end
         end
         self:moveEngine(dt)
     end
@@ -93,7 +101,7 @@ function HunterMaster:moveEngine(dt)
     end
     --Actualizacion de tiempo requerido para llegar al objetivo
     --Calcula la distancia mas corta para llegar al objetivo
-    new_distance = (self.distancex^2 + self.distancey^2)^0.5
+    local new_distance = (self.distancex^2 + self.distancey^2)^0.5
     --Si el objetivo esta a menos de un pixel de distancia, se considerara que la nave ha llegado al objetivo
     if new_distance <= 1 then
         self.timeToTarget = 0
@@ -113,14 +121,16 @@ function HunterMaster:moveEngine(dt)
 end
 
 function HunterMaster:isNotBalaDetectedBefore(bala)
-    for i = 1, table.getn(self.balasCredentials) do
-        if bala.credential == self.balasCredentials[i][1] then
-            if self.balasCredentials[i][2] == false then
-                self.balasCredentials[i][2] = true
-            else
-                table.remove(self.balasCredentials, i)
+    if table.getn(self.balasCredentials) > 0 then
+        for i = 1, table.getn(self.balasCredentials) do
+            if bala.credential == self.balasCredentials[i][1] then
+                if self.balasCredentials[i][2] == false then
+                    self.balasCredentials[i][2] = true
+                else
+                    table.remove(self.balasCredentials, i)
+                end
+                return false
             end
-            return false
         end
     end
     table.insert(self.balasCredentials, {bala.credential, false})
@@ -128,10 +138,9 @@ function HunterMaster:isNotBalaDetectedBefore(bala)
 end
 
 function HunterMaster:detectBalasAndAvoid(balas)
-    local balasInArea = {}
-    local dx = 0
-    local dy = 0
-    local angle = 0 
+    local dangerBalas = {}
+    local px = 0
+    local py = 0
     --Revisa cada bala en el area
     if table.getn(balas) > 0 then
         for i, bala in pairs(balas) do
@@ -144,11 +153,30 @@ function HunterMaster:detectBalasAndAvoid(balas)
         if table.getn(dangerBalas) > 0 then
             self.combatState = avoidBalasState
             self:resetMoveEngine()
-            --self.newx = math.min(self.spacex, math.max(0, if self.x >= bala.x then self.x - math.random())
+            for i, bala in pairs(dangerBalas) do
+                if self.x >= bala.x then --bala a la izquierda
+                    px = self.x + math.random(self.height, self.height * 2)
+                else --bala a la derecha
+                    px = self.x - math.random(self.height, self.height * 2)
+                end
+                if self.y >= bala.y then -- bala esta arriba baka >//.//<
+                    py = self.y + math.random(self.width, self.width * 2) 
+                else -- bala esta abajo
+                    py = self.y - math.random(self.width, self.width * 2) 
+                end
+                self.newx = math.min(self.spacex, math.max(0, px))
+                self.newy = math.min(self.spacey, math.max(0, py))
+            end
         end 
     end
 
     --Ninguna bala esta en el area
+end
+
+function HunterMaster:resetMoveEngine()
+    self.timeToTarget = 0
+    self.lastDistance = 0
+    self.objetiveApproach = true
 end
 
 function HunterMaster:collides(objeto)
