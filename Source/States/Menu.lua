@@ -66,6 +66,7 @@ function Menu:update(dt)
             gStateMachine:change('config', {highScores = self.highScores, ultimoEstado = 'menu'})
         elseif self.opc == 'salir' then
             TEsound.stop('musica_menu')
+            TEsound.stop('musica_play')
             gStateMachine:change('inicio', {highScores = self.highScores})
         end 
     end

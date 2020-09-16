@@ -25,6 +25,9 @@ function GameOver:enter(params)
     self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
     self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
     self.target = Anim(0,0,60,60,5,5,10)
+    TEsound.stop('musica_play')
+    TEsound.stop('musica_menu')
+    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, 'stream', {'musica_menu'},  VOLUMEN_MUSICA)
 
 end
 

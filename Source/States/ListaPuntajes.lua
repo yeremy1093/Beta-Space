@@ -86,6 +86,7 @@ function ListaPuntajes:update(dt)
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
         TEsound.stop('musica_menu')
+        TEsound.stop('musica_play')
         gStateMachine:change('inicio', {highScores = loadHighScores()})
     end
 end

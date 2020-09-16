@@ -53,6 +53,7 @@ function Pause:update(dt)
 	    elseif self.targetY == (WINDOW_HEIGHT / 2) + 80 then
             gStateMachine:change('config', self.params)
         else
+            TEsound.stop('musica_play')
 	    	TEsound.stop('musica_menu')
         	gStateMachine:change('inicio', {highScores = self.play.highScores})
         end
