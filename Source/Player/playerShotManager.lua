@@ -141,7 +141,7 @@ function PlayerShot:disparo_direccional(player)
         end
     end
 
-    TEsound.play('Soundtrack/Effect/Bullet Princiapl.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+    TEsound.play({'Soundtrack/Effect/Bullet Princiapl.wav'}, 'static', {'effect'}, VOLUMEN_EFECTOS)
 end
 
 function PlayerShot:disparo_pulsar(player)
