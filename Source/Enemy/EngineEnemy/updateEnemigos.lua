@@ -97,7 +97,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 				puntaje = puntaje + 100
 				cazaBasic.destruible = true
 				bala.destruible = true
-				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explison Medium.wav'},
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
 				break
@@ -112,7 +112,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			if escudo_nave == false then
 				puntaje = puntaje - 50
 				HPnave = HPnave + 2
-				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explison Medium.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
 				nave.escudo:golpe_escudo(20)
 				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)

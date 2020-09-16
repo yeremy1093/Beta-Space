@@ -147,7 +147,7 @@ end
 function PlayerShot:disparo_pulsar(player)
     if self.pulsar == 'activado' then 
         table.insert(self.balas, Pulsar(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
-        TEsound.play('Soundtrack/Effect/Attk2 Pulsar.wav', 'static', {'effect'},  VOLUMEN_EFECTOS)
+        TEsound.play('Soundtrack/Effect/Attk 2 Pulsar.wav', 'static', {'effect'},  VOLUMEN_EFECTOS)
         self.pulsar = 'desactivado'
     end
 end
@@ -156,7 +156,7 @@ function PlayerShot:disparo_tercer_disparo(player, dt)
     if self.tercer_disparo == 'activado' then
         if player.nave == 1 then
             table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
-            TEsound.play('Soundtrack/Effect/Attk2 Pulsar.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
+            TEsound.play('Soundtrack/Effect/Attk 2 Pulsar.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
         elseif player.nave == 3 then
             table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100), self.credential))
             TEsound.play('Soundtrack/Effect/Launch Missil.wav', 'static', {'effect'},  VOLUMEN_EFECTOS / 2)
