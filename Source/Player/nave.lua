@@ -113,7 +113,7 @@ function Nave:update(dt)
 	else
 		self.frame_ex = self.anim['explosion']:update(dt, self.sprite_ex)
 		if self.frame_ex == 5 then
-			TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
+			TEsound.play({'Soundtrack/Effect/Explosion Medium.wav'},
 				'static',
 				{'effect'},	VOLUMEN_EFECTOS)
 			HPnave = 0
