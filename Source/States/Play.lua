@@ -164,7 +164,7 @@ function Play:update_pickups(dt)
         if pickup:collides(self.player) then
             self.player:update_power_up(pickup.tipo)
             table.remove(self.pickups, i)
-            TEsound.play({'Soundtrack/Effect/PowerUp1.wav', 'Soundtrack/Effect/PowerUp2.wav', 'Soundtrack/Effect/PowerUp3.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
+            TEsound.play({'Soundtrack/Effect/Power UP.wav','Soundtrack/Effect/Heal or Life.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
         end
     end
 end

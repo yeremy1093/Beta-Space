@@ -19,7 +19,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 				puntaje = puntaje + 10
 				asteroide.destruible = true
 				bala.destruible = true
-				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},
 					VOLUMEN_EFECTOS / 2)
@@ -67,10 +67,10 @@ function update_asteroides(dt, asteroides, balas, nave)
 			if escudo_nave == false then
 				puntaje = puntaje - 5
 				HPnave = HPnave + 2
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
+				TEsound.play('Soundtrack/Effect/Explosion Small.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
 				nave.escudo:golpe_escudo(20)
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
 					VOLUMEN_EFECTOS)
 			end
 			break
@@ -97,7 +97,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 				puntaje = puntaje + 100
 				cazaBasic.destruible = true
 				bala.destruible = true
-				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explison Medium.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
 				break
@@ -112,10 +112,10 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			if escudo_nave == false then
 				puntaje = puntaje - 50
 				HPnave = HPnave + 2
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explison Medium.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
 				nave.escudo:golpe_escudo(20)
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
 			end
 			break
 		end
@@ -134,14 +134,14 @@ function update_drones(dt, drones, balas, nave)
 		end
 	end
 
-	--Aqui checamos las colisiones entre cazas y balas del jugador
+	--Aqui checamos las colisiones entre drone y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, Drone in pairs(drones) do
 			if Drone:collides(bala) and Drone.destruible == false then
 				puntaje = puntaje + 150
 				Drone.destruible = true
 				bala.destruible = true
-				TEsound.play({'Soundtrack/Effect/soundExplosion1.wav','Soundtrack/Effect/soundExplosion2.wav','Soundtrack/Effect/soundExplosion3.wav'},
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
 				break
@@ -149,17 +149,17 @@ function update_drones(dt, drones, balas, nave)
 		end
 	end
 
-	--Checamos si el caza choca con la nave
+	--Checamos si el drone choca con la nave
 	for j, Drone in pairs(drones) do
 		if Drone:collides(nave) and Drone.destruible == false then
 			Drone.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 20
 				HPnave = HPnave + 2
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
+				TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
 				nave.escudo:golpe_escudo(10)
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
 			end
 			break
 		end

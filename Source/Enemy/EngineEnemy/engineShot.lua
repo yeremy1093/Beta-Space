@@ -68,6 +68,7 @@ end
 --Creacion de proyectiles
 function EngineShot:setCannon(x, y)
     table.insert(self.listCannon, Cannon(x,y))
+    TEsound.play('Soundtrack/Effect/Bullet Principal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS/2)
 end
 
 function EngineShot:setDiscEnergy(x, y)
@@ -94,10 +95,10 @@ function EngineShot:collidesShots(player, balas)
             if escudo_nave == false then
 				puntaje = puntaje - 10
 				HPnave = HPnave + 1
-				TEsound.play('Soundtrack/Effect/GolpeSimple.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+				TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
 			else
 				player.escudo:golpe_escudo(10)
-				TEsound.play({'Soundtrack/Effect/hit1.wav', 'Soundtrack/Effect/hit2.wav', 'Soundtrack/Effect/hit3.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
 			end
             Cannon.destruible = true
             return true
