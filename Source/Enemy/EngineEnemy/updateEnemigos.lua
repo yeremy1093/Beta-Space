@@ -1,6 +1,7 @@
 --Aqui van las funsiones que checan colisiones entre objetos como asteroides, enemigos, balas, etc.
 
 function update_asteroides(dt, asteroides, balas, nave)
+	local cambiar_checkpoint = false
 	--checamos si el asteroide salio de la pantalla y la borramos
 	for i, asteroide in pairs(asteroides) do
 		if false == asteroide:update(dt) then
@@ -16,6 +17,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
 			if asteroide:collides(bala) and asteroide.destruible == false then
+				cambiar_checkpoint = true
 				puntaje = puntaje + 10
 				asteroide.destruible = true
 				bala.destruible = true
@@ -76,9 +78,11 @@ function update_asteroides(dt, asteroides, balas, nave)
 			break
 		end
 	end
+	return cambiar_checkpoint
 end
 
 function update_cazas_basicos(dt, cazas, balas, nave)
+	local cambiar_checkpoint = false
 	--checamos si el cazaBasic salio de la pantalla y la borramos
 	for i, cazaBasic in pairs(cazas) do
 		if false == cazaBasic:update(dt) then
@@ -94,6 +98,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 	for i, bala in pairs(balas) do
 		for j, cazaBasic in pairs(cazas) do
 			if cazaBasic:collides(bala) and cazaBasic.destruible == false then
+				cambiar_checkpoint = true
 				puntaje = puntaje + 100
 				cazaBasic.destruible = true
 				bala.destruible = true
@@ -120,9 +125,11 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			break
 		end
 	end
+	return cambiar_checkpoint
 end
 
 function update_drones(dt, drones, balas, nave)
+	local cambiar_checkpoint = false
 	--Checamos si el drone ha salido de pantalla o a colisionado con la nave
 	for i, Drone in pairs(drones) do
 		if false == Drone:update(dt, nave) then
@@ -138,6 +145,7 @@ function update_drones(dt, drones, balas, nave)
 	for i, bala in pairs(balas) do
 		for j, Drone in pairs(drones) do
 			if Drone:collides(bala) and Drone.destruible == false then
+				cambiar_checkpoint = true
 				puntaje = puntaje + 150
 				Drone.destruible = true
 				bala.destruible = true
@@ -164,4 +172,5 @@ function update_drones(dt, drones, balas, nave)
 			break
 		end
 	end
+	return cambiar_checkpoint
 end

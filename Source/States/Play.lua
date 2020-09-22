@@ -63,6 +63,9 @@ function Play:enter(params)
     TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
     TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
 
+    --Manejo del sistema de enemigos por stages
+    self.stage = 0
+
 end
 
 
@@ -80,7 +83,10 @@ function Play:update(dt)
 	self.shotManager:disparo_jugador(self.player, dt)
 
 	--Hacemos el update de los enemigos
-	self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player)
+	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) then
+        self.stage = self.stage + 1
+        self.enemyManager:cambio_stage(self.stage)
+    end
 
     --checamos si es game over
     if Numvidas <= 0 then
@@ -130,6 +136,8 @@ function Play:render()
 
     --Ponemos el puntaje en la pantalla
     love.graphics.print(tostring(puntaje), 30, 25)
+
+    love.graphics.print(tostring(self.stage), 200, 25)
 
     --Dibujamos la interfaz de usuario
     love.graphics.draw(self.ui, 0, 0)
