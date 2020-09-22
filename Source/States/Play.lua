@@ -58,9 +58,11 @@ function Play:enter(params)
         self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 500, 0, 10)
     end
 
-    --Musica del estado de Play
     TEsound.stop('musica_menu')
-    TEsound.playLooping({'Soundtrack/Songs/BattleMusic1.mp3'}, 'stream', {'musica_play'},  VOLUMEN_MUSICA)
+    TEsound.stop('musica_play')
+    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
+    TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
+
 end
 
 

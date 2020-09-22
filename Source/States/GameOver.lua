@@ -27,7 +27,8 @@ function GameOver:enter(params)
     self.target = Anim(0,0,60,60,5,5,10)
     TEsound.stop('musica_play')
     TEsound.stop('musica_menu')
-    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, 'stream', {'musica_menu'},  VOLUMEN_MUSICA)
+    TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
+    TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
 
 end
 

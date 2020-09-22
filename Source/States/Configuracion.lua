@@ -135,7 +135,7 @@ function Config:update(dt)
                 VOLUMEN_MUSICA = VOLUMEN_MUSICA - 0.1
                 if VOLUMEN_MUSICA <= 0 then VOLUMEN_MUSICA = 0 end
 
-                TEsound.volume('musica_menu', VOLUMEN_MUSICA)
+                TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
             end
             if love.keyboard.wasPressed('right') then
                 self.targetX1 = self.targetX1 + 25
@@ -144,7 +144,7 @@ function Config:update(dt)
                 end
                 VOLUMEN_MUSICA = VOLUMEN_MUSICA + 0.1
                 if VOLUMEN_MUSICA >= 1 then VOLUMEN_MUSICA = 1 end
-                TEsound.volume('musica_menu', VOLUMEN_MUSICA)
+                TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
             end
         else
             if love.keyboard.wasPressed('left') then

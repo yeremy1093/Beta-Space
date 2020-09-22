@@ -125,6 +125,12 @@ function Nave:update(dt)
 			self.frame_ex = 1
 			self.x = WINDOW_WIDTH / 2
 			self.y = WINDOW_HEIGHT /2
+			if Numvidas == 1 then
+				TEsound.stop('musica_menu')
+				TEsound.stop('musica_play')
+				TEsound.playLooping('Soundtrack/Songs/BattleMusic1.mp3', "stream", {'musica_play'})
+				TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
+			end
 		end
 
 	end
@@ -264,6 +270,12 @@ function Nave:update_power_up(power_up)
 		HPnave = 0
 	elseif power_up == 'vida' and Numvidas <= 9 then
 		Numvidas = Numvidas + 1
+		if Numvidas == 2 then
+			TEsound.stop('musica_menu')
+			TEsound.stop('musica_play')
+			TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
+			TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
+		end
 	elseif power_up == 'escudo' then
 		self.escudo:boost_escudo(100)
 		self.escudo.timer_react = 0
