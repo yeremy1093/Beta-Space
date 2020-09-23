@@ -23,22 +23,33 @@ function Enemy:init()
 
 	self.engineShot = EngineShot()
 
+	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
+	self.tag_stage = 'normal'
+
 end
 
 function Enemy:update(dt, puntuacion, balas, player)
-	if puntuacion >= 150000 then
+	if puntuacion >= 1024000 then
+		self.nivel = 11
+	elseif puntuacion >= 512000 then
+		self.nivel = 10
+	elseif puntuacion >= 256000 then
+		self.nivel = 9
+	elseif puntuacion >= 128000 then
+		self.nivel = 8
+	elseif puntuacion >= 64000 then
+		self.nivel = 7
+	elseif puntuacion >= 32000 then
 		self.nivel = 6
-	elseif puntuacion >= 80000 then
+	elseif puntuacion >= 16000 then
 		self.nivel = 5
-	elseif puntuacion >= 20000 then
-		self.nivel = 4
 	elseif puntuacion >= 8000 then
+		self.nivel = 4
+	elseif puntuacion >= 4000 then
 		self.nivel = 3
 	elseif puntuacion >= 2000 then
 		self.nivel = 2
 	end
-
-	self:ajuste_nivel(dt)
 	
 	--Checamos cuando debemos remover o mover los asteroides
 	if update_asteroides(dt, self.asteroides, balas, player) then
@@ -80,10 +91,63 @@ function Enemy:check_stage(dt, player)
 end
 
 function Enemy:cambio_stage(stage)
-	--Falta la parte que crea stage especiales
-	self.checkpoint_naveBasic = love.math.random(5, stage * 5)
+	--Asignamos un nuevo tipo de stage
+	local random_stage = love.math.random(1, 100)
+	if random_stage <= 70 then
+		self.tag_stage = 'normal'
+	elseif random_stage <= 80 then
+		self.tag_stage = 'cint_ast'
+	elseif random_stage <= 90 then
+		self.tag_stage = 'enjambre'
+	elseif random_stage <= 95 then
+		self.tag_stage = 'hunters'
+	else
+		self.tag_stage = 'nebulosa'
+	end
 
-	self.checkpoint_drones = love.math.random(3, stage * 10)
+	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
+	if self.tag_stage == 'normal' then
+		--Los tres valores de las naves normales
+		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
+		self.max_on_screen_naveBasic = 5 + self.nivel * 2
+		self.chance_naveBasic = 5 + self.nivel * 2
+		--Los tres valores de los drones
+		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
+		self.max_on_screen_drones = 3 + self.nivel * 2
+		self.chance_drones = 3 + self.nivel * 2
+
+	elseif self.tag_stage == 'cint_ast' then
+		self.checkpoint_asteroides = love.math.random(self.nivel * 5, self.nivel * 10)
+		self.max_on_screen_asteroides = 5 + self.nivel * 5
+		self.chance_asteroides = 5 + self.nivel * 2
+
+	elseif self.tag_stage == 'enjambre' then
+		self.checkpoint_drones = love.math.random(self.nivel * 5, self.nivel * 10)
+		self.max_on_screen_drones = 10 + self.nivel * 2
+		self.chance_drones = 10 + self.nivel * 2
+
+	elseif self.tag_stage == 'hunters' then
+		--Los tres valores de las naves normales
+		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
+		self.max_on_screen_naveBasic = 5 + self.nivel * 2
+		self.chance_naveBasic = 5 + self.nivel * 2
+		--Los tres valores de los drones
+		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
+		self.max_on_screen_drones = 3 + self.nivel * 2
+		self.chance_drones = 3 + self.nivel * 2
+
+	elseif self.tag_stage == 'nebulosa' then
+		--Los tres valores de las naves normales
+		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
+		self.max_on_screen_naveBasic = 5 + self.nivel * 2
+		self.chance_naveBasic = 5 + self.nivel * 2
+		--Los tres valores de los drones
+		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
+		self.max_on_screen_drones = 3 + self.nivel * 2
+		self.chance_drones = 3 + self.nivel * 2
+	end
+
+	return self.tag_stage
 
 end
 
@@ -103,51 +167,6 @@ function Enemy:render()
 	love.graphics.print(tostring(self.checkpoint_asteroides), WINDOW_WIDTH - 100, 20)
 	love.graphics.print(tostring(self.checkpoint_naveBasic), WINDOW_WIDTH - 100, 80)
 	love.graphics.print(tostring(self.checkpoint_drones), WINDOW_WIDTH - 100, 140)
-end
-
-function Enemy:ajuste_nivel(dt)
-	if self.nivel == 1 then
-		self.max_on_screen_asteroides = 10
-		self.chance_asteroides = 10
-		self.max_on_screen_naveBasic = 5
-		self.chance_naveBasic = 10
-		self.max_on_screen_drones = 10
-		self.chance_drones = 10
-	elseif self.nivel == 2 then
-		self.max_on_screen_asteroides = 10
-		self.chance_asteroides = 20
-		self.max_on_screen_naveBasic = 10
-		self.chance_naveBasic = 20
-		self.max_on_screen_drones = 10
-		self.chance_drones = 10
-	elseif self.nivel == 3 then
-		self.max_on_screen_asteroides = 10
-		self.chance_asteroides = 30
-		self.max_on_screen_naveBasic = 10
-		self.chance_naveBasic = 20
-		self.max_on_screen_drones = 15
-		self.chance_drones = 20
-	elseif self.nivel == 4 then
-		self.max_on_screen_asteroides = 10
-		self.chance_asteroides = 30
-		self.max_on_screen_naveBasic = 15
-		self.chance_naveBasic = 30
-		self.max_on_screen_drones = 10
-		self.chance_drones = 30
-	elseif self.nivel == 5 then
-		self.max_on_screen_asteroides = 10
-		self.chance_asteroides = 30
-		self.max_on_screen_naveBasic = 15
-		self.max_on_screen_drones = 15
-		self.chance_drones = 30
-	elseif self.nivel == 6 then
-		self.max_on_screen_asteroides = 10
-		self.chance_asteroides = 30
-		self.max_on_screen_naveBasic = 15
-		self.chance_naveBasic = 40
-		self.max_on_screen_drones = 15
-		self.chance_drones = 40
-	end
 end
 
 function Enemy:create_enemy(dt, player, tipo)
