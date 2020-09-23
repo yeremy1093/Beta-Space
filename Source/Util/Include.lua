@@ -16,6 +16,7 @@ require 'Source/Player/RayoAlex'
 
 --Archivos de los enemigos, de distintos tipos
 require 'Source/Enemy/asteroide'
+require 'Source/Enemy/asteroideM'
 require 'Source/Enemy/cazaBasic'
 require 'Source/Enemy/drone'
 require 'Source/Enemy/hunterMaster'
