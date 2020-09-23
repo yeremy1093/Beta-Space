@@ -90,15 +90,14 @@ function Play:update(dt)
         if TIMER_CAMBIO_STAGE <= 0 then
             TIMER_CAMBIO_STAGE = 3
             self.cambio_stage = false
+            self.enemyManager:cambio_stage(self.stage)
         end
-        return
     end
 
 	--Hacemos el update de los enemigos
-	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) then
+	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) and self.cambio_stage == false then
         self.stage = self.stage + 1
         self.cambio_stage = true
-        self.enemyManager:cambio_stage(self.stage)
     end
 
     --checamos si es game over
@@ -155,7 +154,7 @@ function Play:render()
     love.graphics.print(tostring(self.stage), 200, 25)
 
     if self.cambio_stage then
-        self.mensaje_stage:render(480, 400, 2, 2)
+        self.mensaje_stage:render(420, 320, 2, 2)
     end
 
     --Dibujamos la interfaz de usuario

@@ -98,10 +98,18 @@ function update_asteroidesM(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and asteroide.destruible == false then
+			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
 				
 				puntaje = puntaje + 10
-				asteroide.hp = asteroide.hp - 1
+				if bala.clase == 'pulsar' or bala.clase == 'pulso' then
+					asteroide.hp = asteroide.hp - 5
+				elseif bala.clase == 'direccional' or bala.clase == 'misil' then
+					asteroide.hp = asteroide.hp - 2
+				elseif bala.clase == 'rayo' then
+					asteroide.hp = asteroide.hp - 10
+				else
+					asteroide.hp = asteroide.hp - 1
+				end
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
 					'static',

@@ -16,7 +16,7 @@ puntaje = 0
 HPnave = 0
 Numvidas = 3
 tipo_arma = 0
-TIMER_CAMBIO_STAGE = 5
+TIMER_CAMBIO_STAGE = 3
 
 --Variables de los enemigos
 enemy_timer = 0.25

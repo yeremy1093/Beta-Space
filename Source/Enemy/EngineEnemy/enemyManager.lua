@@ -30,7 +30,7 @@ function Enemy:init()
 	self.engineShot = EngineShot()
 
 	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
-	self.tag_stage = 'normal'
+	self.tag_stage = 'cint_ast'
 
 end
 
@@ -128,16 +128,20 @@ function Enemy:cambio_stage(stage)
 		--Los tres valores de las naves normales
 		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
 		self.max_on_screen_naveBasic = 5 + self.nivel * 2
-		self.chance_naveBasic = 5 + self.nivel * 2
+		self.chance_naveBasic = 8 + self.nivel * 2
 		--Los tres valores de los drones
 		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
 		self.max_on_screen_drones = 3 + self.nivel * 2
-		self.chance_drones = 3 + self.nivel * 2
+		self.chance_drones = 5 + self.nivel * 2
 
 	elseif self.tag_stage == 'cint_ast' then
 		self.checkpoint_asteroides = love.math.random(self.nivel * 5, self.nivel * 10)
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
-		self.chance_asteroides = 5 + self.nivel * 2
+		self.chance_asteroides = 10 + self.nivel * 2
+
+		self.checkpoint_asteroidesM = love.math.random(self.nivel, self.nivel * 3)
+		self.max_on_screen_asteroidesM = 2 + self.nivel * 5
+		self.chance_asteroidesM = 4 + self.nivel * 2
 
 	elseif self.tag_stage == 'enjambre' then
 		self.checkpoint_drones = love.math.random(self.nivel * 5, self.nivel * 10)
@@ -173,6 +177,7 @@ function Enemy:render()
 	--render de los asteroides
 	for i, asteroideM in pairs(self.asteroidesM) do
 		asteroideM:render()
+	end
 	for i, asteroide in pairs(self.asteroides) do
 		asteroide:render()
 	end
@@ -185,8 +190,9 @@ function Enemy:render()
 	self.engineShot:render()
 
 	love.graphics.print(tostring(self.checkpoint_asteroides), WINDOW_WIDTH - 100, 20)
-	love.graphics.print(tostring(self.checkpoint_naveBasic), WINDOW_WIDTH - 100, 80)
-	love.graphics.print(tostring(self.checkpoint_drones), WINDOW_WIDTH - 100, 140)
+	love.graphics.print(tostring(self.checkpoint_asteroidesM), WINDOW_WIDTH - 100, 80)
+	love.graphics.print(tostring(self.checkpoint_naveBasic), WINDOW_WIDTH - 100, 140)
+	love.graphics.print(tostring(self.checkpoint_drones), WINDOW_WIDTH - 100, 200)
 end
 
 function Enemy:create_enemy(dt, player, tipo)
@@ -204,7 +210,7 @@ function Enemy:create_enemy(dt, player, tipo)
 				end
 			end
 		end
-
+		--Creacion de Asteroides Medianos
 		if tipo == 'asteroideM' then
 			if table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
