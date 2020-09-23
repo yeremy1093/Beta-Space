@@ -7,7 +7,7 @@ local imgLaser = love.graphics.newImage('Imagen/Sprites/LightSaber.png')
 
 
 function Rayo:init(x, y, xspeed, speed, level)
-	self.clase = 'pulso'
+	self.clase = 'rayo'
 	self.x = x
 	self.y = y
 	self.imagex = x

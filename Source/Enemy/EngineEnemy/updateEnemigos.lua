@@ -81,6 +81,95 @@ function update_asteroides(dt, asteroides, balas, nave)
 	return cambiar_checkpoint
 end
 
+function update_asteroidesM(dt, asteroides, balas, nave)
+	local cambiar_checkpoint = false
+	--checamos si el asteroide salio de la pantalla y la borramos
+	for i, asteroide in pairs(asteroides) do
+		if false == asteroide:update(dt) then
+			table.remove(asteroides, i)
+			cambiar_checkpoint = true
+		end
+		
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -35 then
+			table.remove(asteroides, i)
+		end
+	end
+
+	--Aqui checamos las colisiones entre asteroides y balas
+	for i, bala in pairs(balas) do
+		for j, asteroide in pairs(asteroides) do
+			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
+				
+				puntaje = puntaje + 10
+				if bala.clase == 'pulsar' or bala.clase == 'pulso' then
+					asteroide.hp = asteroide.hp - 5
+				elseif bala.clase == 'direccional' or bala.clase == 'misil' then
+					asteroide.hp = asteroide.hp - 2
+				elseif bala.clase == 'rayo' then
+					asteroide.hp = asteroide.hp - 10
+				else
+					asteroide.hp = asteroide.hp - 1
+				end
+				bala.destruible = true
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
+					'static',
+					{'effect'},
+					VOLUMEN_EFECTOS / 2)
+				break
+			end
+		end
+	end
+
+	--Aqui checamos las colisiones entre asteroides y otros asteroides
+	for i, ast1 in pairs(asteroides) do
+		for j, ast2 in pairs(asteroides) do
+			if ast2:collides(ast1) then
+				--Primero movemos el asteroide para que dejen de chocar
+				if ast1.x < ast2.x then
+					ast1.x = ast1.x - 1
+					ast2.x = ast2.x + 1
+				else
+					ast1.x = ast1.x + 1
+					ast2.x = ast2.x - 1
+				end
+				if ast1.y < ast2.y then
+					ast1.y = ast1.y - 1
+					ast2.y = ast2.y + 1
+				else
+					ast1.y = ast1.y + 1
+					ast2.y = ast2.y - 1
+				end
+
+				--Ahora calculamos la nueva dirección de los asteroides
+				tempx = ast1.dx
+				tempy = ast1.dy
+				ast1.dx = ast2.dx
+				ast1.dy = ast2.dy
+				ast2.dx = tempx
+				ast2.dy = tempy
+				break
+			end
+		end
+	end
+
+	--Checamos si el asteroide choca con la nave
+	for j, asteroide in pairs(asteroides) do
+		if asteroide:collides(nave) and asteroide.destruible == false then
+			asteroide.destruible = true
+			if escudo_nave == false then
+				puntaje = puntaje - 5
+				HPnave = HPnave + 10
+				TEsound.play('Soundtrack/Effect/Explosion Small.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
+			else
+				nave.escudo:golpe_escudo(100)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
+					VOLUMEN_EFECTOS)
+			end
+			break
+		end
+	end
+	return cambiar_checkpoint
+end
 function update_cazas_basicos(dt, cazas, balas, nave)
 	local cambiar_checkpoint = false
 	--checamos si el cazaBasic salio de la pantalla y la borramos

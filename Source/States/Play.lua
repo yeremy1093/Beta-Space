@@ -65,6 +65,8 @@ function Play:enter(params)
 
     --Manejo del sistema de enemigos por stages
     self.stage = 0
+    self.cambio_stage = false
+    self.mensaje_stage = Escribir('Nuevo Stage')
 
 end
 
@@ -82,10 +84,20 @@ function Play:update(dt)
 	--Funcion con el codigo para mover la bala
 	self.shotManager:disparo_jugador(self.player, dt)
 
+    --Mostramos el mensaje de cambio de stage
+    if self.cambio_stage then
+        TIMER_CAMBIO_STAGE = TIMER_CAMBIO_STAGE - dt
+        if TIMER_CAMBIO_STAGE <= 0 then
+            TIMER_CAMBIO_STAGE = 3
+            self.cambio_stage = false
+            self.enemyManager:cambio_stage(self.stage)
+        end
+    end
+
 	--Hacemos el update de los enemigos
-	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) then
+	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) and self.cambio_stage == false then
         self.stage = self.stage + 1
-        self.enemyManager:cambio_stage(self.stage)
+        self.cambio_stage = true
     end
 
     --checamos si es game over
@@ -137,7 +149,13 @@ function Play:render()
     --Ponemos el puntaje en la pantalla
     love.graphics.print(tostring(puntaje), 30, 25)
 
+    --Ponemos en pantalla el stage en el que vamos
+
     love.graphics.print(tostring(self.stage), 200, 25)
+
+    if self.cambio_stage then
+        self.mensaje_stage:render(420, 320, 2, 2)
+    end
 
     --Dibujamos la interfaz de usuario
     love.graphics.draw(self.ui, 0, 0)
