@@ -21,6 +21,11 @@ function Enemy:init()
 	self.chance_drones = 0
 	self.checkpoint_drones = 0
 
+	self.huntersMasters = {}
+	self.max_on_screen_huntersMasters = 0
+	self.chance_huntersMasters = 0
+	self.checkpoint_huntersMasters = 0
+
 	self.engineShot = EngineShot()
 
 end
@@ -55,6 +60,11 @@ function Enemy:update(dt, puntuacion, balas, player)
 		self.checkpoint_drones = self.checkpoint_drones - 1
 	end
 
+	--Checamos cuando debemos remover or mover los hunterMaster
+	if update_hunterMaster(dt, self.huntersMasters, balas, player) then
+		self.checkpoint_huntersMasters = self.checkpoint_huntersMasters - 1
+	end
+
 	self:updateShots(dt, player, balas)
 
 	--Funcion encargada de ver que solo se creen enemigos que falten por completar, y si ya no hay, cambia el stage regresando true
@@ -63,7 +73,8 @@ function Enemy:update(dt, puntuacion, balas, player)
 end
 
 function Enemy:check_stage(dt, player)
-	if self.checkpoint_asteroides <= 0 and self.checkpoint_naveBasic <= 0 and self.checkpoint_drones <= 0 then
+	if self.checkpoint_asteroides <= 0 and self.checkpoint_naveBasic <= 0 and self.checkpoint_drones <= 0 and 
+		self.checkpoint_huntersMasters <= 0 then
 		return true
 	else
 		if self.checkpoint_asteroides > 0 then
@@ -74,6 +85,9 @@ function Enemy:check_stage(dt, player)
 		end
 		if self.checkpoint_drones > 0 then
 			self:create_enemy(dt, player, 'dron')
+		end
+		if self.checkpoint_huntersMasters > 0 then
+			self:create_enemy(dt, player, 'HunterMaster')
 		end
 	end
 	return false
@@ -98,6 +112,9 @@ function Enemy:render()
 	for i, Drone in pairs(self.drones) do
 		Drone:render()
 	end
+	for i, HunterMaster in pairs(self.huntersMasters) do
+		HunterMaster:render()
+	end
 	self.engineShot:render()
 
 	love.graphics.print(tostring(self.checkpoint_asteroides), WINDOW_WIDTH - 100, 20)
@@ -113,6 +130,8 @@ function Enemy:ajuste_nivel(dt)
 		self.chance_naveBasic = 10
 		self.max_on_screen_drones = 10
 		self.chance_drones = 10
+		self.max_on_screen_huntersMasters = 1
+		self.chance_huntersMasters = 100
 	elseif self.nivel == 2 then
 		self.max_on_screen_asteroides = 10
 		self.chance_asteroides = 20
@@ -120,6 +139,8 @@ function Enemy:ajuste_nivel(dt)
 		self.chance_naveBasic = 20
 		self.max_on_screen_drones = 10
 		self.chance_drones = 10
+		self.max_on_screen_huntersMasters = 0
+		self.chance_huntersMasters = 0
 	elseif self.nivel == 3 then
 		self.max_on_screen_asteroides = 10
 		self.chance_asteroides = 30
@@ -127,6 +148,8 @@ function Enemy:ajuste_nivel(dt)
 		self.chance_naveBasic = 20
 		self.max_on_screen_drones = 15
 		self.chance_drones = 20
+		self.max_on_screen_huntersMasters = 0
+		self.chance_huntersMasters = 0
 	elseif self.nivel == 4 then
 		self.max_on_screen_asteroides = 10
 		self.chance_asteroides = 30
@@ -134,12 +157,16 @@ function Enemy:ajuste_nivel(dt)
 		self.chance_naveBasic = 30
 		self.max_on_screen_drones = 10
 		self.chance_drones = 30
+		self.max_on_screen_huntersMasters = 0
+		self.chance_huntersMasters = 0
 	elseif self.nivel == 5 then
 		self.max_on_screen_asteroides = 10
 		self.chance_asteroides = 30
 		self.max_on_screen_naveBasic = 15
 		self.max_on_screen_drones = 15
 		self.chance_drones = 30
+		self.max_on_screen_huntersMasters = 1
+		self.chance_huntersMasters = 20
 	elseif self.nivel == 6 then
 		self.max_on_screen_asteroides = 10
 		self.chance_asteroides = 30
@@ -147,6 +174,8 @@ function Enemy:ajuste_nivel(dt)
 		self.chance_naveBasic = 40
 		self.max_on_screen_drones = 15
 		self.chance_drones = 40
+		self.max_on_screen_huntersMasters = 3
+		self.chance_huntersMasters = 35
 	end
 end
 
@@ -186,6 +215,14 @@ function Enemy:create_enemy(dt, player, tipo)
 			elseif math.random(0,100) <= self.max_on_screen_drones then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
 					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
+				end
+			end
+		end
+		--Creacion de HunterMaster ya se la pelaron muajaja
+		if tipo == 'HunterMaster' then
+			if table.getn(self.huntersMasters) <= self.max_on_screen_huntersMasters then
+				if (MAX_CHANCE - self.chance_huntersMasters) < love.math.random(MAX_CHANCE) then
+					table.insert(self.huntersMasters, HunterMaster(math.random(0, WINDOW_WIDTH -50), -34, player, WINDOW_WIDTH, WINDOW_HEIGHT, 300))
 				end
 			end
 		end

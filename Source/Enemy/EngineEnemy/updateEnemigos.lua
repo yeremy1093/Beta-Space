@@ -174,3 +174,50 @@ function update_drones(dt, drones, balas, nave)
 	end
 	return cambiar_checkpoint
 end
+
+function update_hunterMaster(dt, huntersMasters, balas, nave)
+	local cambiar_checkpoint = false
+	--Checamos si el hunterMaster ha salido de pantalla o a colisionado con la nave
+	for i, HunterMaster in pairs(huntersMasters) do
+		if false == HunterMaster:update(dt, nave, balas) then
+			table.remove(huntersMasters, i)
+		end
+		
+		if HunterMaster.y > WINDOW_HEIGHT or HunterMaster.x > WINDOW_WIDTH or HunterMaster.x < -HunterMaster.width or HunterMaster.y < -35 then
+			table.remove(huntersMasters, i)
+		end
+	end
+
+	--Aqui checamos las colisiones entre hunterMaster y balas del jugador
+	for i, bala in pairs(balas) do
+		for j, HunterMaster in pairs(huntersMasters) do
+			if HunterMaster:collides(bala) and HunterMaster.destruible == false then
+				cambiar_checkpoint = true
+				puntaje = puntaje + 150
+				HunterMaster.destruible = true
+				bala.destruible = true
+				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
+					'static',
+					{'effect'},	VOLUMEN_EFECTOS / 2)
+				break
+			end
+		end
+	end
+
+	--Checamos si el hunterMaster choca con la nave
+	for j, HunterMaster in pairs(huntersMasters) do
+		if HunterMaster:collides(nave) and HunterMaster.destruible == false then
+			HunterMaster.destruible = true
+			if escudo_nave == false then
+				puntaje = puntaje - 20
+				HPnave = HPnave + 2
+				TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
+			else
+				nave.escudo:golpe_escudo(10)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},	VOLUMEN_EFECTOS)
+			end
+			break
+		end
+	end
+	return cambiar_checkpoint
+end

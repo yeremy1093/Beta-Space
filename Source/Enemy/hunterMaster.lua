@@ -6,14 +6,12 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 
 local idleState = 0
 local avoidBalasState = 1
-local avoidNaveState = 2
 
-function HunterMaster:init(x, y, player , minimalDistance, spacex, spacey, velocity)
+function HunterMaster:init(x, y, player, spacex, spacey, velocity)
 	self.x = x
     self.y = y
 	self.width = 58
     self.height = 40
-    self.minimalDistance = minimalDistance
     self.movState = entrada
     self.spacex = spacex
     self.spacey = spacey
