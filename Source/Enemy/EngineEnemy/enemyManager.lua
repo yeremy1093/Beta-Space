@@ -21,6 +21,12 @@ function Enemy:init()
 	self.chance_drones = 0
 	self.checkpoint_drones = 0
 
+	self.asteroidesM = {}
+	self.max_on_screen_asteroidesM = 0
+	self.chance_asteroidesM = 0
+	self.checkpoint_asteroidesM = 0
+
+
 	self.engineShot = EngineShot()
 
 	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
@@ -56,6 +62,10 @@ function Enemy:update(dt, puntuacion, balas, player)
 		self.checkpoint_asteroides = self.checkpoint_asteroides - 1
 	end
 
+	if update_asteroidesM(dt, self.asteroidesM, balas, player) then
+		self.checkpoint_asteroidesM = self.checkpoint_asteroidesM - 1
+	end
+
 	--Checamos cuando debemos remover o mover los cazas
 	if update_cazas_basicos(dt, self.navesBasic, balas, player) then
 		self.checkpoint_naveBasic = self.checkpoint_naveBasic - 1
@@ -74,11 +84,19 @@ function Enemy:update(dt, puntuacion, balas, player)
 end
 
 function Enemy:check_stage(dt, player)
-	if self.checkpoint_asteroides <= 0 and self.checkpoint_naveBasic <= 0 and self.checkpoint_drones <= 0 then
+	if self.checkpoint_asteroides <= 0 
+
+		and self.checkpoint_asteroidesM <= 0 
+		and self.checkpoint_naveBasic <= 0 
+		and self.checkpoint_drones <= 0 then
+
 		return true
 	else
 		if self.checkpoint_asteroides > 0 then
 			self:create_enemy(dt, player, 'asteroide')
+		end
+		if self.checkpoint_asteroidesM > 0 then
+			self:create_enemy(dt, player, 'asteroideM')
 		end
 		if self.checkpoint_naveBasic > 0 then
 			self:create_enemy(dt, player, 'naveBasic')
@@ -153,6 +171,8 @@ end
 
 function Enemy:render()
 	--render de los asteroides
+	for i, asteroideM in pairs(self.asteroidesM) do
+		asteroideM:render()
 	for i, asteroide in pairs(self.asteroides) do
 		asteroide:render()
 	end
@@ -181,6 +201,18 @@ function Enemy:create_enemy(dt, player, tipo)
 			elseif table.getn(self.asteroides) <= self.max_on_screen_asteroides then
 				if (MAX_CHANCE - self.chance_asteroides) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-100, 100), math.random(40, 200)))
+				end
+			end
+		end
+
+		if tipo == 'asteroideM' then
+			if table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM and self.nivel < 6 then
+				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
+					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -50), -34, math.random(-50, 50), math.random(20, 100)))
+				end
+			elseif table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM then
+				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
+					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -50), -34, math.random(-100, 100), math.random(40, 200)))
 				end
 			end
 		end
