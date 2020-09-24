@@ -81,10 +81,16 @@ function update_asteroides(dt, asteroides, balas, nave)
 	return cambiar_checkpoint
 end
 
-function update_asteroidesM(dt, asteroides, balas, nave)
+function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 	local cambiar_checkpoint = false
 	--checamos si el asteroide salio de la pantalla y la borramos
 	for i, asteroide in pairs(asteroides) do
+		if asteroide.destruible == true and asteroide.spawn_asteroides == true then
+			asteroide.spawn_asteroides = false
+			table.insert(asteroides_small, Asteroide(asteroide.x, asteroide.y, math.random(-100, 100), math.random(-200, 200)))
+			table.insert(asteroides_small, Asteroide(asteroide.x + 60, asteroide.y + 60, math.random(-100, 100), math.random(-200, 200)))
+			table.insert(asteroides_small, Asteroide(asteroide.x + 120, asteroide.y + 120, math.random(-100, 100), math.random(-200, 200)))
+		end
 		if false == asteroide:update(dt) then
 			table.remove(asteroides, i)
 			cambiar_checkpoint = true

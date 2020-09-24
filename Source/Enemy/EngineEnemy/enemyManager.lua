@@ -67,7 +67,7 @@ function Enemy:update(dt, puntuacion, balas, player)
 		self.checkpoint_asteroides = self.checkpoint_asteroides - 1
 	end
 
-	if update_asteroidesM(dt, self.asteroidesM, balas, player) then
+	if update_asteroidesM(dt, self.asteroidesM, balas, player, self.asteroides) then
 		self.checkpoint_asteroidesM = self.checkpoint_asteroidesM - 1
 	end
 

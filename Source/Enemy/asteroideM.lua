@@ -19,6 +19,7 @@ function AsteroideM:init(x, y, dx, dy)
 	self.fps = 12
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
+	self.spawn_asteroides = true
 	--Aqui van todas las animaciones posibles
 	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 8, 8, self.fps),
 				['explosion'] = Anim(0, 0, 200, 200, 8, 8, self.fps)}
@@ -29,7 +30,7 @@ function AsteroideM:update(dt)
 	self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
 
-	if self.hp == 0 then
+	if self.hp <= 0 then
 	 	self.destruible = true
 	end
 
