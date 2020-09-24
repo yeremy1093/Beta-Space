@@ -64,9 +64,10 @@ function Play:enter(params)
     TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
 
     --Manejo del sistema de enemigos por stages
-    self.stage = 0
     self.cambio_stage = false
-    self.mensaje_stage = Escribir('Nuevo Stage')
+    self.mensaje_stage = Escribir('Nuevo Nivel')
+    self.mensaje_stage2 = Escribir('Vienen Enemigos')
+    self.mensaje2X = 400
 
 end
 
@@ -96,8 +97,30 @@ function Play:update(dt)
 
 	--Hacemos el update de los enemigos
 	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) and self.cambio_stage == false then
-        self.stage = self.stage + 1
         self.cambio_stage = true
+        --Asignamos un nuevo tipo de stage
+        local random_stage = love.math.random(1, 100)
+        if random_stage <= 50 then
+            self.enemyManager.tag_stage = 'normal'
+            self.mensaje_stage2 = Escribir('Vienen Enemigos')
+             self.mensaje2X = 340
+        elseif random_stage <= 65 then
+            self.enemyManager.tag_stage = 'cint_ast'
+            self.mensaje_stage2 = Escribir('Cinturon de Asteroides')
+             self.mensaje2X = 260
+        elseif random_stage <= 80 then
+            self.enemyManager.tag_stage = 'enjambre'
+            self.mensaje_stage2 = Escribir('Enjambre de Drones')
+             self.mensaje2X = 300
+        elseif random_stage <= 90 then
+            self.enemyManager.tag_stage = 'hunters'
+            self.mensaje_stage2 = Escribir('Escuadron Elite')
+             self.mensaje2X = 340
+        else
+            self.enemyManager.tag_stage = 'nebulosa'
+            self.mensaje_stage2 = Escribir('Entrando a Nebulosa')
+             self.mensaje2X = 320
+        end
     end
 
     --checamos si es game over
@@ -150,11 +173,9 @@ function Play:render()
     love.graphics.print(tostring(puntaje), 30, 25)
 
     --Ponemos en pantalla el stage en el que vamos
-
-    love.graphics.print(tostring(self.stage), 200, 25)
-
     if self.cambio_stage then
-        self.mensaje_stage:render(420, 320, 2, 2)
+        self.mensaje_stage:render(400, 300, 2, 2)
+        self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
     end
 
     --Dibujamos la interfaz de usuario

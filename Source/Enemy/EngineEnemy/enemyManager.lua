@@ -121,20 +121,7 @@ function Enemy:check_stage(dt, player)
 	return false
 end
 
-function Enemy:cambio_stage(stage)
-	--Asignamos un nuevo tipo de stage
-	local random_stage = love.math.random(1, 100)
-	if random_stage <= 70 then
-		self.tag_stage = 'normal'
-	elseif random_stage <= 80 then
-		self.tag_stage = 'cint_ast'
-	elseif random_stage <= 90 then
-		self.tag_stage = 'enjambre'
-	elseif random_stage <= 95 then
-		self.tag_stage = 'hunters'
-	else
-		self.tag_stage = 'nebulosa'
-	end
+function Enemy:cambio_stage()
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
@@ -145,7 +132,7 @@ function Enemy:cambio_stage(stage)
 		--Los tres valores de los drones
 		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
 		self.max_on_screen_drones = 3 + self.nivel * 2
-		self.chance_drones = 5 + self.nivel * 2
+		self.chance_drones = 8 + self.nivel * 2
 
 	elseif self.tag_stage == 'cint_ast' then
 		self.checkpoint_asteroides = love.math.random(self.nivel * 5, self.nivel * 10)
@@ -159,23 +146,23 @@ function Enemy:cambio_stage(stage)
 	elseif self.tag_stage == 'enjambre' then
 		self.checkpoint_drones = love.math.random(self.nivel * 5, self.nivel * 10)
 		self.max_on_screen_drones = 10 + self.nivel * 2
-		self.chance_drones = 10 + self.nivel * 2
+		self.chance_drones = 15 + self.nivel * 2
 
 	elseif self.tag_stage == 'hunters' then
 		--Los tres valores de las hunters
 		self.checkpoint_huntersMasters = love.math.random(self.nivel * 2, self.nivel * 5)
 		self.max_on_screen_huntersMasters = self.nivel * 2
-		self.chance_huntersMasters = 5 + self.nivel * 2
+		self.chance_huntersMasters = 10 + self.nivel * 2
 
 	elseif self.tag_stage == 'nebulosa' then
 		--Los tres valores de las naves normales
 		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
 		self.max_on_screen_naveBasic = 5 + self.nivel * 2
-		self.chance_naveBasic = 5 + self.nivel * 2
+		self.chance_naveBasic = 8 + self.nivel * 2
 		--Los tres valores de los drones
 		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
 		self.max_on_screen_drones = 3 + self.nivel * 2
-		self.chance_drones = 3 + self.nivel * 2
+		self.chance_drones = 8 + self.nivel * 2
 	end
 
 	return self.tag_stage
@@ -200,11 +187,6 @@ function Enemy:render()
 		HunterMaster:render()
 	end
 	self.engineShot:render()
-
-	love.graphics.print(tostring(self.checkpoint_asteroides), WINDOW_WIDTH - 100, 20)
-	love.graphics.print(tostring(self.checkpoint_asteroidesM), WINDOW_WIDTH - 100, 80)
-	love.graphics.print(tostring(self.checkpoint_naveBasic), WINDOW_WIDTH - 100, 140)
-	love.graphics.print(tostring(self.checkpoint_drones), WINDOW_WIDTH - 100, 200)
 end
 
 function Enemy:create_enemy(dt, player, tipo)

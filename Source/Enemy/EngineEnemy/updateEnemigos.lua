@@ -107,8 +107,8 @@ function update_asteroidesM(dt, asteroides, balas, nave)
 					asteroide.hp = asteroide.hp - 2
 				elseif bala.clase == 'rayo' then
 					asteroide.hp = asteroide.hp - 10
-				else
-					asteroide.hp = asteroide.hp - 1
+				elseif bala.clase == 'laser' then
+					asteroide.hp = asteroide.hp - nave.power_laser
 				end
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
