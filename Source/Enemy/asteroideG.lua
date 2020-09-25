@@ -3,19 +3,19 @@
 AsteroideG = Class{}
 
 --Variables para guardar los sprite sheet de las animaciones
-local sprite_sheet_ast = love.graphics.newImage('Imagen/Sprites/MaxAt.png')
+local sprite_sheet_ast = love.graphics.newImage('Imagen/Sprites/GigaAsteroide.png')
 
 function AsteroideG:init(x, y, dx, dy)
 	self.x = x
 	self.y = y
 	self.dx = dx
 	self.dy = dy
-	self.sprite = love.graphics.newQuad(0, 0, 120, 120, sprite_sheet_ast:getDimensions())
-	self.width = 240
-	self.height = 240
+	self.sprite = sprite_sheet_ast
+	self.width = 396
+	self.height = 396
 	self.fps = 12
 	--Aqui van todas las animaciones posibles
-	self.anim = Anim(0, 0, self.width, self.height, 8, 8, self.fps)
+	self.deg = 0
 end
 
 --Funcion de update
@@ -23,7 +23,10 @@ function AsteroideG:update(dt)
 	self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
 
-	self.anim:update(dt, self.sprite)
+	self.deg = self.deg + 1;
+	if self.deg >= 360 then
+		self.deg = 0
+	end
 
 	return true
 end
@@ -47,5 +50,5 @@ end
 
 
 function AsteroideG:render()
-	love.graphics.draw(sprite_sheet_ast, self.sprite, self.x, self.y, 0, 2, 2)
+	love.graphics.draw(self.sprite, self.x, self.y, math.rad(self.deg), 1, 1, self.width/2, self.height/2)
 end

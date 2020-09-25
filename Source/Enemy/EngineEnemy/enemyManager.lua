@@ -153,7 +153,7 @@ function Enemy:cambio_stage()
 		self.chance_asteroidesM = 4 + self.nivel * 2
 
 		self.max_on_screen_asteroidesG = 3
-		self.chance_asteroidesG = 4 + self.nivel
+		self.chance_asteroidesG = 5 + self.nivel
 
 	elseif self.tag_stage == 'enjambre' then
 		self.checkpoint_drones = love.math.random(self.nivel * 5, self.nivel * 10)
@@ -181,29 +181,6 @@ function Enemy:cambio_stage()
 
 end
 
-function Enemy:render()
-	--render de los asteroides
-	for i, asteroideM in pairs(self.asteroidesM) do
-		asteroideM:render()
-	end
-	for i, asteroideG in pairs(self.asteroidesG) do
-		asteroideG:render()
-	end
-	for i, asteroide in pairs(self.asteroides) do
-		asteroide:render()
-	end
-	for i, cazaBasic in pairs(self.navesBasic) do
-		cazaBasic:render()
-	end
-	for i, Drone in pairs(self.drones) do
-		Drone:render()
-	end
-	for i, HunterMaster in pairs(self.huntersMasters) do
-		HunterMaster:render()
-	end
-	self.engineShot:render()
-end
-
 function Enemy:create_enemy(dt, player, tipo)
 	enemy_timer = enemy_timer - dt
 	if enemy_timer <= 0 then
@@ -223,11 +200,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'asteroideM' then
 			if table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
-					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -50), -110, math.random(-50, 50), math.random(20, 100)))
+					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -110), -110, math.random(-50, 50), math.random(20, 100)))
 				end
 			elseif table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM then
 				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
-					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -50), -110, math.random(-100, 100), math.random(40, 200)))
+					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -110), -110, math.random(-100, 100), math.random(40, 200)))
 				end
 			end
 		end
@@ -235,11 +212,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'asteroideG' then
 			if table.getn(self.asteroidesG) <= self.max_on_screen_asteroidesG and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
-					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -50), -220, math.random(-50, 50), math.random(10, 80)))
+					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -220, math.random(-50, 50), math.random(10, 80)))
 				end
 			elseif table.getn(self.asteroidesG) <= self.max_on_screen_asteroidesG then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
-					table.insert(self.asteroidesM, AsteroideG(math.random(0, WINDOW_WIDTH -50), -220, math.random(-100, 100), math.random(20, 120)))
+					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -220, math.random(-100, 100), math.random(20, 120)))
 				end
 			end
 		end
@@ -295,4 +272,26 @@ function Enemy:updateShots(dt, player, balas)
 	self.engineShot:collidesShots(player, balas)
 end
 
+function Enemy:render()
+	for i, asteroideG in pairs(self.asteroidesG) do
+		asteroideG:render()
+	end
+	for i, asteroideM in pairs(self.asteroidesM) do
+		asteroideM:render()
+	end
+	for i, asteroide in pairs(self.asteroides) do
+		asteroide:render()
+	end
+	for i, cazaBasic in pairs(self.navesBasic) do
+		cazaBasic:render()
+	end
+	for i, Drone in pairs(self.drones) do
+		Drone:render()
+	end
+	for i, HunterMaster in pairs(self.huntersMasters) do
+		HunterMaster:render()
+	end
+	self.engineShot:render()
+	
+end
 return Enemy

@@ -181,9 +181,6 @@ function Play:render()
     --Dibujamos la interfaz de usuario
     love.graphics.draw(self.ui, 0, 0)
 
-    --Dibujamos la nave dependiendo de su posicion
-    self.player:render()
-
 	--Dibujamos las balas en un ciclo
 	self.shotManager:render()
 
@@ -192,6 +189,9 @@ function Play:render()
     for i, pickup in pairs(self.pickups) do
         pickup:render()
     end
+
+    --Dibujamos la nave dependiendo de su posicion
+    self.player:render()
 
 end
 

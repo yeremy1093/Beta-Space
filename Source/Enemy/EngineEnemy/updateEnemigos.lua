@@ -183,7 +183,7 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 
 		asteroide:update(dt)
 		
-		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < asteroide.height then
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -asteroide.height then
 			table.remove(asteroides, i)
 		end
 	end
@@ -237,13 +237,12 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 	--Checamos si el asteroide choca con la nave
 	for j, asteroide in pairs(asteroides) do
 		if asteroide:collides(nave) then
-			asteroide.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 100
-				HPnave = HPnave + 10
+				HPnave = HPnave + 5
 				TEsound.play('Soundtrack/Effect/Explosion Small.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
-				nave.escudo:golpe_escudo(100)
+				nave.escudo:golpe_escudo(50)
 				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
 					VOLUMEN_EFECTOS)
 			end
