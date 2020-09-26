@@ -74,8 +74,6 @@ end
 
 --Lo que se va a calcular frame a frame
 function Play:update(dt)
-
-	
 	--cargamos las estrellas de alex
 	self.sky:update (dt)
 
