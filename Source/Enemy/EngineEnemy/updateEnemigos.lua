@@ -328,7 +328,7 @@ function update_drones(dt, drones, balas, nave)
 	--Aqui checamos las colisiones entre drone y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, Drone in pairs(drones) do
-			if Drone:collides(bala) and bala.destruible == false then
+			if Drone:collides(bala) and Drone.destruible == false and bala.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 150
 				Drone.hp = Drone.hp - bala.damage
@@ -376,7 +376,7 @@ function update_hunterMaster(dt, huntersMasters, balas, nave)
 	--Aqui checamos las colisiones entre hunterMaster y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, HunterMaster in pairs(huntersMasters) do
-			if HunterMaster:collides(bala) and bala.destruible == false then
+			if HunterMaster:collides(bala) and HunterMaster.destruible == true and bala.destruible == false then
 				puntaje = puntaje + 100
 				HunterMaster.hp = HunterMaster.hp - bala.damage
 				bala.destruible = true
