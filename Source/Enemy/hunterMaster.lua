@@ -51,7 +51,10 @@ function HunterMaster:init(x, y, player, spacex, spacey, velocity)
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
 	--Aqui van todas las animaciones posibles
-	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 3, 3, self.fps),
+	self.anim = {['no_damage'] = Anim(0, 0, self.width, self.height, 2, 2, self.fps),
+                ['small_damage'] = Anim(116, 0, self.width, self.height, 2, 2, self.fps),
+                ['medium_damage'] = Anim(232, 0, self.width, self.height, 2, 2, self.fps),
+                ['high_damage'] = Anim(348, 0, self.width, self.height, 2, 2, self.fps),
                 ['explosion'] = Anim(0, 0, 25, 25, 4, 4, self.fps)} 
 end
 
@@ -75,8 +78,17 @@ function HunterMaster:update(dt, player, playerBalas)
         self:moveEngine(dt)
     end
 
-    if self.destruible == false then 
-        self.anim['idle']:update(dt, self.sprite)
+    if self.destruible == false then
+        if self.hp > 12 then
+            self.anim['no_damage']:update(dt, self.sprite)
+        elseif self.hp > 8 then
+            self.anim['small_damage']:update(dt, self.sprite)
+        elseif self.hp > 4 then
+            self.anim['medium_damage']:update(dt, self.sprite)
+        elseif self.hp > 0 then
+            self.anim['high_damage']:update(dt, self.sprite)
+        end
+
 	else
 		if 4 == self.anim['explosion']:update(dt, self.sprite_ex) then
 			return false

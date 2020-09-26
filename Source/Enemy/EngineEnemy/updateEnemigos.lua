@@ -16,7 +16,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and asteroide.destruible == false then
+			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 10
 				asteroide.hp = asteroide.hp - bala.damage
@@ -281,7 +281,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 	--Aqui checamos las colisiones entre cazas y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, cazaBasic in pairs(cazas) do
-			if cazaBasic:collides(bala) and cazaBasic.destruible == false then
+			if cazaBasic:collides(bala) and cazaBasic.destruible == false and bala.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 100
 				cazaBasic.hp = cazaBasic.hp - bala.damage
@@ -328,7 +328,7 @@ function update_drones(dt, drones, balas, nave)
 	--Aqui checamos las colisiones entre drone y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, Drone in pairs(drones) do
-			if Drone:collides(bala) and Drone.destruible == false then
+			if Drone:collides(bala) and Drone.destruible == false and bala.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 150
 				Drone.hp = Drone.hp - bala.damage
@@ -364,6 +364,7 @@ function update_hunterMaster(dt, huntersMasters, balas, nave)
 	--Checamos si el hunterMaster ha salido de pantalla o a colisionado con la nave
 	for i, HunterMaster in pairs(huntersMasters) do
 		if false == HunterMaster:update(dt, nave, balas) then
+			cambiar_checkpoint = true
 			table.remove(huntersMasters, i)
 		end
 		
@@ -375,8 +376,7 @@ function update_hunterMaster(dt, huntersMasters, balas, nave)
 	--Aqui checamos las colisiones entre hunterMaster y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, HunterMaster in pairs(huntersMasters) do
-			if HunterMaster:collides(bala) and HunterMaster.destruible == false then
-				cambiar_checkpoint = true
+			if HunterMaster:collides(bala) and HunterMaster.destruible == true and bala.destruible == false then
 				puntaje = puntaje + 100
 				HunterMaster.hp = HunterMaster.hp - bala.damage
 				bala.destruible = true
