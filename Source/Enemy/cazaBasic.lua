@@ -4,6 +4,7 @@ local sprite_sheet_caz = love.graphics.newImage('Imagen/SpritesEnemys/caza1.png'
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
 function CazaBasic:init(x, y, dx, dy)
+	self.hp = 1
 	self.x = x
 	self.y = y
 	self.dx = dx
@@ -25,6 +26,10 @@ end
 function CazaBasic:update(dt)
 	self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
+
+	if self.hp <= 0 then
+	 	self.destruible = true
+	end
 
 	if self.destruible == false then 
 		self.anim['idle']:update(dt, self.sprite)

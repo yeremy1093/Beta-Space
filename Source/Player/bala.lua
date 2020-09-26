@@ -9,6 +9,7 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 
 function Bala:init(x, y, xspeed, speed)
 	self.clase = 'laser'
+	self.damage = 1
 	self.x = x
 	self.y = y
 	self.xspeed = xspeed

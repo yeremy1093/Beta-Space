@@ -7,6 +7,7 @@ local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Pulsar.png')
 
 function Pulsar:init(x, y, speed, nivel)
 	self.clase = 'pulsar'
+	self.damage = 5
 	self.x = x
 	self.y = y
 	self.xspeed = 0

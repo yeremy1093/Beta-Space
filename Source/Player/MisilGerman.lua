@@ -8,6 +8,7 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 
 function Misil:init(x, y, speed, xspeed)
 	self.clase = 'misil'
+	self.damage = 2
 	self.x = x
 	self.y = y
 	self.speed = speed

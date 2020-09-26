@@ -7,6 +7,7 @@ local sprite_sheet_ast = love.graphics.newImage('Imagen/Sprites/asteroideAnimado
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
 function Asteroide:init(x, y, dx, dy)
+	self.hp = 3
 	self.x = x
 	self.y = y
 	self.dx = dx
@@ -27,6 +28,10 @@ end
 function Asteroide:update(dt)
 	self.y = self.y + self.dy * dt
 	self.x = self.x + self.dx * dt
+
+	if self.hp <= 0 then
+	 	self.destruible = true
+	end
 
 	if self.destruible == false then 
 		self.anim['idle']:update(dt, self.sprite)

@@ -7,6 +7,7 @@ local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Pulso D-10.png')
 
 function Pulso:init(x, y, speed, nivel)
 	self.clase = 'pulso'
+	self.damage = 5
 	self.x = x
 	self.y = y
 	self.xspeed = speed

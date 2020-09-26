@@ -8,6 +8,7 @@ local idleState = 0
 local avoidBalasState = 1
 
 function HunterMaster:init(x, y, player, spacex, spacey, velocity)
+    self.hp = 16
 	self.x = x
     self.y = y
 	self.width = 58
@@ -56,6 +57,9 @@ end
 
 --Funcion de update
 function HunterMaster:update(dt, player, playerBalas)
+    if self.hp <= 0 then
+        self.destruible = true
+    end
     if self.destruible == false then
         if self.combatState == idleState then
             if self.objetiveApproach then
