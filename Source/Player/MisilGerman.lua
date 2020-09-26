@@ -117,15 +117,16 @@ end
 
 function Misil:fijar_enemigo(lista_enemigos)
 	for i, enemy in pairs(lista_enemigos) do
-			if enemy.x < (self.x + 500) and enemy.x > (self.x - 500)
-			and enemy.y < (self.y + 500) and enemy.y > (self.y - 500) then
-				if love.math.random(1, 10) == 1 then
-					self.enemyObj = enemy
-					self.enemyInList = true
-					break
-				end
+		local random_misil = love.math.random(1, 10)
+		if enemy.x < (self.x + 500) and enemy.x > (self.x - 500)
+		and enemy.y < (self.y + 500) and enemy.y > (self.y - 500) then
+			if random_misil == 1 then
+				self.enemyObj = enemy
+				self.enemyInList = true
+				break
 			end
 		end
+	end
 end
 
 function Misil:render()

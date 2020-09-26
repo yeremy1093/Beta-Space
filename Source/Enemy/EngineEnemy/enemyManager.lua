@@ -4,7 +4,7 @@ local MAX_CHANCE = 100
 
 function Enemy:init()
 	self.nivel = 1
-	
+
 	self.asteroides = {}
 	self.max_on_screen_asteroides = 0
 	self.chance_asteroides = 0
@@ -43,6 +43,7 @@ function Enemy:init()
 end
 
 function Enemy:update(dt, puntuacion, balas, player)
+
 	if puntuacion >= 1024000 then
 		self.nivel = 11
 	elseif puntuacion >= 512000 then
