@@ -4,8 +4,7 @@ local MAX_CHANCE = 100
 
 function Enemy:init()
 	self.nivel = 1
-	self.tipos_enemigos = {'asteroide_small'}
-
+	
 	self.asteroides = {}
 	self.max_on_screen_asteroides = 0
 	self.chance_asteroides = 0

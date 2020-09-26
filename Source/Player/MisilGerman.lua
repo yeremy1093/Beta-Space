@@ -106,30 +106,26 @@ function Misil:update(dt, nave, enemigos)
 	end
 
 	if self.enemyObj == nil then
-		for i, naveBasic in pairs(enemigos.navesBasic) do
-			if naveBasic.x < (self.x + 500) and naveBasic.x > (self.x - 500)
-			and naveBasic.y < (self.y + 500) and naveBasic.y > (self.y - 500) then
-				if love.math.random(1, 4) == 1 then
-					self.enemyObj = naveBasic
-					self.enemyInList = true
-					break
-				end
-			end
-		end
-
-		for j, dron in pairs(enemigos.drones) do
-			
-			if dron.x < (self.x + 500) and dron.x > (self.x - 500)
-			and dron.y < (self.y + 500) and dron.y > (self.y - 500) then
-				if love.math.random(1, 4) == 1 then
-					self.enemyObj = dron
-					self.enemyInList = true
-					break
-				end
-			end
-		end
+		self:fijar_enemigo(enemigos.navesBasic)
+		self:fijar_enemigo(enemigos.drones)
+		self:fijar_enemigo(enemigos.huntersMasters)
+		self:fijar_enemigo(enemigos.asteroides)
+		self:fijar_enemigo(enemigos.asteroidesM)
 	end
 	return true	
+end
+
+function Misil:fijar_enemigo(lista_enemigos)
+	for i, enemy in pairs(lista_enemigos) do
+			if enemy.x < (self.x + 500) and enemy.x > (self.x - 500)
+			and enemy.y < (self.y + 500) and enemy.y > (self.y - 500) then
+				if love.math.random(1, 10) == 1 then
+					self.enemyObj = enemy
+					self.enemyInList = true
+					break
+				end
+			end
+		end
 end
 
 function Misil:render()
