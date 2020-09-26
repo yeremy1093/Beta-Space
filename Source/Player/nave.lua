@@ -71,20 +71,20 @@ function Nave:update(dt)
 	--Checamos las teclas oprimidas
 	if love.keyboard.isDown('up') then
 		--Se le agrega la velocidad de la nave, por el dt para que el numero sea escalable, y negativo que es hacia arriba
-		self.dirY = -SHIP_SPEED
+		self.dirY = math.max(self.dirY - (SHIP_SPEED * 2) * dt, -SHIP_SPEED)
 	elseif love.keyboard.isDown('down') then
-		self.dirY = SHIP_SPEED
+		self.dirY = math.min(self.dirY+  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
 	else
-		self.dirY = 0
+		self.dirY = self.dirY + ((0 - self.dirY) * dt)
 	end
 
 	--Hacemos lo mismo con el eje de las x 
 	if love.keyboard.isDown('right') then
-		self.dirX = SHIP_SPEED
+		self.dirX = math.min(self.dirX +  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
 	elseif love.keyboard.isDown('left') then
-		self.dirX = -SHIP_SPEED
+		self.dirX = math.max(self.dirX - (SHIP_SPEED * 2) * dt, -SHIP_SPEED)
 	else
-		self.dirX = 0
+		self.dirX = self.dirX + ((0 - self.dirX) * 5 * dt)
 	end
 
 	--checamos el valor de la direccion en X 
@@ -103,9 +103,9 @@ function Nave:update(dt)
 
 	--Funcion para animar la nave
 	if HPnave <= 8 then
-		if self.dirX > 0 then
+		if self.dirX > 50 then
 			self.anim['der']:update(dt, self.sprite)
-		elseif self.dirX < 0 then
+		elseif self.dirX < -50 then
 			self.anim['izq']:update(dt, self.sprite)
 		else
 			self.anim['idle']:update(dt, self.sprite)

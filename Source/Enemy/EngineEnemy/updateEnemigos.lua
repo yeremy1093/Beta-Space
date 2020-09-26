@@ -164,12 +164,22 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 			asteroide.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 50
-				HPnave = HPnave + 10
+				HPnave = HPnave + 5
 				TEsound.play('Soundtrack/Effect/Explosion Small.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
-				nave.escudo:golpe_escudo(100)
+				nave.escudo:golpe_escudo(50)
 				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
 					VOLUMEN_EFECTOS)
+			end
+			if nave.x + nave.width < asteroide.x then --La nave esta a la izquierda
+				nave.dirX = -SHIP_SPEED / 3
+			else --La nave esta a la derecha
+				nave.dirX = SHIP_SPEED / 3
+			end
+			if nave.y + nave.height < asteroide.y then --La nave esta arriba
+				nave.dirY = -SHIP_SPEED / 3
+			else --La nave abajo
+				nave.dirY = SHIP_SPEED / 3
 			end
 			break
 		end
@@ -191,7 +201,7 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) then
+			if asteroide:collides(bala) and bala.destruible == false then
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
@@ -242,9 +252,20 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 				HPnave = HPnave + 5
 				TEsound.play('Soundtrack/Effect/Explosion Small.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
-				nave.escudo:golpe_escudo(50)
+				nave.escudo:golpe_escudo(10)
 				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
 					VOLUMEN_EFECTOS)
+			end
+
+			if nave.x + nave.width < asteroide.x then --La nave esta a la izquierda
+				nave.dirX = -SHIP_SPEED /2
+			else --La nave esta a la derecha
+				nave.dirX = SHIP_SPEED /2
+			end
+			if nave.y + nave.height < asteroide.y then --La nave esta arriba
+				nave.dirY = -SHIP_SPEED /2
+			else --La nave abajo
+				nave.dirY = SHIP_SPEED /2
 			end
 			break
 		end

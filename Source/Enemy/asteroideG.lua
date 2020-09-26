@@ -11,8 +11,8 @@ function AsteroideG:init(x, y, dx, dy)
 	self.dx = dx
 	self.dy = dy
 	self.sprite = sprite_sheet_ast
-	self.width = 396
-	self.height = 396
+	self.width = 360
+	self.height = 360
 	self.fps = 12
 	--Aqui van todas las animaciones posibles
 	self.deg = 0
@@ -50,5 +50,5 @@ end
 
 
 function AsteroideG:render()
-	love.graphics.draw(self.sprite, self.x, self.y, math.rad(self.deg), 1, 1, self.width/2, self.height/2)
+	love.graphics.draw(self.sprite, self.x + self.width/2 + 20, self.y + self.height/2 + 20, math.rad(self.deg), 1, 1, self.width/2, self.height/2)
 end

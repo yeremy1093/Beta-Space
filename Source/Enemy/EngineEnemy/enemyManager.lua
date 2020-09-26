@@ -152,7 +152,7 @@ function Enemy:cambio_stage()
 		self.max_on_screen_asteroidesM = 2 + self.nivel * 5
 		self.chance_asteroidesM = 4 + self.nivel * 2
 
-		self.max_on_screen_asteroidesG = 3
+		self.max_on_screen_asteroidesG = 2
 		self.chance_asteroidesG = 5 + self.nivel
 
 	elseif self.tag_stage == 'enjambre' then
@@ -212,11 +212,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'asteroideG' then
 			if table.getn(self.asteroidesG) <= self.max_on_screen_asteroidesG and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
-					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -220, math.random(-50, 50), math.random(10, 80)))
+					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -360, math.random(-50, 50), math.random(10, 80)))
 				end
 			elseif table.getn(self.asteroidesG) <= self.max_on_screen_asteroidesG then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
-					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -220, math.random(-100, 100), math.random(20, 120)))
+					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -360, math.random(-100, 100), math.random(20, 120)))
 				end
 			end
 		end
