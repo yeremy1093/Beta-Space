@@ -35,7 +35,6 @@ function Enemy:init()
 	self.chance_huntersMasters = 0
 	self.checkpoint_huntersMasters = 0
 
-
 	self.engineShot = EngineShot()
 
 	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
@@ -257,12 +256,20 @@ function Enemy:create_enemy(dt, player, tipo)
 end
 
 function Enemy:updateShots(dt, player, balas)
+	local target = 0
 	shot_timer = shot_timer - dt
 	if shot_timer <= 0 then
 		if math.random(0,100) >= 80 then
 			if table.getn(self.navesBasic) > 0 then
 				target = math.random(1,table.getn(self.navesBasic))
 				self.engineShot:setCannon(self.navesBasic[target].x + 25, self.navesBasic[target].y + 40)
+				target = 0 
+			end
+		end
+		if math.random(0,100) >= 80 then
+			if table.getn(self.huntersMasters) > 0 then
+				target = math.random(1,table.getn(self.huntersMasters))
+				self.engineShot:setSmartCannon(self.huntersMasters[target].x + (self.huntersMasters[target].width/2), self.huntersMasters[target].y + (self.huntersMasters[target].height/2), player, 400)
 				target = 0 
 			end
 		end

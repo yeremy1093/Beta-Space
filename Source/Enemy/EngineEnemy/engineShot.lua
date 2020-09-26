@@ -2,6 +2,7 @@ EngineShot = Class{}
 
 function EngineShot:init()
     self.listCannon = {}
+    self.listSmartCannon = {}
     self.listDiscEnergy = {}
     self.listMissil = {}
     self.listPhEnemy = {}
@@ -14,6 +15,13 @@ function EngineShot:update(dt)
         if (Cannon:update(dt) == false) or 
         ((Cannon.x > WINDOW_WIDTH or Cannon.x < 0) or
         (Cannon.y > WINDOW_HEIGHT or Cannon.y < 0)) then
+            table.remove(self.listCannon, i)
+        end
+    end
+    for i, SmartCannon in pairs(self.listSmartCannon) do
+        if (SmartCannon:update(dt) == false) or 
+        ((SmartCannon.x > WINDOW_WIDTH or SmartCannon.x < 0) or
+        (SmartCannon.y > WINDOW_HEIGHT or SmartCannon.y < 0)) then
             table.remove(self.listCannon, i)
         end
     end
@@ -51,6 +59,9 @@ function EngineShot:render()
     for i, Cannon in pairs(self.listCannon) do
 		Cannon:render()
     end
+    for i, smartCannon in pairs(self.listSmartCannon) do
+		smartCannon:render()
+    end
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
 		DiscEnergy:render()
     end
@@ -68,6 +79,11 @@ end
 --Creacion de proyectiles
 function EngineShot:setCannon(x, y)
     table.insert(self.listCannon, Cannon(x,y))
+    TEsound.play('Soundtrack/Effect/Bullet Principal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS/2)
+end
+
+function EngineShot:setSmartCannon(x, y, player, velocity)
+    table.insert(self.listSmartCannon, SmartCannon(x,y,player,velocity))
     TEsound.play('Soundtrack/Effect/Bullet Principal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS/2)
 end
 
@@ -106,6 +122,27 @@ function EngineShot:collidesShots(player, balas)
         for i, bala in pairs(balas) do
             if Cannon:collides(bala) and bala.clase == 'pulso' then
                 Cannon.destruible = true
+                return true
+            end
+        end
+    end
+    for i, SmartCannon in pairs(self.listSmartCannon) do
+        if SmartCannon:collides(player) then
+            --Animacion final de objecto
+            if escudo_nave == false then
+				puntaje = puntaje - 10
+				HPnave = HPnave + 1
+				TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+			else
+				player.escudo:golpe_escudo(10)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
+			end
+            SmartCannon.destruible = true
+            return true
+        end
+        for i, bala in pairs(balas) do
+            if SmartCannon:collides(bala) and bala.clase == 'pulso' then
+                SmartCannon.destruible = true
                 return true
             end
         end

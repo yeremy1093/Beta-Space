@@ -3,6 +3,7 @@ BalaEnemy = Class{}
 local sprite_sheet_bala = love.graphics.newImage('Imagen/Sprites/laser.png')
 
 function BalaEnemy:init(x, y, dx, dy)
+    self.damage = 1
     self.x = x
 	self.y = y
 	self.dx = dx
