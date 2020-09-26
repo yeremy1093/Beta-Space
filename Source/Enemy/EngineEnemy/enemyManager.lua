@@ -152,7 +152,7 @@ function Enemy:cambio_stage()
 		self.max_on_screen_asteroidesM = 2 + self.nivel * 5
 		self.chance_asteroidesM = 4 + self.nivel * 2
 
-		self.max_on_screen_asteroidesG = 2
+		self.max_on_screen_asteroidesG = 3
 		self.chance_asteroidesG = 5 + self.nivel
 
 	elseif self.tag_stage == 'enjambre' then
@@ -162,8 +162,8 @@ function Enemy:cambio_stage()
 
 	elseif self.tag_stage == 'hunters' then
 		--Los tres valores de las hunters
-		self.checkpoint_huntersMasters = love.math.random(self.nivel * 2, self.nivel * 5)
-		self.max_on_screen_huntersMasters = self.nivel * 2
+		self.checkpoint_huntersMasters = love.math.random(self.nivel, self.nivel * 2)
+		self.max_on_screen_huntersMasters = self.nivel
 		self.chance_huntersMasters = 10 + self.nivel * 2
 
 	elseif self.tag_stage == 'nebulosa' then
@@ -186,11 +186,11 @@ function Enemy:create_enemy(dt, player, tipo)
 	if enemy_timer <= 0 then
 		--Creacion de Asteroides
 		if tipo == 'asteroide' then
-			if table.getn(self.asteroides) <= self.max_on_screen_asteroides and self.nivel < 6 then
+			if table.getn(self.asteroides) < self.max_on_screen_asteroides and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroides) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-50, 50), math.random(20, 100)))
 				end
-			elseif table.getn(self.asteroides) <= self.max_on_screen_asteroides then
+			elseif table.getn(self.asteroides) < self.max_on_screen_asteroides then
 				if (MAX_CHANCE - self.chance_asteroides) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroides, Asteroide(math.random(0, WINDOW_WIDTH -50), -34, math.random(-100, 100), math.random(40, 200)))
 				end
@@ -198,11 +198,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de Asteroides Medianos
 		if tipo == 'asteroideM' then
-			if table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM and self.nivel < 6 then
+			if table.getn(self.asteroidesM) < self.max_on_screen_asteroidesM and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -110), -110, math.random(-50, 50), math.random(20, 100)))
 				end
-			elseif table.getn(self.asteroidesM) <= self.max_on_screen_asteroidesM then
+			elseif table.getn(self.asteroidesM) < self.max_on_screen_asteroidesM then
 				if (MAX_CHANCE - self.chance_asteroidesM) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroidesM, AsteroideM(math.random(0, WINDOW_WIDTH -110), -110, math.random(-100, 100), math.random(40, 200)))
 				end
@@ -210,11 +210,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de Asteroides Grandes
 		if tipo == 'asteroideG' then
-			if table.getn(self.asteroidesG) <= self.max_on_screen_asteroidesG and self.nivel < 6 then
+			if table.getn(self.asteroidesG) < self.max_on_screen_asteroidesG and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -360, math.random(-50, 50), math.random(10, 80)))
 				end
-			elseif table.getn(self.asteroidesG) <= self.max_on_screen_asteroidesG then
+			elseif table.getn(self.asteroidesG) < self.max_on_screen_asteroidesG then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -360, math.random(-100, 100), math.random(20, 120)))
 				end
@@ -222,11 +222,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de Naves Basicas
 		if tipo == 'naveBasic' then
-			if table.getn(self.navesBasic) <= self.max_on_screen_naveBasic and self.nivel < 6 then
+			if table.getn(self.navesBasic) < self.max_on_screen_naveBasic and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_naveBasic) < love.math.random(MAX_CHANCE) then
 					table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 50))
 				end
-			elseif table.getn(self.navesBasic) <= self.max_on_screen_naveBasic then
+			elseif table.getn(self.navesBasic) < self.max_on_screen_naveBasic then
 				if (MAX_CHANCE - self.chance_naveBasic) < love.math.random(MAX_CHANCE) then
 					table.insert(self.navesBasic, CazaBasic(math.random(0, WINDOW_WIDTH -50), -34, 0, 100))
 				end
@@ -234,11 +234,11 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de Drones
 		if tipo == 'dron' then
-			if table.getn(self.drones) <= self.max_on_screen_drones and self.nivel < 6 then
+			if table.getn(self.drones) < self.max_on_screen_drones and self.nivel < 6 then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
 					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
 				end
-			elseif math.random(0,100) <= self.max_on_screen_drones then
+			elseif math.random(0,100) < self.max_on_screen_drones then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
 					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
 				end
@@ -246,7 +246,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de HunterMaster ya se la pelaron muajaja
 		if tipo == 'HunterMaster' then
-			if table.getn(self.huntersMasters) <= self.max_on_screen_huntersMasters then
+			if table.getn(self.huntersMasters) < self.max_on_screen_huntersMasters then
 				if (MAX_CHANCE - self.chance_huntersMasters) < love.math.random(MAX_CHANCE) then
 					table.insert(self.huntersMasters, HunterMaster(math.random(0, WINDOW_WIDTH -50), -34, player, WINDOW_WIDTH, WINDOW_HEIGHT, 300))
 				end

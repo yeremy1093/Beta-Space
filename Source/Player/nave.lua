@@ -75,7 +75,7 @@ function Nave:update(dt)
 	elseif love.keyboard.isDown('down') then
 		self.dirY = math.min(self.dirY+  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
 	else
-		self.dirY = self.dirY + ((0 - self.dirY) * dt)
+		self.dirY = self.dirY + ((0 - self.dirY) * 5 * dt)
 	end
 
 	--Hacemos lo mismo con el eje de las x 
