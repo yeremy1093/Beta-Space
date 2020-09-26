@@ -19,7 +19,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 			if asteroide:collides(bala) and asteroide.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 10
-				asteroide.destruible = true
+				asteroide.hp = asteroide.hp - bala.damage
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
@@ -106,16 +106,8 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 		for j, asteroide in pairs(asteroides) do
 			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
 				
-				puntaje = puntaje + 10
-				if bala.clase == 'pulsar' or bala.clase == 'pulso' then
-					asteroide.hp = asteroide.hp - 5
-				elseif bala.clase == 'direccional' or bala.clase == 'misil' then
-					asteroide.hp = asteroide.hp - 2
-				elseif bala.clase == 'rayo' then
-					asteroide.hp = asteroide.hp - 10
-				elseif bala.clase == 'laser' then
-					asteroide.hp = asteroide.hp - nave.power_laser
-				end
+				puntaje = puntaje + 20
+				asteroide.hp = asteroide.hp - bala.damage
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
 					'static',
@@ -165,6 +157,7 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 			if escudo_nave == false then
 				puntaje = puntaje - 50
 				HPnave = HPnave + 5
+				asteroide.hp = asteroide.hp - 5
 				TEsound.play('Soundtrack/Effect/Explosion Small.wav', 'static', {'effect'},	VOLUMEN_EFECTOS)
 			else
 				nave.escudo:golpe_escudo(50)
@@ -291,7 +284,7 @@ function update_cazas_basicos(dt, cazas, balas, nave)
 			if cazaBasic:collides(bala) and cazaBasic.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 100
-				cazaBasic.destruible = true
+				cazaBasic.hp = cazaBasic.hp - bala.damage
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
@@ -338,7 +331,7 @@ function update_drones(dt, drones, balas, nave)
 			if Drone:collides(bala) and Drone.destruible == false then
 				cambiar_checkpoint = true
 				puntaje = puntaje + 150
-				Drone.destruible = true
+				Drone.hp = Drone.hp - bala.damage
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
 					'static',
@@ -384,8 +377,8 @@ function update_hunterMaster(dt, huntersMasters, balas, nave)
 		for j, HunterMaster in pairs(huntersMasters) do
 			if HunterMaster:collides(bala) and HunterMaster.destruible == false then
 				cambiar_checkpoint = true
-				puntaje = puntaje + 150
-				HunterMaster.destruible = true
+				puntaje = puntaje + 100
+				HunterMaster.hp = HunterMaster.hp - bala.damage
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
 					'static',

@@ -9,6 +9,7 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 
 function Direccional:init(x, y, speed, id)
 	self.clase = 'direccional'
+	self.damage = 2
 	self.x = x
 	self.y = y
 	self.xspeed = speed

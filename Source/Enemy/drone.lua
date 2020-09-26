@@ -4,6 +4,7 @@ local sprite_sheet_drone = love.graphics.newImage('Imagen/SpritesEnemys/Drone.pn
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
 function Drone:init(x, y, velocity, player)
+    self.hp = 1
 	self.x = x
 	self.y = y
 	self.width = 20
@@ -40,6 +41,10 @@ end
 
 --Funcion de update
 function Drone:update(dt, player)
+
+    if self.hp <= 0 then
+        self.destruible = true
+    end
     --Si el drone no esta destruido, actualiza la direccion para seguir al objetivo
     if self.destruible == false then
         if self.y <= (player.y + (player.height/2)) then -- Drone esta arriba del jugador
