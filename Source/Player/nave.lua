@@ -52,7 +52,7 @@ function Nave:init(x, y, player)
 	--Agregamos la cantidad de vidas iniciales
 	self.numvidas = Escribir("3")
 	--Agregamos el tipo de arma que tenemos equipada
-	self.power_up = 'direccional'
+	self.power_up = 'tercer_disparo'
 	--Las armas tienen niveles, que se trackean en esta variable
 	self.power_level = 1
 	self.power_state = 0 --Que tan llena esta el arma, de 0 a 12
@@ -103,9 +103,9 @@ function Nave:update(dt)
 
 	--Funcion para animar la nave
 	if HPnave <= 8 then
-		if self.dirX > 50 then
+		if self.dirX > 80 then
 			self.anim['der']:update(dt, self.sprite)
-		elseif self.dirX < -50 then
+		elseif self.dirX < -80 then
 			self.anim['izq']:update(dt, self.sprite)
 		else
 			self.anim['idle']:update(dt, self.sprite)

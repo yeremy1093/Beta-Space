@@ -6,6 +6,8 @@ Misil = Class{}
 local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Missil Y9-2.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
+local enemigos_en_pantalla = 0
+
 function Misil:init(x, y, speed, xspeed)
 	self.clase = 'misil'
 	self.damage = 2
@@ -27,6 +29,8 @@ function Misil:init(x, y, speed, xspeed)
     self.destruible = false
     self.anim = {['explotando'] = Anim(0, 0, 25, 25, 4, 4, 10),
     			['idle'] = Anim(0, 0, 6, 15, 2, 2, 10)}
+
+    self.enemy_min_x = 0
 
 
 end
@@ -62,28 +66,32 @@ function Misil:update(dt, nave, enemigos)
 		    self.y = self.y + self.yspeed * dt
 			self.x = self.x + self.xspeed * dt
 
-			if #enemigos.navesBasic == 0 and #enemigos.drones == 0 then
+			local enemigos_totales = {}
+			for i, enemigo in pairs(enemigos.navesBasic) do
+				table.insert(enemigos_totales, enemigo)
+			end
+
+			for i, enemigo in pairs(enemigos.drones) do
+				table.insert(enemigos_totales, enemigo)
+			end
+
+			for i, enemigo in pairs(enemigos.huntersMasters) do
+				table.insert(enemigos_totales, enemigo)
+			end
+
+			if #enemigos_totales == 0 then
 				self.yspeed = -self.speed
 				self.xspeed = 0
 				self.enemyObj = nil
 			else
 		 
-			    for i, naveBasic in pairs(enemigos.navesBasic) do
+			    for i, enemigo in pairs(enemigos_totales) do
 			    	if naveBasic == self.enemyObj then
 			    		self.enemyInList = true
 						break
 					else
 						self.enemyInList = false
 					end
-				end
-				for j, dron in pairs(enemigos.drones) do
-					if dron == self.enemyObj then
-						self.enemyInList = true
-						break
-					else
-						self.enemyInList = false
-					end
-							
 				end
 			end
 
@@ -106,27 +114,42 @@ function Misil:update(dt, nave, enemigos)
 	end
 
 	if self.enemyObj == nil then
-		self:fijar_enemigo(enemigos.navesBasic)
-		self:fijar_enemigo(enemigos.drones)
-		self:fijar_enemigo(enemigos.huntersMasters)
-		self:fijar_enemigo(enemigos.asteroides)
-		self:fijar_enemigo(enemigos.asteroidesM)
+		self:fijar_enemigo(enemigos)
 	end
 	return true	
 end
 
-function Misil:fijar_enemigo(lista_enemigos)
-	for i, enemy in pairs(lista_enemigos) do
-		local random_misil = love.math.random(1, 10)
-		if enemy.x < (self.x + 500) and enemy.x > (self.x - 500)
-		and enemy.y < (self.y + 500) and enemy.y > (self.y - 500) then
-			if random_misil == 1 then
-				self.enemyObj = enemy
-				self.enemyInList = true
-				break
-			end
+function Misil:fijar_enemigo(enemigos)
+	local enemigos_totales = {}
+	for i, enemigo in pairs(enemigos.navesBasic) do
+		table.insert(enemigos_totales, enemigo)
+	end
+
+	for i, enemigo in pairs(enemigos.drones) do
+		table.insert(enemigos_totales, enemigo)
+	end
+
+	for i, enemigo in pairs(enemigos.huntersMasters) do
+		table.insert(enemigos_totales, enemigo)
+	end
+
+	for i, enemigo in pairs(enemigos_totales) do
+		if i == 1 then
+			self.enemy_min_x = math.abs(self.x - enemigo.x)
+			self.enemyObj = enemigo
+			self.enemyInList = true
+		end
+
+		if math.abs(self.x - enemigo.x) < self.enemy_min_x then
+			self.enemy_min_x = math.abs(self.x - enemigo.x)
+			self.enemyObj = enemigo
+			self.enemyInList = true
 		end
 	end
+
+	enemigos_en_pantalla = #enemigos_totales
+
+	self.enemy_min_x = 0
 end
 
 function Misil:render()
@@ -135,4 +158,6 @@ function Misil:render()
 	else
 		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y, math.rad(self.angulo), 1, 1, self.width/2, self.height-7)
 	end
+
+	love.graphics.print(tostring(enemigos_en_pantalla), 600, 50)
 end
