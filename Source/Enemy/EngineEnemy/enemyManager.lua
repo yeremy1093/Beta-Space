@@ -259,18 +259,19 @@ function Enemy:updateShots(dt, player, balas)
 	local target = 0
 	shot_timer = shot_timer - dt
 	if shot_timer <= 0 then
-		if math.random(0,100) >= 80 then
-			if table.getn(self.navesBasic) > 0 then
-				target = math.random(1,table.getn(self.navesBasic))
-				self.engineShot:setCannon(self.navesBasic[target].x + 25, self.navesBasic[target].y + 40)
-				target = 0 
+		if table.getn(self.navesBasic) > 0 then
+			for i, naveBasic in pairs(self.navesBasic) do
+				if math.random(0,100) >= 90 then
+					self.engineShot:setCannon(naveBasic.x + 25, naveBasic.y + 40)
+				end
 			end
 		end
+		
 		if table.getn(self.huntersMasters) > 0 then
-			if math.random(0,100) >= 80 then
-				target = math.random(1,table.getn(self.huntersMasters))
-				self.engineShot:setSmartCannon(self.huntersMasters[target].x + (self.huntersMasters[target].width/2), self.huntersMasters[target].y + (self.huntersMasters[target].height/2), player, 400)
-				target = 0 
+			for i, hunter in pairs(self.huntersMasters) do
+				if math.random(0,100) >= 90 then
+					self.engineShot:setSmartCannon(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), player, 400)
+				end
 			end
 		end
 		shot_timer = 0.05
