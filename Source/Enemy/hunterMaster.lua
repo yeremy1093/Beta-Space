@@ -6,6 +6,7 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 
 local idleState = 0
 local avoidBalasState = 1
+local avoidCorner = 2
 
 function HunterMaster:init(x, y, player, spacex, spacey, velocity)
     self.hp = 16
@@ -76,8 +77,8 @@ function HunterMaster:update(dt, player, playerBalas)
 
         if self.combatState == idleState then
             if self.objetiveApproach then
-                self.newx = self.spacex - self.width * (math.random(10,90)/100)
-                self.newy = self.spacey - self.height * (math.random(10,70)/100)
+                self.newx = (self.spacex - self.width) * (math.random(10,90)/100)
+                self.newy = (self.spacey - self.height) * (math.random(10,70)/100)
             end
             self:detectBalasAndAvoid(playerBalas)
         elseif self.combatState == avoidBalasState then
@@ -128,6 +129,15 @@ function HunterMaster:moveEngine(dt)
             self.timeToTarget = (self.lastDistance / new_distance) * self.timeToTarget
             self.lastDistance = new_distance
         end
+    end
+end
+
+function HunterMaster:avoidTheCorners()
+    local change = false
+    if self.x < self.width * 2  and self.y < self.height * 2 then
+        change = true
+        self.newx = math.random(self.spacex/2,self.spacex - self.width)
+        self.newx = math.random(self.spacex/2,self.spacex - self.width)
     end
 end
 
