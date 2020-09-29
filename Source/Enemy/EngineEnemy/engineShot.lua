@@ -22,7 +22,7 @@ function EngineShot:update(dt)
         if (SmartCannon:update(dt) == false) or 
         ((SmartCannon.x > WINDOW_WIDTH or SmartCannon.x < 0) or
         (SmartCannon.y > WINDOW_HEIGHT or SmartCannon.y < 0)) then
-            table.remove(self.listCannon, i)
+            table.remove(self.listSmartCannon, i)
         end
     end
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
