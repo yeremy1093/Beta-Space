@@ -22,6 +22,11 @@ function SmartCannon:init(x, y, player, velocity)
     self.velx = velocity * math.cos(angle)
     self.vely = velocity * math.sin(angle)
 
+    if player.x < self.x then
+        self.velx = -self.velx
+        self.vely = -self.vely
+    end
+
 end
 
 function SmartCannon:update(dt)
