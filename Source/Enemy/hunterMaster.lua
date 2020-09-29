@@ -64,6 +64,16 @@ function HunterMaster:update(dt, player, playerBalas)
         self.destruible = true
     end
     if self.destruible == false then
+        if self.hp > 12 then
+            self.anim['no_damage']:update(dt, self.sprite)
+        elseif self.hp > 8 then
+            self.anim['small_damage']:update(dt, self.sprite)
+        elseif self.hp > 4 then
+            self.anim['medium_damage']:update(dt, self.sprite)
+        elseif self.hp > 0 then
+            self.anim['high_damage']:update(dt, self.sprite)
+        end
+
         if self.combatState == idleState then
             if self.objetiveApproach then
                 self.newx = self.spacex * (math.random(10,90)/100)
@@ -76,19 +86,6 @@ function HunterMaster:update(dt, player, playerBalas)
             end
         end
         self:moveEngine(dt)
-    end
-
-    if self.destruible == false then
-        if self.hp > 12 then
-            self.anim['no_damage']:update(dt, self.sprite)
-        elseif self.hp > 8 then
-            self.anim['small_damage']:update(dt, self.sprite)
-        elseif self.hp > 4 then
-            self.anim['medium_damage']:update(dt, self.sprite)
-        elseif self.hp > 0 then
-            self.anim['high_damage']:update(dt, self.sprite)
-        end
-
 	else
 		if 4 == self.anim['explosion']:update(dt, self.sprite_ex) then
 			return false
