@@ -16,17 +16,17 @@ function SmartCannon:init(x, y, player, velocity)
     self.destruible = false
     self.explotionAnim = Anim(0, 0, 25, 25, 4, 4, 10)
 
-    local distancex = self.x - player.x + (player.width/2)
-    local distancey = self.y - player.y + (player.height/2)
-    local distancet = (distancex^2 + distancey^2)^0.5
-    local time = velocity / distancet
-    self.stepx = distancex / time
-    self.stepy = distancey / time
+    local dix = player.x + (player.width/2) - self.x
+    local diy = player.y + (player.height/2) - self.y
+    local angle = math.atan(diy/dix)
+    self.velx = velocity * math.cos(angle)
+    self.vely = velocity * math.sin(angle)
+
 end
 
 function SmartCannon:update(dt)
-    self.y = self.y + self.stepy 
-    self.x = self.x + self.stepx
+    self.y = self.y + self.vely * dt 
+    self.x = self.x + self.velx * dt
 
     if self.destruible == true then 
 		if 4 == self.explotionAnim:update(dt, self.spriteExplotion) then
