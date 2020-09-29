@@ -261,7 +261,7 @@ function Enemy:updateShots(dt, player, balas)
 	if shot_timer <= 0 then
 		if table.getn(self.navesBasic) > 0 then
 			for i, naveBasic in pairs(self.navesBasic) do
-				if math.random(0,100) >= 90 then
+				if math.random(0,100) >= 90 and naveBasic.destruible == false then
 					self.engineShot:setCannon(naveBasic.x + 25, naveBasic.y + 40)
 				end
 			end
@@ -269,7 +269,7 @@ function Enemy:updateShots(dt, player, balas)
 		
 		if table.getn(self.huntersMasters) > 0 then
 			for i, hunter in pairs(self.huntersMasters) do
-				if math.random(0,100) >= 90 then
+				if math.random(0,100) >= 90 and hunter.destruible == false then
 					self.engineShot:setSmartCannon(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), player, 400)
 				end
 			end

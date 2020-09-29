@@ -6,7 +6,8 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 
 local idleState = 0
 local avoidBalasState = 1
-local avoidCorner = 2
+local avoidCornerState = 2
+local kamikazeState = 3
 
 function HunterMaster:init(x, y, player, spacex, spacey, velocity)
     self.hp = 16
@@ -80,11 +81,23 @@ function HunterMaster:update(dt, player, playerBalas)
                 self.newx = (self.spacex - self.width) * (math.random(10,90)/100)
                 self.newy = (self.spacey - self.height) * (math.random(10,70)/100)
             end
-            self:detectBalasAndAvoid(playerBalas)
+            if not self:kamikaze(player) then
+                if not self:avoidTheCorners() then
+                    self:detectBalasAndAvoid(playerBalas)
+                end
+            end
         elseif self.combatState == avoidBalasState then
             if self.objetiveApproach then
                 self.combatState = idleState
             end
+        elseif self.combatState == avoidCornerState then
+            if self.objetiveApproach then
+                self.combatState = idleState
+            end
+        elseif self.combatState == kamikazeState then
+            --ya valiste verga morro
+            self.newx = player.x
+            self.newy = player.y
         end
         self:moveEngine(dt)
 	else
@@ -132,13 +145,33 @@ function HunterMaster:moveEngine(dt)
     end
 end
 
+function HunterMaster:kamikaze(player)
+    if self.hp <= 2 then
+        if math.random(1,10) > 9 then
+            self.newx = player.x
+            self.newy = player.y
+            self:resetMoveEngine()
+            self.combatState = kamikazeState
+            return true
+        end
+    end
+    return false
+end
+
 function HunterMaster:avoidTheCorners()
     local change = false
-    if self.x < self.width * 2  and self.y < self.height * 2 then
+    if self.x < self.width * 2 then
         change = true
-        self.newx = math.random(self.spacex/2,self.spacex - self.width)
-        self.newx = math.random(self.spacex/2,self.spacex - self.width)
+        self.newx = math.random(self.spacex/4, self.spacex - (self.width * 3))
+    elseif self.x > self.spacex - (self.width * 2) then
+        change = true
+        self.newx = math.random(0, (self.spacex * (3/4)) - self.width)
     end
+    if change then
+        self:resetMoveEngine()
+        self.combatState = avoidCornerState
+    end
+    return change
 end
 
 function HunterMaster:isNotBalaDetectedBefore(bala)
@@ -159,11 +192,11 @@ function HunterMaster:isNotBalaDetectedBefore(bala)
 end
 
 function HunterMaster:detectBalasAndAvoid(balas)
-    local dangerBalas = {}
-    local px = 0
-    local py = 0
     --Revisa cada bala en el area
     if table.getn(balas) > 0 then
+        local dangerBalas = {}
+        local px = 0
+        local py = 0
         for i, bala in pairs(balas) do
             if bala.x + bala.width/2 >= self.x - self.width*4 and bala.x + bala.width/2 <= self.x + self.width*5 and
             bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 and
@@ -180,10 +213,10 @@ function HunterMaster:detectBalasAndAvoid(balas)
                 else --bala a la derecha
                     px = self.x - math.random(self.height, self.height * 2)
                 end
-                if self.y >= bala.y then -- bala esta arriba baka >//.//<
-                    py = self.y + math.random(self.width, self.width * 2) 
-                else -- bala esta abajo
+                if self.y + self.spacey/8 >= bala.y then -- bala esta arriba baka >//.//<
                     py = self.y - math.random(self.width, self.width * 2) 
+                elseif self.y - self.spacey/8 <= bala.y then -- bala esta abajo
+                    py = self.y + math.random(self.width, self.width * 2) 
                 end
                 self.newx = math.min(self.spacex - self.width, math.max(0, px))
                 self.newy = math.min(self.spacey - self.height, math.max(0, py))
