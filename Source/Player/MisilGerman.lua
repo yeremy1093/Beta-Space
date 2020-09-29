@@ -6,8 +6,6 @@ Misil = Class{}
 local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Missil Y9-2.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-local enemigos_en_pantalla = 0
-
 function Misil:init(x, y, speed, xspeed)
 	self.clase = 'misil'
 	self.damage = 2
@@ -147,8 +145,6 @@ function Misil:fijar_enemigo(enemigos)
 		end
 	end
 
-	enemigos_en_pantalla = #enemigos_totales
-
 	self.enemy_min_x = 0
 end
 
@@ -159,5 +155,4 @@ function Misil:render()
 		love.graphics.draw(sprite_sheet, self.sprite, self.x, self.y, math.rad(self.angulo), 1, 1, self.width/2, self.height-7)
 	end
 
-	love.graphics.print(tostring(enemigos_en_pantalla), 600, 50)
 end

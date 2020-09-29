@@ -52,7 +52,7 @@ function Nave:init(x, y, player)
 	--Agregamos la cantidad de vidas iniciales
 	self.numvidas = Escribir("3")
 	--Agregamos el tipo de arma que tenemos equipada
-	self.power_up = 'tercer_disparo'
+	self.power_up = 'direccional'
 	--Las armas tienen niveles, que se trackean en esta variable
 	self.power_level = 1
 	self.power_state = 0 --Que tan llena esta el arma, de 0 a 12
