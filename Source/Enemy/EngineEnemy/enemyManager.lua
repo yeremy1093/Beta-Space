@@ -266,8 +266,8 @@ function Enemy:updateShots(dt, player, balas)
 				target = 0 
 			end
 		end
-		if math.random(0,100) >= 80 then
-			if table.getn(self.huntersMasters) > 0 then
+		if table.getn(self.huntersMasters) > 0 then
+			if math.random(0,100) >= 80 then
 				target = math.random(1,table.getn(self.huntersMasters))
 				self.engineShot:setSmartCannon(self.huntersMasters[target].x + (self.huntersMasters[target].width/2), self.huntersMasters[target].y + (self.huntersMasters[target].height/2), player, 400)
 				target = 0 

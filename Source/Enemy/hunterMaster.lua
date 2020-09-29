@@ -76,8 +76,8 @@ function HunterMaster:update(dt, player, playerBalas)
 
         if self.combatState == idleState then
             if self.objetiveApproach then
-                self.newx = self.spacex * (math.random(10,90)/100)
-                self.newy = self.spacey * (math.random(10,70)/100)
+                self.newx = self.spacex - self.width * (math.random(10,90)/100)
+                self.newy = self.spacey - self.height * (math.random(10,70)/100)
             end
             self:detectBalasAndAvoid(playerBalas)
         elseif self.combatState == avoidBalasState then
@@ -175,8 +175,8 @@ function HunterMaster:detectBalasAndAvoid(balas)
                 else -- bala esta abajo
                     py = self.y - math.random(self.width, self.width * 2) 
                 end
-                self.newx = math.min(self.spacex, math.max(0, px))
-                self.newy = math.min(self.spacey, math.max(0, py))
+                self.newx = math.min(self.spacex - self.width, math.max(0, px))
+                self.newy = math.min(self.spacey - self.height, math.max(0, py))
             end
         end 
     end
