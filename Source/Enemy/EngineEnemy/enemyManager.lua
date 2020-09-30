@@ -111,7 +111,7 @@ end
 function Enemy:cambio_stage()
 
 	--Asignamos un nuevo puntaje que tenemos que alcanzar para cambiar de stage
-	stage_checkpoint = 5000 * love.math.random(self.nivel, self.nivel * 2)
+	stage_checkpoint = 5000 * self.nivel
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
@@ -270,9 +270,6 @@ function Enemy:render()
 	for i, HunterMaster in pairs(self.huntersMasters) do
 		HunterMaster:render()
 	end
-	self.engineShot:render()
-
-	love.graphics.print(tostring(stage_checkpoint), 600, 50)
-	
+	self.engineShot:render()	
 end
 return Enemy
