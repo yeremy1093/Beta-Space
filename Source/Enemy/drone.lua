@@ -4,6 +4,7 @@ local sprite_sheet_drone = love.graphics.newImage('Imagen/SpritesEnemys/Drone.pn
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
 function Drone:init(x, y, velocity, player)
+    self.clase = 'dron'
     self.hp = 1
 	self.x = x
 	self.y = y

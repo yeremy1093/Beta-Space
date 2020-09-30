@@ -5,10 +5,11 @@ local MAX_CHANCE = 100
 function Enemy:init()
 	self.nivel = 1
 
+	stage_checkpoint = 0;
+
 	self.asteroides = {}
 	self.max_on_screen_asteroides = 0
 	self.chance_asteroides = 0
-	self.checkpoint_asteroides = 0
 
 	self.asteroidesG = {}
 	self.max_on_screen_asteroidesG = 0
@@ -17,22 +18,18 @@ function Enemy:init()
 	self.asteroidesM = {}
 	self.max_on_screen_asteroidesM = 0
 	self.chance_asteroidesM = 0
-	self.checkpoint_asteroidesM = 0
 
 	self.navesBasic = {}
 	self.max_on_screen_naveBasic = 0
 	self.chance_naveBasic = 0
-	self.checkpoint_naveBasic = 0
 
 	self.drones = {}
 	self.max_on_screen_drones = 0
 	self.chance_drones = 0
-	self.checkpoint_drones = 0
 
 	self.huntersMasters = {}
 	self.max_on_screen_huntersMasters = 0
 	self.chance_huntersMasters = 0
-	self.checkpoint_huntersMasters = 0
 
 	self.engineShot = EngineShot()
 
@@ -66,30 +63,20 @@ function Enemy:update(dt, puntuacion, balas, player)
 	end
 	
 	--Checamos cuando debemos remover o mover los asteroides
-	if update_asteroides(dt, self.asteroides, balas, player) then
-		self.checkpoint_asteroides = self.checkpoint_asteroides - 1
-	end
+	update_asteroides(dt, self.asteroides, balas, player)
 
-	if update_asteroidesM(dt, self.asteroidesM, balas, player, self.asteroides) then
-		self.checkpoint_asteroidesM = self.checkpoint_asteroidesM - 1
-	end
+	update_asteroidesM(dt, self.asteroidesM, balas, player, self.asteroides)
 
 	update_asteroidesG(dt, self.asteroidesG, balas, player)
 
 	--Checamos cuando debemos remover o mover los cazas
-	if update_cazas_basicos(dt, self.navesBasic, balas, player) then
-		self.checkpoint_naveBasic = self.checkpoint_naveBasic - 1
-	end
+	update_nave_enemiga(dt, self.navesBasic, balas, player)
 
 	--Checamos cuando debemos remover or mover los drones
-	if update_drones(dt, self.drones, balas, player) then
-		self.checkpoint_drones = self.checkpoint_drones - 1
-	end
+	update_nave_enemiga(dt, self.drones, balas, player)
 
 	--Checamos cuando debemos remover or mover los hunterMaster
-	if update_hunterMaster(dt, self.huntersMasters, balas, player) then
-		self.checkpoint_huntersMasters = self.checkpoint_huntersMasters - 1
-	end
+	update_nave_enemiga(dt, self.huntersMasters, balas, player)
 
 	self:updateShots(dt, player, balas)
 
@@ -99,31 +86,23 @@ function Enemy:update(dt, puntuacion, balas, player)
 end
 
 function Enemy:check_stage(dt, player)
-	if self.checkpoint_asteroides <= 0 
-		and self.checkpoint_huntersMasters <= 0
-		and self.checkpoint_asteroidesM <= 0 
-		and self.checkpoint_naveBasic <= 0 
-		and self.checkpoint_drones <= 0 then
-
+	if stage_checkpoint <= 0 or stage_checkpoint == nil  then
 		return true
 	else
-		if self.checkpoint_asteroides > 0 then
-			self:create_enemy(dt, player, 'asteroide')
-		end
-		if self.checkpoint_asteroidesM > 0 then
-			self:create_enemy(dt, player, 'asteroideM')
-		end
-		if self.checkpoint_naveBasic > 0 then
+		if self.tag_stage == 'normal' then
 			self:create_enemy(dt, player, 'naveBasic')
-		end
-		if self.checkpoint_drones > 0 then
 			self:create_enemy(dt, player, 'dron')
-		end
-		if self.checkpoint_huntersMasters > 0 then
-			self:create_enemy(dt, player, 'HunterMaster')
-		end
-		if self.tag_stage == 'cint_ast' then
+		elseif self.tag_stage == 'enjambre' then
+			self:create_enemy(dt, player, 'dron')
+		elseif self.tag_stage == 'cint_ast' then
+			self:create_enemy(dt, player, 'asteroide')
+			self:create_enemy(dt, player, 'asteroideM')
 			self:create_enemy(dt, player, 'asteroideG')
+		elseif self.tag_stage == 'hunters' then
+			self:create_enemy(dt, player, 'HunterMaster')
+		elseif self.tag_stage == 'nebulosa' then
+			self:create_enemy(dt, player, 'naveBasic')
+			self:create_enemy(dt, player, 'dron')
 		end
 	end
 	return false
@@ -131,49 +110,41 @@ end
 
 function Enemy:cambio_stage()
 
+	--Asignamos un nuevo puntaje que tenemos que alcanzar para cambiar de stage
+	stage_checkpoint = 5000 * love.math.random(self.nivel, self.nivel * 2)
+
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
-		--Los tres valores de las naves normales
-		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
-		self.max_on_screen_naveBasic = 5 + self.nivel * 2
-		self.chance_naveBasic = 8 + self.nivel * 2
-		--Los tres valores de los drones
-		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
-		self.max_on_screen_drones = 3 + self.nivel * 2
-		self.chance_drones = 8 + self.nivel * 2
+		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_naveBasic = 20 + self.nivel * 2
+
+		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_drones = 15 + self.nivel * 2
 
 	elseif self.tag_stage == 'cint_ast' then
-		self.checkpoint_asteroides = love.math.random(self.nivel * 5, self.nivel * 10)
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
-		self.chance_asteroides = 10 + self.nivel * 2
+		self.chance_asteroides = 20 + self.nivel * 2
 
-		self.checkpoint_asteroidesM = love.math.random(self.nivel, self.nivel * 3)
-		self.max_on_screen_asteroidesM = 2 + self.nivel * 5
-		self.chance_asteroidesM = 4 + self.nivel * 2
+		self.max_on_screen_asteroidesM = 2 + self.nivel * 2
+		self.chance_asteroidesM = 10 + self.nivel * 2
 
 		self.max_on_screen_asteroidesG = 3
 		self.chance_asteroidesG = 5 + self.nivel
 
 	elseif self.tag_stage == 'enjambre' then
-		self.checkpoint_drones = love.math.random(self.nivel * 5, self.nivel * 10)
-		self.max_on_screen_drones = 10 + self.nivel * 2
-		self.chance_drones = 15 + self.nivel * 2
+		self.max_on_screen_drones = 15 + self.nivel * 2
+		self.chance_drones = 30 + self.nivel * 2
 
 	elseif self.tag_stage == 'hunters' then
-		--Los tres valores de las hunters
-		self.checkpoint_huntersMasters = love.math.random(self.nivel, self.nivel * 2)
 		self.max_on_screen_huntersMasters = self.nivel
 		self.chance_huntersMasters = 10 + self.nivel * 2
 
 	elseif self.tag_stage == 'nebulosa' then
-		--Los tres valores de las naves normales
-		self.checkpoint_naveBasic = love.math.random(self.nivel * 2, self.nivel * 5)
-		self.max_on_screen_naveBasic = 5 + self.nivel * 2
-		self.chance_naveBasic = 8 + self.nivel * 2
-		--Los tres valores de los drones
-		self.checkpoint_drones = love.math.random(self.nivel * 2, self.nivel * 5)
-		self.max_on_screen_drones = 3 + self.nivel * 2
-		self.chance_drones = 8 + self.nivel * 2
+		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_naveBasic = 20 + self.nivel * 2
+
+		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_drones = 15 + self.nivel * 2
 	end
 
 	return self.tag_stage
@@ -300,6 +271,8 @@ function Enemy:render()
 		HunterMaster:render()
 	end
 	self.engineShot:render()
+
+	love.graphics.print(tostring(stage_checkpoint), 600, 50)
 	
 end
 return Enemy
