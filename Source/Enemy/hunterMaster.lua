@@ -147,7 +147,7 @@ end
 
 function HunterMaster:kamikaze(player)
     if self.hp <= 2 then
-        if math.random(1,10) > 9 then
+        if math.random(1,10) > 7 then
             self.newx = player.x
             self.newy = player.y
             self:resetMoveEngine()

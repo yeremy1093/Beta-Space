@@ -4,13 +4,13 @@ function EngineShot:init()
     self.listCannon = {}
     self.listSmartCannon = {}
     self.listDiscEnergy = {}
-    self.listMissil = {}
+    self.listWissil = {}
     self.listPhEnemy = {}
     self.listStella = {}
 end
 
 --Actualizacion de los proyectiles y eliminacion de proyectiles fuera de pantalla o por impacto
-function EngineShot:update(dt)
+function EngineShot:update(dt, player)
     for i, Cannon in pairs(self.listCannon) do
         if (Cannon:update(dt) == false) or 
         ((Cannon.x > WINDOW_WIDTH or Cannon.x < 0) or
@@ -32,11 +32,11 @@ function EngineShot:update(dt)
             table.remove(self.listDiscEnergy, i)
         end
     end
-    for i, Missil in pairs(self.listMissil) do
-        Missil:update(dt)
-        if (Missil.x > WINDOW_WIDTH or Missil.x < 0) or
-        (Missil.y > WINDOW_HEIGHT or Missil.y < 0) then
-            table.remove(self.listMissil, i)
+    for i, Wissil in pairs(self.listWissil) do
+        if not Wissil:update(dt, player) or 
+        (Wissil.x > WINDOW_WIDTH or Wissil.x < 0) or
+        (Wissil.y > WINDOW_HEIGHT or Wissil.y < 0) then
+            table.remove(self.listWissil, i)
         end
     end
     for i, PhEnemy in pairs(self.listPhEnemy) do
@@ -65,8 +65,8 @@ function EngineShot:render()
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
 		DiscEnergy:render()
     end
-    for i, Missil in pairs(self.listMissil) do
-		Missil:render()
+    for i, Wisil in pairs(self.listWissil) do
+		Wisil:render()
     end
     for i, PhEnemy in pairs(self.listPhEnemy) do
 		PhEnemy:render()
@@ -91,8 +91,8 @@ function EngineShot:setDiscEnergy(x, y)
     table.insert(self.listDiscEnergy, DiscEnergy(x,y))
 end
 
-function EngineShot:setMissil(Originx, Originy, Targetx, Targety)
-    table.insert(self.listMissil, Missil(Originx, Originy, Targetx, Targety))
+function EngineShot:setWissil(x, y, speedx, speedy, player)
+    table.insert(self.listWissil, Wisil(x, y, speedx, speedy, player))
 end
 
 function EngineShot:setPhEnemy(x, y)
@@ -160,15 +160,24 @@ function EngineShot:collidesShots(player, balas)
             end
         end
     end
-    for i, Missil in pairs(self.listMissil) do
-        if Missil:collides(player) then
+    for i, Wisil in pairs(self.listWissil) do
+        if Wisil:collides(player) then
             --Animacion final de objecto
-            table.remove(self.listMissil, i)
+            if escudo_nave == false then
+				puntaje = puntaje - 10
+				HPnave = HPnave + 1
+				TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+			else
+				player.escudo:golpe_escudo(10)
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
+			end
+            table.remove(self.listWissil, i)
             return true
         end
         for i, bala in pairs(balas) do
-            if Missil:collides(bala) and bala.clase == 'pulso' then
-                Missil.destruible = true
+            if Wisil:collides(bala) then
+                Wisil.destruible = true
+                TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
                 return true
             end
         end

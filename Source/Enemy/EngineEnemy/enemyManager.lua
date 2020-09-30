@@ -269,14 +269,19 @@ function Enemy:updateShots(dt, player, balas)
 		
 		if table.getn(self.huntersMasters) > 0 then
 			for i, hunter in pairs(self.huntersMasters) do
-				if math.random(0,100) >= 90 and hunter.destruible == false then
-					self.engineShot:setSmartCannon(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), player, 400)
+				if math.random(0,100) >= 80 and hunter.destruible == false then
+					if math.random(1,10) >= 9 then
+						self.engineShot:setWissil(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), BULLET_SPEED/2, love.math.random(-100, 100)) 
+						TEsound.play('Soundtrack/Effect/Launch Missil.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+					else
+						self.engineShot:setSmartCannon(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), player, 400)
+					end
 				end
 			end
 		end
 		shot_timer = 0.05
 	end
-	self.engineShot:update(dt)
+	self.engineShot:update(dt, player)
 	self.engineShot:collidesShots(player, balas)
 end
 
