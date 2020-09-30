@@ -10,6 +10,7 @@ local avoidCornerState = 2
 local kamikazeState = 3
 
 function HunterMaster:init(x, y, player, spacex, spacey, velocity)
+    self.clase = 'hunter'
     self.hp = 16
 	self.x = x
     self.y = y

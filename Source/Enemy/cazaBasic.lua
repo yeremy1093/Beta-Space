@@ -4,6 +4,7 @@ local sprite_sheet_caz = love.graphics.newImage('Imagen/SpritesEnemys/caza1.png'
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
 function CazaBasic:init(x, y, dx, dy)
+	self.clase = 'caza'
 	self.hp = 1
 	self.x = x
 	self.y = y
