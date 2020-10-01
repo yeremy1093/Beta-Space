@@ -15,11 +15,13 @@ function update_asteroides(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and asteroide.destruible == false then
+			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
 				puntaje = puntaje + 10
 				stage_checkpoint = stage_checkpoint - 10
 				asteroide.hp = asteroide.hp - bala.damage
-				bala.destruible = true
+				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
+					bala.destruible = true
+				end
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},
@@ -71,11 +73,13 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and asteroide.destruible == false then
+			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
 				puntaje = puntaje + 100
 				stage_checkpoint = stage_checkpoint - 100
 				asteroide.hp = asteroide.hp - bala.damage
-				bala.destruible = true
+				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
+					bala.destruible = true
+				end
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},
@@ -131,8 +135,10 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) then
-				bala.destruible = true
+			if asteroide:collides(bala) and bala.destruible == false then
+				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
+					bala.destruible = true
+				end
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},
@@ -189,7 +195,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 	--Aqui checamos las colisiones entre el enemigo y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, enemigo in pairs(enemigos) do
-			if enemigo:collides(bala) and enemigo.destruible == false then
+			if enemigo:collides(bala) and enemigo.destruible == false and bala.destruible == false then
 				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
@@ -198,7 +204,10 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 					stage_checkpoint = stage_checkpoint - 150
 				end
 				enemigo.hp = enemigo.hp - bala.damage
-				bala.destruible = true
+				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
+					bala.destruible = true
+				end
+				
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
