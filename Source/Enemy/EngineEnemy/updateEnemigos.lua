@@ -15,7 +15,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
+			if asteroide:collides(bala) and asteroide.destruible == false then
 				puntaje = puntaje + 10
 				stage_checkpoint = stage_checkpoint - 10
 				asteroide.hp = asteroide.hp - bala.damage
@@ -71,7 +71,7 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
+			if asteroide:collides(bala) and asteroide.destruible == false then
 				puntaje = puntaje + 100
 				stage_checkpoint = stage_checkpoint - 100
 				asteroide.hp = asteroide.hp - bala.damage
@@ -131,7 +131,7 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 	--Aqui checamos las colisiones entre asteroides y balas
 	for i, bala in pairs(balas) do
 		for j, asteroide in pairs(asteroides) do
-			if asteroide:collides(bala) and bala.destruible == false then
+			if asteroide:collides(bala) then
 				bala.destruible = true
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
@@ -176,8 +176,14 @@ end
 function update_nave_enemiga(dt, enemigos, balas, nave)
 	--checamos si el enemigo salio de la pantalla y la borramos
 	for i, enemigo in pairs(enemigos) do
-		if false == enemigo:update(dt, nave) then
-			table.remove(enemigos, i)
+		if enemigo.clase == 'hunter' then
+			if false == enemigo:update(dt, balas) then
+				table.remove(enemigos, i)
+			end
+		else
+			if false == enemigo:update(dt, nave) then
+				table.remove(enemigos, i)
+			end
 		end
 		
 		if enemigo.y > WINDOW_HEIGHT or enemigo.x > WINDOW_WIDTH or enemigo.x < -enemigo.width or enemigo.y < -35 then
@@ -188,7 +194,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 	--Aqui checamos las colisiones entre el enemigo y balas del jugador
 	for i, bala in pairs(balas) do
 		for j, enemigo in pairs(enemigos) do
-			if enemigo:collides(bala) and enemigo.destruible == false and bala.destruible == false then
+			if enemigo:collides(bala) and enemigo.destruible == false then
 				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
