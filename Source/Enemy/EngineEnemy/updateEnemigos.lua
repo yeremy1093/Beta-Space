@@ -176,14 +176,9 @@ end
 function update_nave_enemiga(dt, enemigos, balas, nave)
 	--checamos si el enemigo salio de la pantalla y la borramos
 	for i, enemigo in pairs(enemigos) do
-		if enemigo.clase == 'hunter' then
-			if false == enemigo:update(dt, balas) then
-				table.remove(enemigos, i)
-			end
-		else
-			if false == enemigo:update(dt, nave) then
-				table.remove(enemigos, i)
-			end
+		
+		if false == enemigo:update(dt, nave, balas) then
+			table.remove(enemigos, i)
 		end
 		
 		if enemigo.y > WINDOW_HEIGHT or enemigo.x > WINDOW_WIDTH or enemigo.x < -enemigo.width or enemigo.y < -35 then

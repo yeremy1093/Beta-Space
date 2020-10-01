@@ -116,14 +116,14 @@ function Enemy:cambio_stage()
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
 		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_naveBasic = 20 + self.nivel * 2
+		self.chance_naveBasic = 10 + self.nivel * 2
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_drones = 15 + self.nivel * 2
+		self.chance_drones = 5 + self.nivel * 2
 
 	elseif self.tag_stage == 'cint_ast' then
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
-		self.chance_asteroides = 20 + self.nivel * 2
+		self.chance_asteroides = 15 + self.nivel * 2
 
 		self.max_on_screen_asteroidesM = 2 + self.nivel * 2
 		self.chance_asteroidesM = 10 + self.nivel * 2
@@ -141,10 +141,10 @@ function Enemy:cambio_stage()
 
 	elseif self.tag_stage == 'nebulosa' then
 		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_naveBasic = 20 + self.nivel * 2
+		self.chance_naveBasic = 10 + self.nivel * 2
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_drones = 15 + self.nivel * 2
+		self.chance_drones = 5 + self.nivel * 2
 	end
 
 	return self.tag_stage
