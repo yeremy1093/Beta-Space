@@ -31,6 +31,10 @@ function Enemy:init()
 	self.max_on_screen_huntersMasters = 0
 	self.chance_huntersMasters = 0
 
+	self.lancers = {}
+	self.max_on_screen_lancers = 0
+	self.chance_lancers = 0
+
 	self.engineShot = EngineShot()
 
 	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
@@ -78,6 +82,9 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover los hunterMaster
 	update_nave_enemiga(dt, self.huntersMasters, balas, player)
 
+	--Checamos cuando debemos remover or mover los lancers
+	update_nave_enemiga(dt, self.lancers, balas, player)
+
 	self:updateShots(dt, player, balas)
 
 	--Funcion encargada de ver que solo se creen enemigos que falten por completar, y si ya no hay, cambia el stage regresando true
@@ -92,6 +99,7 @@ function Enemy:check_stage(dt, player)
 		if self.tag_stage == 'normal' then
 			self:create_enemy(dt, player, 'naveBasic')
 			self:create_enemy(dt, player, 'dron')
+			self:create_enemy(dt, player, 'Lancer')
 		elseif self.tag_stage == 'enjambre' then
 			self:create_enemy(dt, player, 'dron')
 		elseif self.tag_stage == 'cint_ast' then
@@ -121,6 +129,9 @@ function Enemy:cambio_stage()
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
 
+		self.max_on_screen_lancers = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_lancer = 10 + self.nivel * 2
+		
 	elseif self.tag_stage == 'cint_ast' then
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
 		self.chance_asteroides = 15 + self.nivel * 2
@@ -222,6 +233,18 @@ function Enemy:create_enemy(dt, player, tipo)
 				end
 			end
 		end
+		--Creacion de Lancer ya se la pelaron
+		if tipo == 'Lancer' then
+			if table.getn(self.lancers) < self.max_on_screen_lancers then
+				if (MAX_CHANCE - self.chance_lancers) < love.math.random(MAX_CHANCE) then
+					if math.random(1,2) == 1 then
+						Lancer(0,math.random(0, WINDOW_HEIGHT), 200, true) --izquierda
+					else
+						Lancer(WINDOW_WIDTH,math.random(0, WINDOW_HEIGHT), 200, false) --derecha
+					end
+				end
+			end
+		end
 		enemy_timer = 0.25
 	end
 end
@@ -274,6 +297,9 @@ function Enemy:render()
 	end
 	for i, HunterMaster in pairs(self.huntersMasters) do
 		HunterMaster:render()
+	end
+	for i, Lancer in pairs(self.lancers) do
+		Lancer:render()
 	end
 	self.engineShot:render()	
 end
