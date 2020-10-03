@@ -129,8 +129,8 @@ function Enemy:cambio_stage()
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
 
-		self.max_on_screen_lancers = 5 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_lancers = 10 + self.nivel * 2
+		self.max_on_screen_lancers = 3 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_lancers = 5 + self.nivel * 2
 		
 	elseif self.tag_stage == 'cint_ast' then
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
@@ -238,9 +238,9 @@ function Enemy:create_enemy(dt, player, tipo)
 			if table.getn(self.lancers) < self.max_on_screen_lancers then
 				if (MAX_CHANCE - self.chance_lancers) < love.math.random(MAX_CHANCE) then
 					if love.math.random(1,2) == 1 then
-						table.insert(self.lancers, Lancer(WINDOW_WIDTH + 50 , player.y, 600, true)) --izquierda
+						table.insert(self.lancers, Lancer(WINDOW_WIDTH , player.y, 600, true)) --izquierda
 					else
-						table.insert(self.lancers, Lancer(-50 , player.y, 600, true)) --derecha
+						table.insert(self.lancers, Lancer(-50 , player.y, 600, false)) --derecha
 					end
 				end
 			end
