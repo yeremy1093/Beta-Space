@@ -5,19 +5,21 @@ local sprite_sheet_lancer_derecha = love.graphics.newImage('Imagen/SpritesEnemys
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
 function Lancer:init(x, y, vel, izquierda)
+    self.izquierda = izquierda
+    self.hp = 1
     self.x = x
     self.y = y
     self.vel = vel
     self.hp = 2
     self.clase = 'Lancer'
-    if izquierda == true then
-        self.vel = 0 - self.vel
+    if self.izquierda then
+        self.vel = -self.vel
         self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_lancer_izquierda:getDimensions())
     else
         self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_lancer_derecha:getDimensions())
     end
-    self.width = self.sprite:getWidth()
-    self.height = self.sprite:getHeight()    
+    self.width = 58
+    self.height = 40   
     self.spriteExplotion = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
     self.destruible = false
 
@@ -25,8 +27,12 @@ function Lancer:init(x, y, vel, izquierda)
                  ['explotion'] = Anim(0, 0, 76, 76, 7, 7, 10)}
 end
 
-function Lancer:update(dt, nave, balas)
-    self.x = self.x + self.vel * dt
+function Lancer:update(dt, nave)
+    self.x = self.x + self.vel * dt 
+
+    if self.hp <= 0 then
+        self.destruible = true
+    end
 
     if self.destruible == true then 
 		if 7 == self.anim['explotion']:update(dt, self.spriteExplotion) then
@@ -62,8 +68,13 @@ end
 
 function Lancer:render()
     if self.destruible == false then
-		love.graphics.draw(self.sprite, self.x, self.y)
+        if self.izquierda == false then
+            love.graphics.draw(sprite_sheet_lancer_derecha, self.sprite, self.x, self.y)
+        else
+            love.graphics.draw(sprite_sheet_lancer_izquierda, self.sprite, self.x, self.y)
+        end
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.spriteExplotion, self.x, self.y)
 	end
+
 end

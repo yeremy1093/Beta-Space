@@ -130,7 +130,7 @@ function Enemy:cambio_stage()
 		self.chance_drones = 5 + self.nivel * 2
 
 		self.max_on_screen_lancers = 5 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_lancer = 10 + self.nivel * 2
+		self.chance_lancers = 10 + self.nivel * 2
 		
 	elseif self.tag_stage == 'cint_ast' then
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
@@ -237,10 +237,10 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'Lancer' then
 			if table.getn(self.lancers) < self.max_on_screen_lancers then
 				if (MAX_CHANCE - self.chance_lancers) < love.math.random(MAX_CHANCE) then
-					if math.random(1,2) == 1 then
-						Lancer(0,math.random(0, WINDOW_HEIGHT), 200, true) --izquierda
+					if love.math.random(1,2) == 1 then
+						table.insert(self.lancers, Lancer(WINDOW_WIDTH + 50 , player.y, 600, true)) --izquierda
 					else
-						Lancer(WINDOW_WIDTH,math.random(0, WINDOW_HEIGHT), 200, false) --derecha
+						table.insert(self.lancers, Lancer(-50 , player.y, 600, true)) --derecha
 					end
 				end
 			end
@@ -301,6 +301,7 @@ function Enemy:render()
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
 	end
+
 	self.engineShot:render()	
 end
 return Enemy
