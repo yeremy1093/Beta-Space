@@ -1,6 +1,9 @@
 
 Play = Class{__includes = BaseState}
 
+local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
+local quad_level = love.graphics.newImage('Imagen/Menus/QuadLvlarma.png')
+
 
 function Play:enter(params)
     --cargamos los puntajes altos
@@ -99,27 +102,23 @@ function Play:update(dt)
         --Asignamos un nuevo tipo de stage
         local random_stage = love.math.random(1, 100)
         if random_stage <= 50 then
-            --self.enemyManager.tag_stage = 'normal'
             self.enemyManager.tag_stage = 'normal'
             self.mensaje_stage2 = Escribir('Vienen Enemigos')
             self.mensaje2X = 340
         elseif random_stage <= 65 then
-            --self.enemyManager.tag_stage = 'cint_ast'
-            self.enemyManager.tag_stage = 'normal'
+            self.enemyManager.tag_stage = 'cint_ast'
             self.mensaje_stage2 = Escribir('Cinturon de Asteroides')
             self.mensaje2X = 200
         elseif random_stage <= 80 then
-            --self.enemyManager.tag_stage = 'enjambre'
-            self.enemyManager.tag_stage = 'normal'
+            self.enemyManager.tag_stage = 'enjambre'
             self.mensaje_stage2 = Escribir('Enjambre de Drones')
             self.mensaje2X = 300
         elseif random_stage <= 90 then
-            self.enemyManager.tag_stage = 'normal'
+            self.enemyManager.tag_stage = 'hunters'
             self.mensaje_stage2 = Escribir('Escuadron Elite')
             self.mensaje2X = 340
         else
-            --self.enemyManager.tag_stage = 'nebulosa'
-            self.enemyManager.tag_stage = 'normal'
+            self.enemyManager.tag_stage = 'nebulosa'
             self.mensaje_stage2 = Escribir('Entrando a Nebulosa')
             self.mensaje2X = 280
         end
@@ -171,21 +170,7 @@ function Play:render()
 	--Dibujamos las estrellas de alex
 	self.sky:render()
 
-    --Ponemos el puntaje en la pantalla
-    love.graphics.print(tostring(puntaje), 30, 25)
-
-    --Ponemos en pantalla el stage en el que vamos
-    if self.cambio_stage then
-        self.mensaje_stage:render(400, 300, 2, 2)
-        self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
-    end
-
-    --Dibujamos la interfaz de usuario
-    love.graphics.draw(self.ui, 0, 0)
-
-	self.enemyManager:render()
-
-    --Dibujamos las balas en un ciclo
+    --Dibujamos las balas del jugador
     self.shotManager:render()
 
     for i, pickup in pairs(self.pickups) do
@@ -194,6 +179,20 @@ function Play:render()
 
     --Dibujamos la nave dependiendo de su posicion
     self.player:render()
+
+    self.enemyManager:render()
+
+    --Ponemos el puntaje en la pantalla
+    love.graphics.print(tostring(puntaje), 30, 25)
+
+    --Dibujamos la interfaz de usuario
+    self:UI_render()
+
+     --Ponemos en pantalla el stage en el que vamos
+    if self.cambio_stage then
+        self.mensaje_stage:render(400, 300, 2, 2)
+        self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
+    end
 
 end
 
@@ -222,4 +221,28 @@ function Play:update_pickups(dt)
             TEsound.play({'Soundtrack/Effect/Power UP.wav','Soundtrack/Effect/Heal or Life.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
         end
     end
+end
+
+function Play:UI_render()
+
+    --Dibujamos la interfaz de usuario
+    love.graphics.draw(self.ui, 0, 0)
+    --Dibujamos el icono del estatus de escudo
+    love.graphics.draw(quad_util, self.player.escudo_quad, 1080, 600)
+    if self.player.escudo.estado == 'desactivado' then
+        love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
+        love.graphics.rectangle('fill', 1080, 600, 60, 60 )
+        love.graphics.setColor(1, 1, 1, 1)
+    end
+
+    --Dibujamos el HP de la nave--
+    love.graphics.draw(quad_util, self.player.hp_quad, 960, 600)
+    --Dibujamos la cantidad de vidas--
+    self.player.numvidas:render(840, 600, 3, 3)
+    --Dibujamos el icono del tipo de arma
+    love.graphics.draw(quad_util, self.player.equip_quad, 1200, 600)
+
+    --Dibujamos el nivel de poder de las armas secundarias
+    love.graphics.draw(quad_level, self.player.sprite_lvl2, 1195, 570)
+    love.graphics.draw(quad_level, self.player.sprite_lvl3, 1195, 545)
 end

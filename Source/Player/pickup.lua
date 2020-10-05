@@ -14,20 +14,20 @@ function Pickup:init(x, y, dx, dy)
 	self.width = 60
 	self.height = 60
 	self.fps = math.random(6, 10)
-	self.num = love.math.random(1, 7)
-	if self.num == 1 then
+	local num = love.math.random(1, 7)
+	if num == 1 then
 		self.tipo = 'laser'
-	elseif self.num == 2 then
+	elseif num == 2 then
 		self.tipo = 'salud'
-	elseif self.num == 3 then
+	elseif num == 3 then
 		self.tipo = 'vida'
-	elseif self.num == 4 then
+	elseif num == 4 then
 		self.tipo = 'direccional'
-	elseif self.num == 5 then
+	elseif num == 5 then
 		self.tipo = 'pulsar'
-	elseif self.num == 6 then
+	elseif num == 6 then
 		self.tipo = 'escudo'
-	elseif self.num == 7 then
+	elseif num == 7 then
 		self.tipo = 'tercer_disparo'
 	end
 	--Aqui van todas las animaciones posibles

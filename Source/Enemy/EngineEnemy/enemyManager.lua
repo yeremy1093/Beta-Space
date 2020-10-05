@@ -19,6 +19,10 @@ function Enemy:init()
 	self.max_on_screen_asteroidesM = 0
 	self.chance_asteroidesM = 0
 
+	self.nebulosas = {}
+	self.max_on_screen_nebulosas = 0
+	self.chance_nebulosas= 0
+
 	self.navesBasic = {}
 	self.max_on_screen_naveBasic = 0
 	self.chance_naveBasic = 0
@@ -73,6 +77,9 @@ function Enemy:update(dt, puntuacion, balas, player)
 
 	update_asteroidesG(dt, self.asteroidesG, balas, player)
 
+	--Si hay nubes de nebulosa, hacemos su update
+	update_nebulosas(dt, self.nebulosas, player, self.navesBasic, self.drones)
+
 	--Checamos cuando debemos remover o mover los cazas
 	update_nave_enemiga(dt, self.navesBasic, balas, player)
 
@@ -109,6 +116,7 @@ function Enemy:check_stage(dt, player)
 		elseif self.tag_stage == 'hunters' then
 			self:create_enemy(dt, player, 'HunterMaster')
 		elseif self.tag_stage == 'nebulosa' then
+			self:create_enemy(dt, player, 'nebulosa')
 			self:create_enemy(dt, player, 'naveBasic')
 			self:create_enemy(dt, player, 'dron')
 		end
@@ -151,6 +159,9 @@ function Enemy:cambio_stage()
 		self.chance_huntersMasters = 10 + self.nivel * 2
 
 	elseif self.tag_stage == 'nebulosa' then
+		self.max_on_screen_nebulosas = 4
+		self.chance_nebulosas = 15 + self.nivel * 2
+
 		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_naveBasic = 10 + self.nivel * 2
 
@@ -198,6 +209,18 @@ function Enemy:create_enemy(dt, player, tipo)
 			elseif table.getn(self.asteroidesG) < self.max_on_screen_asteroidesG then
 				if (MAX_CHANCE - self.chance_asteroidesG) < love.math.random(MAX_CHANCE) then
 					table.insert(self.asteroidesG, AsteroideG(math.random(0, WINDOW_WIDTH -220), -360, math.random(-100, 100), math.random(20, 120)))
+				end
+			end
+		end
+		--Creacion de nebulosas
+		if tipo == 'nebulosa' then
+			if table.getn(self.nebulosas) < self.max_on_screen_nebulosas and self.nivel < 6 then
+				if (MAX_CHANCE - self.chance_nebulosas) < love.math.random(MAX_CHANCE) then
+					table.insert(self.nebulosas, Nebulosa(math.random(0, WINDOW_WIDTH -250), -495, math.random(-50, 50), math.random(20, 100)))
+				end
+			elseif table.getn(self.nebulosas) < self.max_on_screen_nebulosas then
+				if (MAX_CHANCE - self.chance_nebulosas) < love.math.random(MAX_CHANCE) then
+					table.insert(self.nebulosas, Nebulosa(math.random(0, WINDOW_WIDTH -250), -495, math.random(-100, 100), math.random(40, 200)))
 				end
 			end
 		end
@@ -300,6 +323,9 @@ function Enemy:render()
 	end
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
+	end
+	for i, nebulosa in pairs(self.nebulosas) do
+		nebulosa:render()
 	end
 
 	self.engineShot:render()	

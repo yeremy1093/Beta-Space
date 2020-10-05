@@ -179,25 +179,6 @@ function Nave:render()
 	if escudo_nave == true then
 		self.escudo:render(self.x - 3, self.y - 7)
 	end
-
-	--Dibujamos el icono del estatus de escudo
-	love.graphics.draw(quad_util, self.escudo_quad, 1080, 600)
-	if self.escudo.estado == 'desactivado' then
-		love.graphics.setColor(0.5, 0.5, 0.5, 0.5)
-		love.graphics.rectangle('fill', 1080, 600, 60, 60 )
-		love.graphics.setColor(1, 1, 1, 1)
-	end
-
-	--Dibujamos el HP de la nave--
-	love.graphics.draw(quad_util, self.hp_quad, 960, 600)
-	--Dibujamos la cantidad de vidas--
-	self.numvidas:render(840, 600, 3, 3)
-	--Dibujamos el icono del tipo de arma
-	love.graphics.draw(quad_util, self.equip_quad, 1200, 600)
-
-	--Dibujamos el nivel de poder de las armas secundarias
-	love.graphics.draw(quad_level, self.sprite_lvl2, 1195, 570)
-	love.graphics.draw(quad_level, self.sprite_lvl3, 1195, 545)
 end
 
 function Nave:manager_escudo(dt)

@@ -234,6 +234,69 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 	end
 end
 
+function update_nebulosas(dt, nebulosas, nave, cazas, drones)
+	--checamos si la nebulosa salio de la pantalla y la borramos
+	for i, nebulosa in pairs(nebulosas) do
+
+		nebulosa:update(dt)
+		
+		if nebulosa.y > WINDOW_HEIGHT or nebulosa.x > WINDOW_WIDTH or nebulosa.x < -nebulosa.width or nebulosa.y < -nebulosa.height then
+			table.remove(nebulosas, i)
+		end
+	end
+
+	--Checamos si la nebulosa choca con la nave
+	for j, nebulosa in pairs(nebulosas) do
+		if nebulosa:collides(nave) and nebulosa.clase == 'nebulosa_mala' then
+			nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
+			if nebulosa.tiempo_damage == 0 then
+				nebulosa.tiempo_damage = 1
+				if escudo_nave == false then
+					HPnave = HPnave + 1
+				else
+					nave.escudo:golpe_escudo(10)
+				end
+				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
+						VOLUMEN_EFECTOS)
+				break
+			end
+			
+		end
+	end
+
+	--Checamos si la nebulosa le hace daño a otros enemigos
+
+	for i, nebulosa in pairs(nebulosas) do
+		for j, caza in pairs(cazas) do
+			if nebulosa:collides(caza) and nebulosa.clase == 'nebulosa_mala' then
+				nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
+				if nebulosa.tiempo_damage == 0 then
+					nebulosa.tiempo_damage = 1
+					caza.hp = caza.hp - nebulosa.damage
+					TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
+							VOLUMEN_EFECTOS)
+					break
+				end
+			end
+		end
+	end
+
+	for i, nebulosa in pairs(nebulosas) do
+		for j, dron in pairs(drones) do
+			if nebulosa:collides(dron) and nebulosa.clase == 'nebulosa_mala' then
+				nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
+				if nebulosa.tiempo_damage == 0 then
+					nebulosa.tiempo_damage = 1
+					dron.hp = dron.hp - nebulosa.damage
+					TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
+							VOLUMEN_EFECTOS)
+					break
+				end
+			end
+		end
+	end
+
+end
 
 function colision_entre_asteroides(asteroides)
 	--Aqui checamos las colisiones entre asteroides y otros asteroides
