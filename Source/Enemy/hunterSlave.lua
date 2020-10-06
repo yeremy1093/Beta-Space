@@ -17,6 +17,8 @@ function HunterSlave:init(x, y, velocity, izquierda)
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
     self.fps = math.random(6, 10)
+    --variable para saber cuando el asteroide explotó y se puede borrar
+	self.destruible = false
     if izquierda then
         self.velocity = -self.velocity
     end
