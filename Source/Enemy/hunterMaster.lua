@@ -16,15 +16,14 @@ function HunterMaster:init(x, y, player, spacex, spacey, velocity)
     self.y = y
 	self.width = 58
     self.height = 40
-    self.movState = entrada
     self.spacex = spacex
     self.spacey = spacey
     self.velocity = velocity
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
     self.fps = math.random(6, 10)
-    self.newx = self.spacex * 1/2
-    self.newy = self.spacey * 1/3
+    self.newx = (self.spacex - self.width) * (math.random(10,90)/100)
+    self.newy = (self.spacey - self.height) * (math.random(10,70)/100)
 
     self.combatState = idleState
     self.balasCredentials = {}
@@ -196,8 +195,6 @@ function HunterMaster:detectBalasAndAvoid(balas)
     --Revisa cada bala en el area
     if table.getn(balas) > 0 then
         local dangerBalas = {}
-        local px = 0
-        local py = 0
         for i, bala in pairs(balas) do
             if bala.x + bala.width/2 >= self.x - self.width*4 and bala.x + bala.width/2 <= self.x + self.width*5 and
             bala.y + bala.height/2 >= self.y - self.height*4 and bala.y + bala.height/2 <= self.y + self.height*5 and
@@ -206,6 +203,8 @@ function HunterMaster:detectBalasAndAvoid(balas)
             end
         end
         if table.getn(dangerBalas) > 0 then
+            local px = 0
+            local py = 0
             self.combatState = avoidBalasState
             self:resetMoveEngine()
             for i, bala in pairs(dangerBalas) do

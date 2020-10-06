@@ -27,7 +27,7 @@ function Lancer:init(x, y, vel, izquierda)
                  ['explotion'] = Anim(0, 0, 76, 76, 7, 7, 10)}
 end
 
-function Lancer:update(dt, nave)
+function Lancer:update(dt)
     self.x = self.x + self.vel * dt 
 
     if self.hp <= 0 then
