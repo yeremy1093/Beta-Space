@@ -9,6 +9,8 @@ function HunterSlave:init(x, y, velocity, izquierda)
     self.hp = 4
 	self.x = x
     self.y = y
+    self.velx = velocity
+    self.vely = velocity * (math.random(1,10)/10)
 	self.width = 58
     self.height = 40
     self.spacex = spacex
@@ -17,11 +19,13 @@ function HunterSlave:init(x, y, velocity, izquierda)
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
     self.fps = math.random(6, 10)
+    --variable para saber cuando el asteroide explotó y se puede borrar
+	self.destruible = false
     if izquierda then
-        self.velocity = -self.velocity
+        self.vely = -self.vely
     end
 
-    self.max = math.random(0, math.min(self.x, WINDOW_HEIGHT - self.x))
+    self.conty = 1
 
 	--Aqui van todas las animaciones posibles
 	self.anim = {['no_damage'] = Anim(0, 0, self.width, self.height, 2, 2, self.fps),
@@ -47,8 +51,13 @@ function HunterSlave:update(dt)
             self.anim['high_damage']:update(dt, self.sprite)
         end
         --Comportamiento
-        self.x = self.x + self.velocity * dt
-        self.y = self.y + self.max * math.sin(2 * math.pi * dt)
+        self.x = self.x + self.velx * dt
+        self.y = self.y + self.vely * dt
+        self.conty = self.conty - dt
+        if self.conty <= 0 then
+            self.conty = 1
+            self.vely = (-1) * self.vely
+        end
 	else
 		if 4 == self.anim['explosion']:update(dt, self.sprite_ex) then
 			return false
