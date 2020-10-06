@@ -249,7 +249,7 @@ function update_nebulosas(dt, nebulosas, nave, cazas, drones)
 	for j, nebulosa in pairs(nebulosas) do
 		if nebulosa:collides(nave) and nebulosa.clase == 'nebulosa_mala' then
 			nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
-			if nebulosa.tiempo_damage == 0 then
+			if nebulosa.tiempo_damage <= 0 then
 				nebulosa.tiempo_damage = 1
 				if escudo_nave == false then
 					HPnave = HPnave + 1
@@ -265,36 +265,8 @@ function update_nebulosas(dt, nebulosas, nave, cazas, drones)
 	end
 
 	--Checamos si la nebulosa le hace daño a otros enemigos
-
-	for i, nebulosa in pairs(nebulosas) do
-		for j, caza in pairs(cazas) do
-			if nebulosa:collides(caza) and nebulosa.clase == 'nebulosa_mala' then
-				nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
-				if nebulosa.tiempo_damage == 0 then
-					nebulosa.tiempo_damage = 1
-					caza.hp = caza.hp - nebulosa.damage
-					TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
-							VOLUMEN_EFECTOS)
-					break
-				end
-			end
-		end
-	end
-
-	for i, nebulosa in pairs(nebulosas) do
-		for j, dron in pairs(drones) do
-			if nebulosa:collides(dron) and nebulosa.clase == 'nebulosa_mala' then
-				nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
-				if nebulosa.tiempo_damage == 0 then
-					nebulosa.tiempo_damage = 1
-					dron.hp = dron.hp - nebulosa.damage
-					TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
-							VOLUMEN_EFECTOS)
-					break
-				end
-			end
-		end
-	end
+	nebulosa_enemigos(dt, nebulosas, cazas)
+	nebulosa_enemigos(dt, nebulosas, drones)
 
 end
 
@@ -327,6 +299,23 @@ function colision_entre_asteroides(asteroides)
 				ast2.dx = tempx
 				ast2.dy = tempy
 				break
+			end
+		end
+	end
+end
+
+function nebulosa_enemigos(dt , nebulosas ,enemigos)
+	for i, nebulosa in pairs(nebulosas) do
+		for j, enemigo in pairs(enemigos) do
+			if nebulosa:collides(enemigo) and nebulosa.clase == 'nebulosa_mala' then
+				nebulosa.tiempo_damage = nebulosa.tiempo_damage - dt
+				if nebulosa.tiempo_damage <= 0 then
+					nebulosa.tiempo_damage = 1
+					enemigo.hp = enemigo.hp - nebulosa.damage
+					TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},
+							VOLUMEN_EFECTOS)
+					break
+				end
 			end
 		end
 	end
