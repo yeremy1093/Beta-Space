@@ -30,6 +30,7 @@ function Enemy:init()
 	self.drones = {}
 	self.max_on_screen_drones = 0
 	self.chance_drones = 0
+	self.velodron = 0
 
 	self.huntersMasters = {}
 	self.max_on_screen_huntersMasters = 0
@@ -136,6 +137,7 @@ function Enemy:cambio_stage()
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
+		self.velodron = 80 + self.nivel * 10
 
 		self.max_on_screen_lancers = 3 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_lancers = 5 + self.nivel * 2
@@ -151,8 +153,9 @@ function Enemy:cambio_stage()
 		self.chance_asteroidesG = 5 + self.nivel
 
 	elseif self.tag_stage == 'enjambre' then
-		self.max_on_screen_drones = 15 + self.nivel * 2
-		self.chance_drones = 30 + self.nivel * 2
+		self.max_on_screen_drones = 20 + self.nivel * 2
+		self.chance_drones = 80 + self.nivel * 2
+		self.velodron = 160 + self.nivel * 10
 
 	elseif self.tag_stage == 'hunters' then
 		self.max_on_screen_huntersMasters = self.nivel
@@ -167,6 +170,7 @@ function Enemy:cambio_stage()
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
+		self.velodron = 80 + self.nivel * 10
 	end
 
 	return self.tag_stage
@@ -238,13 +242,9 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de Drones
 		if tipo == 'dron' then
-			if table.getn(self.drones) < self.max_on_screen_drones and self.nivel < 6 then
+			if table.getn(self.drones) < self.max_on_screen_drones then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
-					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
-				end
-			elseif math.random(0,100) < self.max_on_screen_drones then
-				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
-					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
+					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, self.velodron, player))
 				end
 			end
 		end
