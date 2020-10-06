@@ -327,7 +327,36 @@ function Enemy:updateShots(dt, player, balas)
 	self.engineShot:collidesShots(player, balas)
 end
 
+function Enemy:vaciar_enemigos()
+	for i, asteroide in pairs(self.asteroides) do
+		table.remove(self.asteroides, i)
+	end
+	for i, asteroideG in pairs(self.asteroidesG) do
+		table.remove(self.asteroidesG, i)
+	end
+	for i, asteroideM in pairs(self.asteroidesM) do
+		table.remove(self.asteroidesM, i)
+	end
+	for i, nebulosas in pairs(self.nebulosas) do
+		table.remove(self.nebulosas, i)
+	end
+	for i, navesBasic in pairs(self.navesBasic) do
+		table.remove(self.navesBasic, i)
+	end
+	for i, drones in pairs(self.drones) do
+		table.remove(self.drones, i)
+	end
+	for i, huntersMasters in pairs(self.huntersMasters) do
+		table.remove(self.huntersMasters, i)
+	end
+	for i, lancers in pairs(self.lancers) do
+		table.remove(self.lancers, i)
+	end
+
+end
+
 function Enemy:render()
+	self.engineShot:render()	
 	for i, asteroideG in pairs(self.asteroidesG) do
 		asteroideG:render()
 	end
@@ -352,10 +381,14 @@ function Enemy:render()
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
 	end
+
+end
+
+function Enemy:render_nebulosas()
 	for i, nebulosa in pairs(self.nebulosas) do
 		nebulosa:render()
 	end
-
-	self.engineShot:render()	
 end
+
+
 return Enemy

@@ -3,6 +3,7 @@ Play = Class{__includes = BaseState}
 
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 local quad_level = love.graphics.newImage('Imagen/Menus/QuadLvlarma.png')
+local img_viaje_luz = love.graphics.newImage('Imagen/Background/Viaje Luz.png')
 
 
 function Play:enter(params)
@@ -71,6 +72,9 @@ function Play:enter(params)
     self.mensaje_stage = Escribir('Nuevo Nivel')
     self.mensaje_stage2 = Escribir('Vienen Enemigos')
     self.mensaje2X = 400
+    self.cambio_background = false
+    self.sprite_vl = love.graphics.newQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, img_viaje_luz:getDimensions())
+    self.viaje_luz = Anim(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 13, 13, 13)
 
 end
 
@@ -88,10 +92,14 @@ function Play:update(dt)
 
     --Mostramos el mensaje de cambio de stage
     if self.cambio_stage then
+        if self.cambio_stage then
+            self.viaje_luz:update(dt, self.sprite_vl)
+        end
         TIMER_CAMBIO_STAGE = TIMER_CAMBIO_STAGE - dt
         if TIMER_CAMBIO_STAGE <= 0 then
             TIMER_CAMBIO_STAGE = 3
             self.cambio_stage = false
+            self.cambio_background = false
             self.enemyManager:cambio_stage(self.stage)
         end
     end
@@ -99,6 +107,10 @@ function Play:update(dt)
 	--Hacemos el update de los enemigos
 	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) and self.cambio_stage == false then
         self.cambio_stage = true
+        local cambio_background = love.math.random(1, 3)
+        if cambio_background == 3 then
+            self.cambio_background = true
+        end
         --Asignamos un nuevo tipo de stage
         --normal
         --cint_ast
@@ -188,10 +200,32 @@ function Play:render()
         pickup:render()
     end
 
+    self.enemyManager:render()
+
+     --Ponemos en pantalla el stage en el que vamos
+    if self.cambio_stage then
+        if self.cambio_background then
+            if TIMER_CAMBIO_STAGE > 2.5 then
+                love.graphics.setColor(0,0,0, 0 + (2 * math.abs(3 - TIMER_CAMBIO_STAGE)))
+            elseif TIMER_CAMBIO_STAGE > 0.5 then
+                self.enemyManager:vaciar_enemigos()
+                self.background:change_background()
+                love.graphics.setColor(0,0,0, 1)
+            else
+                love.graphics.setColor(0,0,0,(2 * TIMER_CAMBIO_STAGE))
+            end
+            love.graphics.rectangle('fill', 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+            love.graphics.setColor(1,1,1,1)
+            love.graphics.draw(img_viaje_luz, self.sprite_vl, 0, 0)
+        end
+        self.mensaje_stage:render(400, 300, 2, 2)
+        self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
+    end
+
     --Dibujamos la nave dependiendo de su posicion
     self.player:render()
 
-    self.enemyManager:render()
+    self.enemyManager:render_nebulosas()
 
     --Ponemos el puntaje en la pantalla
     love.graphics.print(tostring(puntaje), 30, 25)
@@ -199,11 +233,6 @@ function Play:render()
     --Dibujamos la interfaz de usuario
     self:UI_render()
 
-     --Ponemos en pantalla el stage en el que vamos
-    if self.cambio_stage then
-        self.mensaje_stage:render(400, 300, 2, 2)
-        self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
-    end
 
 end
 

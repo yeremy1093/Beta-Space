@@ -22,6 +22,19 @@ function Background:init()
 
 end	
 
+function Background:change_background()
+	local random = love.math.random(1, 4)
+	if random == 1 then 
+		self.loopingStars = blackhole
+	elseif random == 2 then
+		self.loopingStars = azul
+	elseif random == 3 then
+		self.loopingStars = bigeye
+	elseif random == 4 then
+		self.loopingStars = disco
+	end
+end
+
 function Background:render_background()
 	--rendereamos las estrellas sobre el fondo
 	love.graphics.draw(self.loopingStars, 0, 0)
