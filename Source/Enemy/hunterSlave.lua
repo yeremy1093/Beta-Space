@@ -57,7 +57,7 @@ function HunterSlave:update(dt)
 	return true
 end
 
-function HunterMaster:collides(objeto)
+function HunterSlave:collides(objeto)
     -- first, check to see if the left edge of either is farther to the right
     -- than the right edge of the other
     if self.x > objeto.x + objeto.width or objeto.x > self.x + self.width then
@@ -78,7 +78,7 @@ function HunterMaster:collides(objeto)
     return true
 end
 
-function HunterMaster:render()
+function HunterSlave:render()
 	if self.destruible == false then
         love.graphics.draw(sprite_sheet_hunter, self.sprite, self.x, self.y)
 	else

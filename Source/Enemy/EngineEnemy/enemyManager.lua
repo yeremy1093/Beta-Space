@@ -94,7 +94,7 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover los hunterMaster
 	update_nave_enemiga(dt, self.huntersMasters, balas, player)
 
-	--Checamos cuando debemos remover or mover los hunterMaster
+	--Checamos cuando debemos remover or mover los hunterSlaves
 	update_nave_enemiga(dt, self.huntersSlaves, balas, player)
 
 	--Checamos cuando debemos remover or mover los lancers

@@ -196,7 +196,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 	for i, bala in pairs(balas) do
 		for j, enemigo in pairs(enemigos) do
 			if enemigo:collides(bala) and enemigo.destruible == false and bala.destruible == false then
-				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' or enemigo.clase == 'Lancer' then
+				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' or enemigo.clase == 'Lancer' or enemigo.clase == 'hunterMenso'then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
 				elseif enemigo.clase == 'dron' then
