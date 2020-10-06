@@ -112,6 +112,12 @@ function Play:update(dt)
             self.cambio_background = true
         end
         --Asignamos un nuevo tipo de stage
+        --normal
+        --cint_ast
+        --enjambre
+        --hunters
+        --nebulosa
+
         local random_stage = love.math.random(1, 100)
         if random_stage <= 50 then
             self.enemyManager.tag_stage = 'normal'

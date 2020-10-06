@@ -3,7 +3,7 @@ Enemy = Class{}
 local MAX_CHANCE = 100
 
 function Enemy:init()
-	self.nivel = 1
+	self.nivel = 6
 
 	stage_checkpoint = 0;
 
@@ -30,10 +30,15 @@ function Enemy:init()
 	self.drones = {}
 	self.max_on_screen_drones = 0
 	self.chance_drones = 0
+	self.velodron = 0
 
 	self.huntersMasters = {}
 	self.max_on_screen_huntersMasters = 0
 	self.chance_huntersMasters = 0
+
+	self.huntersSlaves = {}
+	self.max_on_screen_huntersSlaves = 0
+	self.chance_huntersSlaves = 0
 
 	self.lancers = {}
 	self.max_on_screen_lancers = 0
@@ -89,6 +94,9 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover los hunterMaster
 	update_nave_enemiga(dt, self.huntersMasters, balas, player)
 
+	--Checamos cuando debemos remover or mover los hunterMaster
+	update_nave_enemiga(dt, self.huntersSlaves, balas, player)
+
 	--Checamos cuando debemos remover or mover los lancers
 	update_nave_enemiga(dt, self.lancers, balas, player)
 
@@ -107,6 +115,7 @@ function Enemy:check_stage(dt, player)
 			self:create_enemy(dt, player, 'naveBasic')
 			self:create_enemy(dt, player, 'dron')
 			self:create_enemy(dt, player, 'Lancer')
+			self:create_enemy(dt, player, 'HunterSlave')
 		elseif self.tag_stage == 'enjambre' then
 			self:create_enemy(dt, player, 'dron')
 		elseif self.tag_stage == 'cint_ast' then
@@ -136,9 +145,15 @@ function Enemy:cambio_stage()
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
+		self.velodron = 80 + self.nivel * 10
 
 		self.max_on_screen_lancers = 3 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_lancers = 5 + self.nivel * 2
+		
+		if self.nivel >= 6 then
+			self.max_on_screen_huntersSlaves = self.nivel
+			self.chance_huntersSlaves = 10 + self.nivel * 2
+		end
 		
 	elseif self.tag_stage == 'cint_ast' then
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
@@ -151,8 +166,9 @@ function Enemy:cambio_stage()
 		self.chance_asteroidesG = 5 + self.nivel
 
 	elseif self.tag_stage == 'enjambre' then
-		self.max_on_screen_drones = 15 + self.nivel * 2
-		self.chance_drones = 30 + self.nivel * 2
+		self.max_on_screen_drones = 20 + self.nivel * 2
+		self.chance_drones = 80 + self.nivel * 2
+		self.velodron = 160 + self.nivel * 10
 
 	elseif self.tag_stage == 'hunters' then
 		self.max_on_screen_huntersMasters = self.nivel
@@ -167,6 +183,7 @@ function Enemy:cambio_stage()
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
+		self.velodron = 80 + self.nivel * 10
 	end
 
 	return self.tag_stage
@@ -238,13 +255,9 @@ function Enemy:create_enemy(dt, player, tipo)
 		end
 		--Creacion de Drones
 		if tipo == 'dron' then
-			if table.getn(self.drones) < self.max_on_screen_drones and self.nivel < 6 then
+			if table.getn(self.drones) < self.max_on_screen_drones then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
-					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
-				end
-			elseif math.random(0,100) < self.max_on_screen_drones then
-				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
-					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, 80, player))
+					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, self.velodron, player))
 				end
 			end
 		end
@@ -256,7 +269,19 @@ function Enemy:create_enemy(dt, player, tipo)
 				end
 			end
 		end
-		--Creacion de Lancer ya se la pelaron
+		--Creacion de HunterSalves todos mensos jaja xddd
+		if tipo == 'HunterSlave' then
+			if table.getn(self.huntersSlaves) < self.max_on_screen_huntersSlaves then
+				if (MAX_CHANCE - self.chance_huntersSlaves) < love.math.random(MAX_CHANCE) then
+					if math.random(1,2) == 1 then
+						table.insert(self.huntersSlaves, HunterSlave(WINDOW_WIDTH, math.random(WINDOW_HEIGHT/8, WINDOW_HEIGHT/3), 200, true))
+					else
+						table.insert(self.huntersSlaves, HunterSlave(-50, math.random(WINDOW_HEIGHT/8, WINDOW_HEIGHT/3), 200, false))
+					end
+				end
+			end
+		end
+		--Creacion de Lancer
 		if tipo == 'Lancer' then
 			if table.getn(self.lancers) < self.max_on_screen_lancers then
 				if (MAX_CHANCE - self.chance_lancers) < love.math.random(MAX_CHANCE) then
@@ -349,6 +374,9 @@ function Enemy:render()
 	end
 	for i, HunterMaster in pairs(self.huntersMasters) do
 		HunterMaster:render()
+	end
+	for i, HunterSlave in pairs(self.huntersSlaves) do
+		HunterSlave:render()
 	end
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
