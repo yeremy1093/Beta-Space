@@ -33,6 +33,7 @@ require 'Source/Enemy/EngineEnemy/engineShot'
 
 --Archivos de fondo de pantalla
 require 'Source/Background/background'
+require 'Source/Background/planetas'
 require 'Source/Background/sky/sky'
 require 'Source/Background/sky/star'
 
