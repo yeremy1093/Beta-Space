@@ -187,7 +187,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 			table.remove(enemigos, i)
 		end
 		
-		if enemigo.y > WINDOW_HEIGHT or enemigo.x > WINDOW_WIDTH or enemigo.x < -enemigo.width or enemigo.y < -35 then
+		if enemigo.y > WINDOW_HEIGHT or enemigo.x > WINDOW_WIDTH or enemigo.x < -enemigo.width or enemigo.y < -enemigo.height then
 			table.remove(enemigos, i)
 		end
 	end

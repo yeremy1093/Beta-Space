@@ -98,7 +98,7 @@ function Play:update(dt)
         end
         TIMER_CAMBIO_STAGE = TIMER_CAMBIO_STAGE - dt
         if TIMER_CAMBIO_STAGE <= 0 then
-            TIMER_CAMBIO_STAGE = 3
+            TIMER_CAMBIO_STAGE = 2
             self.cambio_stage = false
             self.cambio_background = false
             self.enemyManager:cambio_stage(self.stage)
@@ -206,8 +206,8 @@ function Play:render()
      --Ponemos en pantalla el stage en el que vamos
     if self.cambio_stage then
         if self.cambio_background then
-            if TIMER_CAMBIO_STAGE > 2.5 then
-                love.graphics.setColor(0,0,0, 0 + (2 * math.abs(3 - TIMER_CAMBIO_STAGE)))
+            if TIMER_CAMBIO_STAGE > 1.5 then
+                love.graphics.setColor(0,0,0, 0 + (2 * math.abs(2 - TIMER_CAMBIO_STAGE)))
             elseif TIMER_CAMBIO_STAGE > 0.5 then
                 self.enemyManager:vaciar_enemigos()
                 self.background:change_background()

@@ -3,7 +3,7 @@ Enemy = Class{}
 local MAX_CHANCE = 100
 
 function Enemy:init()
-	self.nivel = 6
+	self.nivel = 1
 
 	stage_checkpoint = 0;
 
@@ -43,6 +43,10 @@ function Enemy:init()
 	self.lancers = {}
 	self.max_on_screen_lancers = 0
 	self.chance_lancers = 0
+
+	self.cruceros = {}
+	self.max_on_screen_cruceros = 0
+	self.chance_cruceros = 0
 
 	self.engineShot = EngineShot()
 
@@ -100,6 +104,9 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover los lancers
 	update_nave_enemiga(dt, self.lancers, balas, player)
 
+	--Checamos cuando debemos remover or mover los cruceros
+	update_nave_enemiga(dt, self.cruceros, balas, player)
+
 	self:updateShots(dt, player, balas)
 
 	--Funcion encargada de ver que solo se creen enemigos que falten por completar, y si ya no hay, cambia el stage regresando true
@@ -116,6 +123,7 @@ function Enemy:check_stage(dt, player)
 			self:create_enemy(dt, player, 'dron')
 			self:create_enemy(dt, player, 'Lancer')
 			self:create_enemy(dt, player, 'HunterSlave')
+			self:create_enemy(dt, player, 'crucero')
 		elseif self.tag_stage == 'enjambre' then
 			self:create_enemy(dt, player, 'dron')
 		elseif self.tag_stage == 'cint_ast' then
@@ -147,9 +155,12 @@ function Enemy:cambio_stage()
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
 
-		self.max_on_screen_lancers = 3 + love.math.random(self.nivel, self.nivel * 2)
+		self.max_on_screen_lancers = 2 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_lancers = 5 + self.nivel * 2
 		
+		self.max_on_screen_cruceros = 1 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_cruceros = 50 + self.nivel * 2
+
 		if self.nivel >= 6 then
 			self.max_on_screen_huntersSlaves = self.nivel
 			self.chance_huntersSlaves = 10 + self.nivel * 2
@@ -293,6 +304,14 @@ function Enemy:create_enemy(dt, player, tipo)
 				end
 			end
 		end
+		--Creacion de Crucero
+		if tipo == 'crucero' then
+			if table.getn(self.cruceros) < self.max_on_screen_cruceros then
+				if (MAX_CHANCE - self.chance_cruceros) < love.math.random(MAX_CHANCE) then
+					table.insert(self.cruceros, Crucero(love.math.random(10, 50)))
+				end
+			end
+		end
 		enemy_timer = 0.25
 	end
 end
@@ -352,6 +371,9 @@ function Enemy:vaciar_enemigos()
 	for i, lancers in pairs(self.lancers) do
 		table.remove(self.lancers, i)
 	end
+	for i, crucero in pairs(self.cruceros) do
+		table.remove(self.cruceros, i)
+	end
 
 end
 
@@ -365,6 +387,9 @@ function Enemy:render()
 	end
 	for i, asteroide in pairs(self.asteroides) do
 		asteroide:render()
+	end
+	for i, crucero in pairs(self.cruceros) do
+		crucero:render()
 	end
 	for i, cazaBasic in pairs(self.navesBasic) do
 		cazaBasic:render()
