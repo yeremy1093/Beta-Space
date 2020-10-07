@@ -8,8 +8,8 @@ function Crucero:init(dy)
 	self.hp = 8
 	self.x = love.math.random(50, WINDOW_WIDTH - 100)
 	self.y = -155
-	self.imagex = x - 13
-	self.imagey = y - 105
+	self.imagex = self.x - 13
+	self.imagey = self.y - 105
 	self.dy = dy
 	self.width = 34
 	self.height = 34
