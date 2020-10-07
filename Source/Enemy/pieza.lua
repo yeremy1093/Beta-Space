@@ -58,14 +58,14 @@ function Pieza:update(dt)
 		end
 
 	else
+		local anim_frame = self.anim:update(dt, self.sprite_ex)
 
-		if 1 == self.anim:update(dt, self.sprite_ex) then
+		if 1 == anim_frame then
 			TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
-		end
 		
-		if 7 == self.anim:update(dt, self.sprite_ex) then
+		elseif 7 == anim_frame then
 			return false
 		end
 	end

@@ -57,7 +57,12 @@ function Crucero:update(dt)
 	if self.destruible == false then 
 		self.anim['idle']:update(dt, self.sprite)
 	else
-		if 9 == self.anim['explosion']:update(dt, self.sprite_ex) then
+		local anim_frame = self.anim['explosion']:update(dt, self.sprite_ex)
+		if 1 == anim_frame then
+			TEsound.play({'Soundtrack/Effect/Explosion Large.wav'},
+					'static',
+					{'effect'},	VOLUMEN_EFECTOS / 2)
+		else if 9 == anim_frame then
 			return false
 		end
 	end
