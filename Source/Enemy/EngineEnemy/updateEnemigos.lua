@@ -7,7 +7,7 @@ function update_asteroides(dt, asteroides, balas, nave)
 			table.remove(asteroides, i)
 		end
 		
-		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -asteroide.height then
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x + asteroide.width < 0 or asteroide.y + asteroide.height < 0 then
 			table.remove(asteroides, i)
 		end
 	end
@@ -65,7 +65,7 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 			table.remove(asteroides, i)
 		end
 		
-		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -asteroide.height then
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x + asteroide.width < 0 or asteroide.y + asteroide.height < 0 then
 			table.remove(asteroides, i)
 		end
 	end
@@ -127,7 +127,7 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 
 		asteroide:update(dt)
 		
-		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x < -asteroide.width or asteroide.y < -asteroide.height then
+		if asteroide.y > WINDOW_HEIGHT or asteroide.x > WINDOW_WIDTH or asteroide.x + asteroide.width < 0 or asteroide.y + asteroide.height < 0 then
 			table.remove(asteroides, i)
 		end
 	end
@@ -187,7 +187,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 			table.remove(enemigos, i)
 		end
 		
-		if enemigo.y > WINDOW_HEIGHT or enemigo.x > WINDOW_WIDTH or enemigo.x < -enemigo.width or enemigo.y < -35 then
+		if enemigo.y > WINDOW_HEIGHT or enemigo.x > WINDOW_WIDTH or enemigo.x + enemigo.width < 0 or enemigo.y + enemigo.height < 0 then
 			table.remove(enemigos, i)
 		end
 	end
@@ -199,7 +199,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' or enemigo.clase == 'Lancer' or enemigo.clase == 'hunterMenso'then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
-				elseif enemigo.clase == 'dron' then
+				elseif enemigo.clase == 'dron' or enemigo.clase == 'crucero' then
 					puntaje = puntaje + 150
 					stage_checkpoint = stage_checkpoint - 150
 				end
