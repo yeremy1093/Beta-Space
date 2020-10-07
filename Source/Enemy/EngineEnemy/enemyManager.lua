@@ -318,7 +318,7 @@ function Enemy:updateShots(dt, player, balas)
 	if shot_timer <= 0 then
 		if table.getn(self.navesBasic) > 0 then
 			for i, naveBasic in pairs(self.navesBasic) do
-				if math.random(0,100) >= 90 and naveBasic.destruible == false then
+				if love.math.random(0,100) >= 90 and naveBasic.destruible == false then
 					self.engineShot:setCannon(naveBasic.x + 25, naveBasic.y + 40)
 				end
 			end
@@ -326,8 +326,8 @@ function Enemy:updateShots(dt, player, balas)
 		
 		if table.getn(self.huntersMasters) > 0 then
 			for i, hunter in pairs(self.huntersMasters) do
-				if math.random(0,100) >= 80 and hunter.destruible == false then
-					if math.random(1,10) >= 9 then
+				if love.math.random(0,100) >= 80 and hunter.destruible == false then
+					if love.math.random(1,10) >= 9 then
 						self.engineShot:setWissil(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), BULLET_SPEED/2, love.math.random(-100, 100)) 
 						TEsound.play('Soundtrack/Effect/Launch Missil.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
 					else
@@ -338,7 +338,7 @@ function Enemy:updateShots(dt, player, balas)
 		end
 		if table.getn(self.huntersSlaves) > 0 then
 			for i, hunter in pairs(self.huntersSlaves) do
-				if math.random(0,100) >= 80 and hunter.destruible == false then
+				if love.math.random(0,100) >= 80 and hunter.destruible == false then
 					if hunter.tipo == 'tipoMisil' then
 						self.engineShot:setWissil(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), BULLET_SPEED/2, love.math.random(-100, 100)) 
 						TEsound.play('Soundtrack/Effect/Launch Missil.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)

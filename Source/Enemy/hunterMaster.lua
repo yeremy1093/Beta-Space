@@ -21,7 +21,7 @@ function HunterMaster:init(x, y, player, spacex, spacey, velocity)
     self.velocity = velocity
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
-    self.fps = math.random(6, 10)
+    self.fps = love.math.random(6, 10)
     self.newx = (self.spacex - self.width) * (math.random(10,90)/100)
     self.newy = (self.spacey - self.height) * (math.random(10,70)/100)
 
@@ -78,8 +78,8 @@ function HunterMaster:update(dt, player, playerBalas)
 
         if self.combatState == idleState then
             if self.objetiveApproach then
-                self.newx = (self.spacex - self.width) * (math.random(10,90)/100)
-                self.newy = (self.spacey - self.height) * (math.random(10,70)/100)
+                self.newx = (self.spacex - self.width) * (love.math.random(10,90)/100)
+                self.newy = (self.spacey - self.height) * (love.math.random(10,70)/100)
             end
             if not self:kamikaze(player) then
                 if not self:avoidTheCorners() then
@@ -147,7 +147,7 @@ end
 
 function HunterMaster:kamikaze(player)
     if self.hp <= 2 then
-        if math.random(1,10) > 7 then
+        if love.math.random(1,10) > 7 then
             self.newx = player.x
             self.newy = player.y
             self:resetMoveEngine()
@@ -162,10 +162,10 @@ function HunterMaster:avoidTheCorners()
     local change = false
     if self.x < self.width * 2 then
         change = true
-        self.newx = math.random(self.spacex/4, self.spacex - (self.width * 3))
+        self.newx = love.math.random(self.spacex/4, self.spacex - (self.width * 3))
     elseif self.x > self.spacex - (self.width * 2) then
         change = true
-        self.newx = math.random(0, (self.spacex * (3/4)) - self.width)
+        self.newx = love.math.random(0, (self.spacex * (3/4)) - self.width)
     end
     if change then
         self:resetMoveEngine()
@@ -209,17 +209,17 @@ function HunterMaster:detectBalasAndAvoid(balas)
             self:resetMoveEngine()
             for i, bala in pairs(dangerBalas) do
                 if self.x >= bala.x then --bala a la izquierda
-                    px = self.x + math.random(self.height, self.height * 2)
+                    px = self.x + love.math.random(self.height, self.height * 2)
                 else --bala a la derecha
-                    px = self.x - math.random(self.height, self.height * 2)
+                    px = self.x - love.math.random(self.height, self.height * 2)
                 end
                 if self.y + self.spacey/8 >= bala.y then -- bala esta arriba baka >//.//<
-                    py = self.y - math.random(self.width, self.width * 2) 
+                    py = self.y - love.math.random(self.width, self.width * 2) 
                 elseif self.y - self.spacey/8 <= bala.y then -- bala esta abajo
-                    py = self.y + math.random(self.width, self.width * 2) 
+                    py = self.y + love.math.random(self.width, self.width * 2) 
                 end
-                self.newx = math.min(self.spacex - self.width, math.max(0, px))
-                self.newy = math.min(self.spacey - self.height, math.max(0, py))
+                self.newx = love.math.min(self.spacex - self.width, math.max(0, px))
+                self.newy = love.math.min(self.spacey - self.height, math.max(0, py))
             end
         end 
     end
