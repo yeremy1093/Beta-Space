@@ -406,7 +406,6 @@ function Enemy:render()
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
 	end
-
 end
 
 function Enemy:render_nebulosas()

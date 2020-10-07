@@ -194,14 +194,14 @@ function Play:render()
 	--Dibujamos las estrellas de alex
 	self.sky:render()
 
-    --Dibujamos las balas del jugador
-    self.shotManager:render()
-
     for i, pickup in pairs(self.pickups) do
         pickup:render()
     end
 
     self.enemyManager:render()
+
+    --Dibujamos las balas del jugador
+    self.shotManager:render()
 
      --Ponemos en pantalla el stage en el que vamos
     if self.cambio_stage then
