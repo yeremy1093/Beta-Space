@@ -4,13 +4,18 @@ HunterSlave = Class{}
 local sprite_sheet_hunter = love.graphics.newImage('Imagen/SpritesEnemys/Hunter-1.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function HunterSlave:init(x, y, velocity, izquierda)
+local tipoMisil = "tipoMisil"
+local tipoBala = "tipoBala"
+
+function HunterSlave:init(x, y, velocity, spacex, spacey)
     self.clase = 'hunterMenso'
     self.hp = 4
 	self.x = x
     self.y = y
     self.velx = velocity
-    self.vely = velocity * (math.random(1,10)/10)
+    self.vely = velocity 
+    self.spacex = spacex
+    self.spacey = spacey
 	self.width = 58
     self.height = 40
     self.spacex = spacex
@@ -18,14 +23,18 @@ function HunterSlave:init(x, y, velocity, izquierda)
     self.velocity = velocity
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
-    self.fps = math.random(6, 10)
+    self.fps = love.math.random(6, 10)
     --variable para saber cuando el asteroide explotó y se puede borrar
-	self.destruible = false
-    if izquierda then
-        self.vely = -self.vely
+    self.destruible = false
+    self.tipo = ''
+    if love.math.random(1,2) == 1 then
+        self.tipo = tipoMisil
+        self.velx = self.velx * (love.math.random(1,10)/10)
+    else
+        self.tipo = tipoBala
     end
-
-    self.conty = 1
+    self.contx = 1
+    self.mode = false
 
 	--Aqui van todas las animaciones posibles
 	self.anim = {['no_damage'] = Anim(0, 0, self.width, self.height, 2, 2, self.fps),
@@ -51,13 +60,31 @@ function HunterSlave:update(dt)
             self.anim['high_damage']:update(dt, self.sprite)
         end
         --Comportamiento
-        self.x = self.x + self.velx * dt
-        self.y = self.y + self.vely * dt
-        self.conty = self.conty - dt
-        if self.conty <= 0 then
-            self.conty = 1
-            self.vely = (-1) * self.vely
+        if tipoMisil == self.tipo then
+            self.y = self.y + self.vely * dt
+            self.x = self.x + self.velx * dt
+            self.contx = self.contx - dt
+            if self.contx <= 0 or 
+            self.x >= 0.95 * self.spacex or
+            self.x <= 0.05 * self.spacex then
+                self.contx = 1
+                self.velx = -self.velx
+            end
+        else
+            if self.mode then
+                self.x = self.x + self.velx * dt
+                if self.x >= 0.95 * self.spacex or
+                self.x <= 0.05 * self.spacex then
+                    self.velx = -self.velx
+                end
+            else
+                self.y = self.y + self.vely * dt
+                if self.y >= 20 then
+                    self.mode = true
+                end
+            end
         end
+        
 	else
 		if 4 == self.anim['explosion']:update(dt, self.sprite_ex) then
 			return false

@@ -151,7 +151,7 @@ function Enemy:cambio_stage()
 		self.chance_lancers = 5 + self.nivel * 2
 		
 		if self.nivel >= 6 then
-			self.max_on_screen_huntersSlaves = self.nivel
+			self.max_on_screen_huntersSlaves = self.nivel - 5
 			self.chance_huntersSlaves = 10 + self.nivel * 2
 		end
 		
@@ -273,11 +273,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'HunterSlave' then
 			if table.getn(self.huntersSlaves) < self.max_on_screen_huntersSlaves then
 				if (MAX_CHANCE - self.chance_huntersSlaves) < love.math.random(MAX_CHANCE) then
-					if math.random(1,2) == 1 then
-						table.insert(self.huntersSlaves, HunterSlave(WINDOW_WIDTH, math.random(WINDOW_HEIGHT/8, WINDOW_HEIGHT/3), 200, true))
-					else
-						table.insert(self.huntersSlaves, HunterSlave(-50, math.random(WINDOW_HEIGHT/8, WINDOW_HEIGHT/3), 200, false))
-					end
+					table.insert(self.huntersSlaves, HunterSlave(math.random(0, WINDOW_WIDTH), -34, 200, WINDOW_WIDTH, WINDOW_HEIGHT))
 				end
 			end
 		end
@@ -321,6 +317,18 @@ function Enemy:updateShots(dt, player, balas)
 				end
 			end
 		end
+		if table.getn(self.huntersSlaves) > 0 then
+			for i, hunter in pairs(self.huntersSlaves) do
+				if math.random(0,100) >= 80 and hunter.destruible == false then
+					if hunter.tipo == 'tipoMisil' then
+						self.engineShot:setWissil(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), BULLET_SPEED/2, love.math.random(-100, 100)) 
+						TEsound.play('Soundtrack/Effect/Launch Missil.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+					else
+						self.engineShot:setSmartCannon(hunter.x + (hunter.width/2), hunter.y + (hunter.height/2), player, 400)
+					end
+				end
+			end
+		end
 		shot_timer = 0.05
 	end
 	self.engineShot:update(dt, player)
@@ -348,6 +356,9 @@ function Enemy:vaciar_enemigos()
 	end
 	for i, huntersMasters in pairs(self.huntersMasters) do
 		table.remove(self.huntersMasters, i)
+	end
+	for i, huntersSlaves in pairs(self.huntersSlaves) do
+		table.remove(self.huntersSlaves, i)
 	end
 	for i, lancers in pairs(self.lancers) do
 		table.remove(self.lancers, i)
