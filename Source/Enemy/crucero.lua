@@ -24,6 +24,12 @@ function Crucero:init(dy)
 	--Aqui van todas las animaciones posibles
 	self.anim = {['idle'] = Anim(0, 0, 60, 261, 8, 8, self.fps),
 				['explosion'] = Anim(0, 0, 200, 200, 9, 9, self.fps)}
+
+
+	self.piezas = {}
+	table.insert(self.piezas, Pieza(self.x - 14, self.y + 4, 0, self.dy, 'back'))
+	table.insert(self.piezas, Pieza(self.x, self.y + 93, 0, self.dy, 'mid'))
+	table.insert(self.piezas, Pieza(self.x - 20, self.y + 152, 0, self.dy, 'front'))
 end
 
 --Funcion de update
@@ -32,6 +38,17 @@ function Crucero:update(dt)
 
 	self.corex = self.x + 13
 	self.corey = self.y + 105
+
+	for i, pieza in pairs(self.piezas) do
+		
+		if false == pieza:update(dt) then
+			table.remove(self.piezas, i)
+		end
+		
+		if pieza.y > WINDOW_HEIGHT or pieza.x > WINDOW_WIDTH or pieza.x + pieza.width < 0 or pieza.y + self.height < 0 then
+			table.remove(self.piezas, i)
+		end
+	end 
 
 	if self.hp <= 0 then
 	 	self.destruible = true
@@ -48,6 +65,15 @@ function Crucero:update(dt)
 end
 
 function Crucero:collides(objeto)
+
+	for i, pieza in pairs(self.piezas) do
+		if pieza:collides(objeto) and pieza.destruible == false and objeto.destruible == false then
+			pieza.hp = pieza.hp - objeto.damage
+			if objeto.clase ~= 'pulsar' and objeto.clase ~= 'pulso' and objeto.clase ~= 'rayo' then
+				objeto.destruible = true
+			end
+		end
+	end
     -- first, check to see if the left edge of either is farther to the right
     -- than the right edge of the other
     if self.corex > objeto.x + objeto.width or objeto.x > self.corex + self.corewidth then
@@ -71,7 +97,11 @@ end
 function Crucero:render()
 	if self.destruible == false then
 		love.graphics.draw(img_crucero_core, self.sprite, self.x, self.y)
+
+		for i, pieza in pairs(self.piezas) do
+			pieza:render()
+		end 
 	else
-		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x - 70, self.y)
+		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x - 100, self.y, 0, 1.5, 1.5)
 	end
 end
