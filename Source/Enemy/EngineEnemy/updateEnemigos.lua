@@ -218,7 +218,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 
 	--Checamos si el enemigo choca con la nave
 	for j, enemigo in pairs(enemigos) do
-		if enemigo:collides(nave) and enemigo.destruible == false then
+		if enemigo:collides(nave) and enemigo.destruible == false  and enemigo.clase ~= 'crucero' then
 			enemigo.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 50
