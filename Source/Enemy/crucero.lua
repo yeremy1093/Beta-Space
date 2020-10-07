@@ -28,8 +28,8 @@ end
 function Crucero:update(dt)
 	self.y = self.y + self.dy * dt
 
-	self.imagex = x - 13
-	self.imagey = y - 105
+	self.imagex = self.x - 13
+	self.imagey = self.y - 105
 
 	if self.hp <= 0 then
 	 	self.destruible = true
