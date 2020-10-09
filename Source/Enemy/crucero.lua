@@ -62,7 +62,7 @@ function Crucero:update(dt)
 			TEsound.play({'Soundtrack/Effect/Explosion Large.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
-		else if 9 == anim_frame then
+		elseif 9 == anim_frame then
 			return false
 		end
 	end

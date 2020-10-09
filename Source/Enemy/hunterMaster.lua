@@ -218,8 +218,8 @@ function HunterMaster:detectBalasAndAvoid(balas)
                 elseif self.y - self.spacey/8 <= bala.y then -- bala esta abajo
                     py = self.y + love.math.random(self.width, self.width * 2) 
                 end
-                self.newx = love.math.min(self.spacex - self.width, math.max(0, px))
-                self.newy = love.math.min(self.spacey - self.height, math.max(0, py))
+                self.newx = math.min(self.spacex - self.width, math.max(0, px))
+                self.newy = math.min(self.spacey - self.height, math.max(0, py))
             end
         end 
     end
