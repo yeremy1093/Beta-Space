@@ -36,6 +36,8 @@ function Crucero:init(dy)
 	table.insert(self.torretas, Torreta(self.x, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
 	table.insert(self.torretas, Torreta(self.x + 40, self.y + 192, 0, self.dy, 'torreta_cannon', 'front'))
 	table.insert(self.torretas, Torreta(self.x + 40, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x + 20, self.y + 132, 0, self.dy, 'torreta_cannon', 'mid'))
+	table.insert(self.torretas, Torreta(self.x + 20, self.y + 152, 0, self.dy, 'torreta_cannon', 'mid'))
 end
 
 --Funcion de update
@@ -46,13 +48,15 @@ function Crucero:update(dt)
 	self.corey = self.y + 105
 
 	for i, pieza in pairs(self.piezas) do
-		
-		if false == pieza:update(dt) then
+		if pieza.hp <= 0 then
 			for j, torreta in pairs(self.torretas) do
 				if torreta.pieza == pieza.tipo then
 					torreta.hp = 0
 				end
 			end
+		end
+		
+		if false == pieza:update(dt) then
 			table.remove(self.piezas, i)
 		end
 		

@@ -15,14 +15,15 @@ function Torreta:init(x, y, dx, dy, tipo, pieza)
 	self.dy = dy
 	self.tipo = tipo
 	self.disparo = false
-	self.sprite_ex = love.graphics.newQuad(0, 0, 20, 20, sprite_sheet_explosion:getDimensions())
+	self.cooldown = false
+	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
 	if tipo == 'torreta_cannon' then
 		local frame = love.math.random(0,4)
 		local offset = frame * 20
 		self.width = 20
 		self.height = 20
 		self.sprite = love.graphics.newQuad(offset, 0, 20, 20, img_torreta_cannon:getDimensions())
-		self.anim = Anim(0, 0, 20, 20, 5, 5, 3)
+		self.anim = Anim(0, 0, 20, 20, 5, 5, 2)
 		self.anim.frame = frame
 	elseif tipo == 'torreta_photon' then
 		self.width = 20
@@ -36,7 +37,7 @@ function Torreta:init(x, y, dx, dy, tipo, pieza)
 		self.anim = Anim(0, 0, 40, 40, 20, 20, 10)
 	end
 
-	self.anim_ex = Anim(0, 0, 20, 20, 4, 4, 10)
+	self.anim_ex = Anim(0, 0, 25, 25, 4, 4, 10)
 
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
@@ -56,9 +57,10 @@ function Torreta:update(dt)
 		self.x = self.x + self.dx * dt
 
 		if self.tipo == 'torreta_cannon' then
-			if 5 == self.anim:update(dt, self.sprite) and self.disparo == false then
+			if 5 == self.anim:update(dt, self.sprite) and self.cooldown == false then
 				self.disparo = true
-			else
+			elseif 5 ~= self.anim:update(dt, self.sprite) then
+				self.cooldown = false
 				self.disparo = false
 			end
 		elseif self.tipo == 'torreta_photon' then

@@ -316,8 +316,10 @@ function Enemy:updateShots(dt, player, balas)
 	local target = 0
 	for i, crucero in pairs(self.cruceros) do
 		for j, torreta in pairs(crucero.torretas) do
-			if torreta.disparo == true then
+			if torreta.disparo == true and torreta.tipo == 'torreta_cannon' then
 				self.engineShot:setSmartCannon(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 400)
+				torreta.cooldown = true
+				torreta.disparo = false
 			end
 		end
 	end
@@ -396,8 +398,7 @@ function Enemy:vaciar_enemigos()
 
 end
 
-function Enemy:render()
-	self.engineShot:render()	
+function Enemy:render()	
 	for i, asteroideG in pairs(self.asteroidesG) do
 		asteroideG:render()
 	end
@@ -426,7 +427,8 @@ function Enemy:render()
 		Lancer:render()
 	end
 
-	love.graphics.print(tostring(#self.drones), 600, 100)
+	self.engineShot:render()
+
 end
 
 function Enemy:render_nebulosas()
