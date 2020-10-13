@@ -64,6 +64,7 @@ function Torreta:update(dt)
 				self.disparo = false
 			end
 		elseif self.tipo == 'torreta_photon' then
+			self.anim:update(dt, self.sprite)
 			
 		elseif self.tipo == 'torreta_disco' then
 			

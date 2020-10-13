@@ -38,6 +38,9 @@ function Crucero:init(dy)
 	table.insert(self.torretas, Torreta(self.x + 40, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
 	table.insert(self.torretas, Torreta(self.x + 20, self.y + 132, 0, self.dy, 'torreta_cannon', 'mid'))
 	table.insert(self.torretas, Torreta(self.x + 20, self.y + 152, 0, self.dy, 'torreta_cannon', 'mid'))
+	table.insert(self.torretas, Torreta(self.x, self.y + 52, 0, self.dy, 'torreta_photon', 'back'))
+	table.insert(self.torretas, Torreta(self.x + 20, self.y + 72, 0, self.dy, 'torreta_photon', 'back'))
+	table.insert(self.torretas, Torreta(self.x + 40, self.y + 52, 0, self.dy, 'torreta_photon', 'back'))
 end
 
 --Funcion de update
