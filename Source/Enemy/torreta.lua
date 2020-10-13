@@ -1,32 +1,42 @@
 Torreta = Class{}
 
-local img_torreta_cannon = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Frontal C-1.png')
-local img_torreta_disco = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Mid C-1.png')
-local img_torreta_photon = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Back C-1.png')
+local img_torreta_cannon = love.graphics.newImage('Imagen/SpritesEnemys/Torret cannon.png')
+local img_torreta_disco = love.graphics.newImage('Imagen/SpritesEnemys/Torret-Disc.png')
+local img_torreta_photon = love.graphics.newImage('Imagen/SpritesEnemys/Torret Ph-Ball.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function Torreta:init(x, y, dx, dy, tipo)
+function Torreta:init(x, y, dx, dy, tipo, pieza)
 	self.clase = 'torreta'
+	self.pieza = pieza
 	self.hp = 1
 	self.x = x
 	self.y = y
 	self.dx = dx
 	self.dy = dy
 	self.tipo = tipo
-	self.sprite_ex = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
+	self.disparo = false
+	self.sprite_ex = love.graphics.newQuad(0, 0, 20, 20, sprite_sheet_explosion:getDimensions())
 	if tipo == 'torreta_cannon' then
-		self.sprite = love.graphics.newQuad(0, 0, 100, 120, img_torreta_cannon:getDimensions())
-		self.width = 100
-		self.height = 120
+		local frame = love.math.random(0,4)
+		local offset = frame * 20
+		self.width = 20
+		self.height = 20
+		self.sprite = love.graphics.newQuad(offset, 0, 20, 20, img_torreta_cannon:getDimensions())
+		self.anim = Anim(0, 0, 20, 20, 5, 5, 3)
+		self.anim.frame = frame
 	elseif tipo == 'torreta_photon' then
-		self.sprite = love.graphics.newQuad(0, 0, 60, 98, img_torreta_photon:getDimensions())
-		self.width = 60
-		self.height = 98
+		self.width = 20
+		self.height = 20
+		self.sprite = love.graphics.newQuad(0, 0, 20, 20, img_torreta_photon:getDimensions())
+		self.anim = Anim(0, 0, 20, 20, 10, 10, 10)
 	elseif tipo == 'torreta_disco' then
-		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_torreta_disco:getDimensions())
-		self.width = 88
-		self.height = 89
+		self.width = 40
+		self.height = 40
+		self.sprite = love.graphics.newQuad(0, 0, 40, 40, img_torreta_disco:getDimensions())
+		self.anim = Anim(0, 0, 40, 40, 20, 20, 10)
 	end
+
+	self.anim_ex = Anim(0, 0, 20, 20, 4, 4, 10)
 
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
@@ -45,25 +55,22 @@ function Torreta:update(dt)
 		self.y = self.y + self.dy * dt
 		self.x = self.x + self.dx * dt
 
-		if self.hp >= 9 then
-			self.sprite:setViewport(0, 0, self.width, self.height)
-		elseif self.hp >= 6 then
-			self.sprite:setViewport(self.width, 0, self.width, self.height)
-		elseif self.hp >= 3 then
-			self.sprite:setViewport(self.width * 2, 0, self.width, self.height)
-		elseif self.hp > 0 then
-			self.sprite:setViewport(self.width * 3, 0, self.width, self.height)
+		if self.tipo == 'torreta_cannon' then
+			if 5 == self.anim:update(dt, self.sprite) and self.disparo == false then
+				self.disparo = true
+			else
+				self.disparo = false
+			end
+		elseif self.tipo == 'torreta_photon' then
+			
+		elseif self.tipo == 'torreta_disco' then
+			
 		end
 
 	else
-		local anim_frame = self.anim:update(dt, self.sprite_ex)
-
-		if 1 == anim_frame then
-			TEsound.play({'Soundtrack/Effect/Explosion Small.wav'},
-					'static',
-					{'effect'},	VOLUMEN_EFECTOS / 2)
+		local anim_frame = self.anim_ex:update(dt, self.sprite_ex)
 		
-		elseif 4 == anim_frame then
+		if 4 == anim_frame then
 			return false
 		end
 	end
@@ -102,6 +109,6 @@ function Torreta:render()
 		end
 		
 	else
-		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x - 20, self.y, 0, 2, 2)
+		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
 	end
 end

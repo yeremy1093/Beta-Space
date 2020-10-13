@@ -314,6 +314,13 @@ end
 
 function Enemy:updateShots(dt, player, balas)
 	local target = 0
+	for i, crucero in pairs(self.cruceros) do
+		for j, torreta in pairs(crucero.torretas) do
+			if torreta.disparo == true then
+				self.engineShot:setSmartCannon(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 400)
+			end
+		end
+	end
 	shot_timer = shot_timer - dt
 	if shot_timer <= 0 then
 		if table.getn(self.navesBasic) > 0 then
@@ -348,6 +355,7 @@ function Enemy:updateShots(dt, player, balas)
 				end
 			end
 		end
+
 		shot_timer = 0.05
 	end
 	self.engineShot:update(dt, player)

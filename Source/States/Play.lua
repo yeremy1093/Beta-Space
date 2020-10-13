@@ -121,23 +121,23 @@ function Play:update(dt)
 
         local random_stage = love.math.random(1, 100)
         if random_stage <= 50 then
-            self.enemyManager.tag_stage = 'enjambre'
+            self.enemyManager.tag_stage = 'normal'
             self.mensaje_stage2 = Escribir('Vienen Enemigos')
             self.mensaje2X = 340
         elseif random_stage <= 65 then
-            self.enemyManager.tag_stage = 'enjambre'
+            self.enemyManager.tag_stage = 'normal'
             self.mensaje_stage2 = Escribir('Cinturon de Asteroides')
             self.mensaje2X = 200
         elseif random_stage <= 80 then
-            self.enemyManager.tag_stage = 'enjambre'
+            self.enemyManager.tag_stage = 'normal'
             self.mensaje_stage2 = Escribir('Enjambre de Drones')
             self.mensaje2X = 300
         elseif random_stage <= 90 then
-            self.enemyManager.tag_stage = 'enjambre'
+            self.enemyManager.tag_stage = 'normal'
             self.mensaje_stage2 = Escribir('Escuadron Elite')
             self.mensaje2X = 340
         else
-            self.enemyManager.tag_stage = 'enjambre'
+            self.enemyManager.tag_stage = 'normal'
             self.mensaje_stage2 = Escribir('Entrando a Nebulosa')
             self.mensaje2X = 280
         end

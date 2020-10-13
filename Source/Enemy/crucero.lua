@@ -30,6 +30,12 @@ function Crucero:init(dy)
 	table.insert(self.piezas, Pieza(self.x - 14, self.y + 4, 0, self.dy, 'back'))
 	table.insert(self.piezas, Pieza(self.x, self.y + 93, 0, self.dy, 'mid'))
 	table.insert(self.piezas, Pieza(self.x - 20, self.y + 152, 0, self.dy, 'front'))
+
+	self.torretas = {}
+	table.insert(self.torretas, Torreta(self.x, self.y + 192, 0, self.dy, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x + 40, self.y + 192, 0, self.dy, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x + 40, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
 end
 
 --Funcion de update
@@ -42,10 +48,26 @@ function Crucero:update(dt)
 	for i, pieza in pairs(self.piezas) do
 		
 		if false == pieza:update(dt) then
+			for j, torreta in pairs(self.torretas) do
+				if torreta.pieza == pieza.tipo then
+					torreta.hp = 0
+				end
+			end
 			table.remove(self.piezas, i)
 		end
 		
 		if pieza.y > WINDOW_HEIGHT or pieza.x > WINDOW_WIDTH or pieza.x + pieza.width < 0 or pieza.y + self.height < 0 then
+			table.remove(self.piezas, i)
+		end
+	end 
+
+	for i, torreta in pairs(self.torretas) do
+		
+		if false == torreta:update(dt) then
+			table.remove(self.torretas, i)
+		end
+		
+		if torreta.y > WINDOW_HEIGHT or torreta.x > WINDOW_WIDTH or torreta.x + torreta.width < 0 or torreta.y + self.height < 0 then
 			table.remove(self.piezas, i)
 		end
 	end 
@@ -105,6 +127,9 @@ function Crucero:render()
 
 		for i, pieza in pairs(self.piezas) do
 			pieza:render()
+		end 
+		for i, torreta in pairs(self.torretas) do
+			torreta:render()
 		end 
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x - 100, self.y, 0, 1.5, 1.5)
