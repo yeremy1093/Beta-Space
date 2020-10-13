@@ -74,6 +74,7 @@ function Crucero:collides(objeto)
 	for i, pieza in pairs(self.piezas) do
 		if pieza:collides(objeto) and pieza.destruible == false and objeto.destruible == false then
 			pieza.hp = pieza.hp - objeto.damage
+			pieza.wasCollides = true
 			if objeto.clase ~= 'pulsar' and objeto.clase ~= 'pulso' and objeto.clase ~= 'rayo' then
 				objeto.destruible = true
 			end
