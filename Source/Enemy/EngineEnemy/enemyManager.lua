@@ -268,7 +268,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'dron' then
 			if table.getn(self.drones) < self.max_on_screen_drones then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
-					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, self.velodron, player))
+					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -15, self.velodron, player))
 				end
 			end
 		end
@@ -417,6 +417,8 @@ function Enemy:render()
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
 	end
+
+	love.graphics.print(tostring(#self.drones), 600, 100)
 end
 
 function Enemy:render_nebulosas()
