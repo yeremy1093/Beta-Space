@@ -32,6 +32,7 @@ function Pieza:init(x, y, dx, dy, tipo)
 
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
+	self.wasCollides = false
 	
 end
 
@@ -47,7 +48,10 @@ function Pieza:update(dt)
 		self.y = self.y + self.dy * dt
 		self.x = self.x + self.dx * dt
 
-		if self.hp >= 9 then
+		if self.wasCollides then
+			self.wasCollides = false
+			self.sprite:setViewport(self.width * 4, 0, self.width, self.height)
+		elseif self.hp >= 9 then
 			self.sprite:setViewport(0, 0, self.width, self.height)
 		elseif self.hp >= 6 then
 			self.sprite:setViewport(self.width, 0, self.width, self.height)
@@ -75,13 +79,13 @@ end
 function Pieza:collides(objeto)
     -- first, check to see if the left edge of either is farther to the right
     -- than the right edge of the other
-    if self.x > objeto.x + objeto.width or objeto.x > self.x + self.width then
+	if self.x > objeto.x + objeto.width or objeto.x > self.x + self.width then
         return false
     end
 
     -- then check to see if the bottom edge of either is higher than the top
     -- edge of the other
-    if self.y > objeto.y + objeto.height or objeto.y > self.y + self.height then
+	if self.y > objeto.y + objeto.height or objeto.y > self.y + self.height then
         return false
 	end 
 	
