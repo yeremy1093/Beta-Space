@@ -130,6 +130,12 @@ function Misil:fijar_enemigo(enemigos)
 	for i, enemigo in pairs(enemigos.huntersMasters) do
 		table.insert(enemigos_totales, enemigo)
 	end
+	for i, enemigo in pairs(enemigos.lancers) do
+		table.insert(enemigos_totales, enemigo)
+	end
+	for i, enemigo in pairs(enemigos.cruceros) do
+		table.insert(enemigos_totales, enemigo)
+	end
 
 	for i, enemigo in pairs(enemigos_totales) do
 		if i == 1 then
