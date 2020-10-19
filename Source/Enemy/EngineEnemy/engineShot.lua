@@ -40,7 +40,7 @@ function EngineShot:update(dt, player)
         end
     end
     for i, PhEnemy in pairs(self.listPhEnemy) do
-        PhEnemy:update(dt)
+        PhEnemy:update(dt, player)
         if (PhEnemy.x > WINDOW_WIDTH or PhEnemy.x < 0) or
         (PhEnemy.y > WINDOW_HEIGHT or PhEnemy.y < 0) then
             table.remove(self.listPhEnemy, i)
@@ -95,8 +95,9 @@ function EngineShot:setWissil(x, y, speedx, speedy, player)
     table.insert(self.listWissil, Wisil(x, y, speedx, speedy, player))
 end
 
-function EngineShot:setPhEnemy(x, y)
-    table.insert(self.listPhEnemy, PhEnemy(x,y))
+function EngineShot:setPhEnemy(x, y, player, velocity)
+    table.insert(self.listPhEnemy, EnemyPhoton(x,y,player,velocity))
+    TEsound.play('Soundtrack/Effect/Bullet Principal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS/2)
 end
 
 function EngineShot:setStella(x, y)
