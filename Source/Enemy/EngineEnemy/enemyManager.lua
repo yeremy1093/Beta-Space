@@ -48,6 +48,10 @@ function Enemy:init()
 	self.max_on_screen_cruceros = 0
 	self.chance_cruceros = 0
 
+	self.capitales = {}
+	self.max_on_screen_capital = 0
+	self.chance_capital = 0
+
 	self.engineShot = EngineShot()
 
 	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
@@ -107,6 +111,9 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover los cruceros
 	update_nave_enemiga(dt, self.cruceros, balas, player)
 
+	--Checamos cuando debemos remover or mover la nave capital
+	update_nave_enemiga(dt, self.capitales, balas, player)
+
 	self:updateShots(dt, player, balas)
 
 	--Funcion encargada de ver que solo se creen enemigos que falten por completar, y si ya no hay, cambia el stage regresando true
@@ -124,6 +131,7 @@ function Enemy:check_stage(dt, player)
 			self:create_enemy(dt, player, 'Lancer')
 			self:create_enemy(dt, player, 'HunterSlave')
 			self:create_enemy(dt, player, 'crucero')
+			self:create_enemy(dt, player, 'capital')
 		elseif self.tag_stage == 'enjambre' then
 			self:create_enemy(dt, player, 'dron')
 		elseif self.tag_stage == 'cint_ast' then
@@ -159,16 +167,23 @@ function Enemy:cambio_stage()
 			self.max_on_screen_lancers = 2 + self.nivel
 			self.chance_lancers = 5 + self.nivel * 2
 		end
-		
+
 		if self.nivel >= 3 then
-			self.max_on_screen_cruceros = 3
+			self.max_on_screen_cruceros = 3 - (#self.capitales * 2)
 			self.chance_cruceros = 10 + self.nivel * 2
 		end
+
+		if self.nivel >= 5 then
+			self.max_on_screen_capital = 1
+			self.chance_capital = 5
+		end
+		
 
 		if self.nivel >= 6 then
 			self.max_on_screen_huntersSlaves = self.nivel - 5
 			self.chance_huntersSlaves = 10 + self.nivel * 2
 		end
+
 		
 	elseif self.tag_stage == 'cint_ast' then
 		self.max_on_screen_asteroides = 5 + self.nivel * 5
@@ -312,6 +327,14 @@ function Enemy:create_enemy(dt, player, tipo)
 				end
 			end
 		end
+		--Creacion de Nave Capital
+		if tipo == 'capital' then
+			if table.getn(self.capitales) < self.max_on_screen_capital then
+				if (MAX_CHANCE - self.chance_capital) < love.math.random(MAX_CHANCE) then
+					table.insert(self.capitales, Capital(love.math.random(10, 30)))
+				end
+			end
+		end
 		enemy_timer = 0.25
 	end
 end
@@ -327,6 +350,25 @@ function Enemy:updateShots(dt, player, balas)
 			end
 			if torreta.disparo == true and torreta.tipo == 'torreta_photon' then
 				self.engineShot:setPhEnemy(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 600)
+				torreta.cooldown = true
+				torreta.disparo = false
+			end
+		end
+	end
+	for i, capital in pairs(self.capitales) do
+		for j, torreta in pairs(capital.torretas) do
+			if torreta.disparo == true and torreta.tipo == 'torreta_cannon' then
+				self.engineShot:setSmartCannon(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 400)
+				torreta.cooldown = true
+				torreta.disparo = false
+			end
+			if torreta.disparo == true and torreta.tipo == 'torreta_photon' then
+				self.engineShot:setPhEnemy(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 600)
+				torreta.cooldown = true
+				torreta.disparo = false
+			end
+			if torreta.disparo == true and torreta.tipo == 'torreta_disco' then
+				self.engineShot:setDiscEnergy(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 300)
 				torreta.cooldown = true
 				torreta.disparo = false
 			end
@@ -404,6 +446,9 @@ function Enemy:vaciar_enemigos()
 	for i, crucero in pairs(self.cruceros) do
 		table.remove(self.cruceros, i)
 	end
+	for i, capital in pairs(self.capitales) do
+		table.remove(self.capital, i)
+	end
 
 end
 
@@ -416,6 +461,9 @@ function Enemy:render()
 	end
 	for i, asteroide in pairs(self.asteroides) do
 		asteroide:render()
+	end
+	for i, capital in pairs(self.capitales) do
+		capital:render()
 	end
 	for i, crucero in pairs(self.cruceros) do
 		crucero:render()

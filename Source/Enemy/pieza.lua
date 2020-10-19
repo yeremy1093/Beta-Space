@@ -3,6 +3,12 @@ Pieza = Class{}
 local img_crucero_front = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Frontal C-1.png')
 local img_crucero_mid = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Mid C-1.png')
 local img_crucero_back = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Back C-1.png')
+
+local img_capital_front = love.graphics.newImage('Imagen/SpritesEnemys/CP1-Cubierta Frontal.png')
+local img_capital_derecha = love.graphics.newImage('Imagen/SpritesEnemys/CP1-CubiertaLateral D.png')
+local img_capital_izquierda = love.graphics.newImage('Imagen/SpritesEnemys/CP1-CubiertaLateral I.png')
+local img_capital_back = love.graphics.newImage('Imagen/SpritesEnemys/CP1-Cubierta Back.png')
+
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
 function Pieza:init(x, y, dx, dy, tipo)
@@ -14,17 +20,44 @@ function Pieza:init(x, y, dx, dy, tipo)
 	self.dy = dy
 	self.tipo = tipo
 	if tipo == 'front' then
+		self.sprite_sheet = img_crucero_front
 		self.sprite = love.graphics.newQuad(0, 0, 100, 120, img_crucero_front:getDimensions())
 		self.width = 100
 		self.height = 120
 	elseif tipo == 'mid' then
+		self.sprite_sheet = img_crucero_mid
 		self.sprite = love.graphics.newQuad(0, 0, 60, 98, img_crucero_mid:getDimensions())
 		self.width = 60
 		self.height = 98
 	elseif tipo == 'back' then
+		self.sprite_sheet = img_crucero_back
 		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_crucero_back:getDimensions())
 		self.width = 88
 		self.height = 89
+	elseif tipo == 'C-front' then
+		self.hp = 18
+		self.sprite_sheet = img_capital_front
+		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_capital_front:getDimensions())
+		self.width = 248
+		self.height = 300
+	elseif tipo == 'C-D' then
+		self.hp = 18
+		self.sprite_sheet = img_capital_derecha
+		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_capital_derecha:getDimensions())
+		self.width = 194
+		self.height = 417
+	elseif tipo == 'C-I' then
+		self.hp = 18
+		self.sprite_sheet = img_capital_izquierda
+		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_capital_izquierda:getDimensions())
+		self.width = 194
+		self.height = 417
+	elseif tipo == 'C-back' then
+		self.hp = 18
+		self.sprite_sheet = img_capital_back
+		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_capital_back:getDimensions())
+		self.width = 242
+		self.height = 245
 	end
 
 	self.sprite_ex = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
@@ -99,14 +132,7 @@ end
 
 function Pieza:render()
 	if self.destruible == false then
-		if self.tipo == 'front' then
-			love.graphics.draw(img_crucero_front, self.sprite, self.x, self.y)
-		elseif self.tipo == 'mid' then
-			love.graphics.draw(img_crucero_mid, self.sprite, self.x, self.y)
-		elseif self.tipo == 'back' then
-			love.graphics.draw(img_crucero_back, self.sprite, self.x, self.y)
-		end
-		
+		love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x - 50, self.y, 0, 2, 2)
 	end

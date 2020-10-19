@@ -5,6 +5,7 @@ local sprite1 = love.graphics.newImage('Imagen/Sprites/D-10.png')
 local sprite2 = love.graphics.newImage('Imagen/Sprites/AX-2.png')
 local sprite3 = love.graphics.newImage('Imagen/Sprites/Y9-2.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion.png')
+local sprite_sheet_stun = love.graphics.newImage('Imagen/SpritesEnemys/Celda-Stun.png')
 
 
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
@@ -47,6 +48,12 @@ function Nave:init(x, y, player)
 	self.dirX = 0
 	self.dirY = 0
 
+	--Por si estamos stuneados
+	self.stun = false
+	self.stun_timer = STUN_TIMER
+	self.stun_sprite = love.graphics.newQuad(0, 0, 70, 70, sprite_sheet_stun:getDimensions())
+	self.stun_anim = Anim(0, 0, 70, 70, 12, 12, 12)
+
 	--La nave tiene un objeto tipo escudo
 	self.escudo = Escudo(20, 100)
 	--Agregamos la cantidad de vidas iniciales
@@ -69,19 +76,19 @@ end
 
 function Nave:update(dt)
 	--Checamos las teclas oprimidas
-	if love.keyboard.isDown('up') then
+	if love.keyboard.isDown('up') and not self.stun then
 		--Se le agrega la velocidad de la nave, por el dt para que el numero sea escalable, y negativo que es hacia arriba
 		self.dirY = math.max(self.dirY - (SHIP_SPEED * 2) * dt, -SHIP_SPEED)
-	elseif love.keyboard.isDown('down') then
+	elseif love.keyboard.isDown('down') and not self.stun then
 		self.dirY = math.min(self.dirY+  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
 	else
 		self.dirY = self.dirY + ((0 - self.dirY) * 5 * dt)
 	end
 
 	--Hacemos lo mismo con el eje de las x 
-	if love.keyboard.isDown('right') then
+	if love.keyboard.isDown('right') and not self.stun then
 		self.dirX = math.min(self.dirX +  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
-	elseif love.keyboard.isDown('left') then
+	elseif love.keyboard.isDown('left') and not self.stun then
 		self.dirX = math.max(self.dirX - (SHIP_SPEED * 2) * dt, -SHIP_SPEED)
 	else
 		self.dirX = self.dirX + ((0 - self.dirX) * 5 * dt)
@@ -99,6 +106,15 @@ function Nave:update(dt)
 		self.y = math.max(0, self.y + self.dirY * dt)
 	elseif self.dirY > 0 then
 		self.y = math.min(WINDOW_HEIGHT - self.height, self.y + self.dirY * dt)
+	end
+
+	if self.stun then
+		self.stun_anim:update(dt, self.stun_sprite)
+		self.stun_timer = self.stun_timer - dt
+		if self.stun_timer <= 0 then
+			self.stun_timer = STUN_TIMER
+			self.stun = false
+		end
 	end
 
 	--Funcion para animar la nave
@@ -178,6 +194,9 @@ function Nave:render()
 	end
 	if escudo_nave == true then
 		self.escudo:render(self.x - 3, self.y - 7)
+	end
+	if self.stun then
+		love.graphics.draw(sprite_sheet_stun, self.stun_sprite, self.x - 6, self.y - 15)
 	end
 end
 

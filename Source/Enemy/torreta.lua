@@ -36,6 +36,7 @@ function Torreta:init(x, y, dx, dy, tipo, pieza)
 		self.height = 40
 		self.sprite = love.graphics.newQuad(0, 0, 40, 40, img_torreta_disco:getDimensions())
 		self.anim = Anim(0, 0, 40, 40, 20, 20, 10)
+		self.timer_disc = love.math.random(3,6)
 	end
 
 	self.anim_ex = Anim(0, 0, 25, 25, 4, 4, 10)
@@ -85,7 +86,23 @@ function Torreta:update(dt)
 			end
 			
 		elseif self.tipo == 'torreta_disco' then
-			
+			if self.timer_disc <= 0 then
+				local anim_frame = self.anim:update(dt, self.sprite)
+				if 10 == anim_frame and self.cooldown == false then
+					self.disparo = true
+				elseif 10 ~= anim_frame then
+					self.cooldown = false
+					self.disparo = false
+				end
+				if 20 == anim_frame then
+					self.timer_disc = love.math.random(3,6)
+					self.sprite:setViewport(0, 0, self.width, self.height)
+					self.anim.frame = 1
+				end
+
+			else
+				self.timer_disc = self.timer_disc - dt
+			end
 		end
 
 	else

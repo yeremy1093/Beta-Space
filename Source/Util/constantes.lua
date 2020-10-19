@@ -8,6 +8,7 @@ BULLET_SPEED = 1000
 BULLET_XSPEED = 100
 TIMER_PULSAR = 3
 TIMER_TERCER_DISPARO = 4
+STUN_TIMER = 3
 
 --Variables globales usadas en el estado PLAY
 PICKUP_TIMER = 5

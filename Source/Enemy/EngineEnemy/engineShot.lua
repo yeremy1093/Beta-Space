@@ -26,8 +26,8 @@ function EngineShot:update(dt, player)
         end
     end
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
-        DiscEnergy:update(dt)
-        if (DiscEnergy.x > WINDOW_WIDTH or DiscEnergy.x < 0) or
+       if not DiscEnergy:update(dt, player) or
+        (DiscEnergy.x > WINDOW_WIDTH or DiscEnergy.x < 0) or
         (DiscEnergy.y > WINDOW_HEIGHT or DiscEnergy.y < 0) then
             table.remove(self.listDiscEnergy, i)
         end
@@ -87,8 +87,8 @@ function EngineShot:setSmartCannon(x, y, player, velocity)
     TEsound.play('Soundtrack/Effect/Bullet Principal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS/2)
 end
 
-function EngineShot:setDiscEnergy(x, y)
-    table.insert(self.listDiscEnergy, DiscEnergy(x,y))
+function EngineShot:setDiscEnergy(x, y, player, velocity)
+    table.insert(self.listDiscEnergy, DiscEnergy(x,y, player, velocity))
 end
 
 function EngineShot:setWissil(x, y, speedx, speedy, player)
@@ -151,7 +151,14 @@ function EngineShot:collidesShots(player, balas)
     for i, DiscEnergy in pairs(self.listDiscEnergy) do
         if DiscEnergy:collides(player) then
             --Animacion final de objecto
-            table.remove(self.listDiscEnergy, i)
+            if escudo_nave == false then
+                player.stun = true
+                TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+            else
+                player.escudo:golpe_escudo(10)
+                TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
+            end
+            DiscEnergy.destruible = true
             return true
         end
         for i, bala in pairs(balas) do

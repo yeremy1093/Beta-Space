@@ -202,6 +202,9 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 				elseif enemigo.clase == 'dron' or enemigo.clase == 'crucero' then
 					puntaje = puntaje + 150
 					stage_checkpoint = stage_checkpoint - 150
+				elseif enemigo.clase == 'capital' then
+					puntaje = puntaje + 250
+					stage_checkpoint = stage_checkpoint - 250
 				end
 				enemigo.hp = enemigo.hp - bala.damage
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
@@ -218,7 +221,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 
 	--Checamos si el enemigo choca con la nave
 	for j, enemigo in pairs(enemigos) do
-		if enemigo:collides(nave) and enemigo.destruible == false  and enemigo.clase ~= 'crucero' then
+		if enemigo:collides(nave) and enemigo.destruible == false  and enemigo.clase ~= 'crucero' and enemigo.clase ~= 'capital' then
 			enemigo.destruible = true
 			if escudo_nave == false then
 				puntaje = puntaje - 50
