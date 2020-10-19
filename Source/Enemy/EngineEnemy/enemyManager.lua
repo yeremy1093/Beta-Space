@@ -158,7 +158,7 @@ function Enemy:cambio_stage()
 		self.max_on_screen_lancers = 2 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_lancers = 5 + self.nivel * 2
 		
-		self.max_on_screen_cruceros = 1 + (self.nivel / 2)
+		self.max_on_screen_cruceros = 1 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_cruceros = 50 + self.nivel * 2
 
 		if self.nivel >= 6 then
@@ -268,7 +268,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'dron' then
 			if table.getn(self.drones) < self.max_on_screen_drones then
 				if (MAX_CHANCE - self.chance_drones) < love.math.random(MAX_CHANCE) then
-					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -34, self.velodron, player))
+					table.insert(self.drones, Drone(math.random(0, WINDOW_WIDTH -50), -15, self.velodron, player))
 				end
 			end
 		end
@@ -314,6 +314,15 @@ end
 
 function Enemy:updateShots(dt, player, balas)
 	local target = 0
+	for i, crucero in pairs(self.cruceros) do
+		for j, torreta in pairs(crucero.torretas) do
+			if torreta.disparo == true and torreta.tipo == 'torreta_cannon' then
+				self.engineShot:setSmartCannon(torreta.x + (torreta.width/2), torreta.y + (torreta.height/2), player, 400)
+				torreta.cooldown = true
+				torreta.disparo = false
+			end
+		end
+	end
 	shot_timer = shot_timer - dt
 	if shot_timer <= 0 then
 		if table.getn(self.navesBasic) > 0 then
@@ -348,6 +357,7 @@ function Enemy:updateShots(dt, player, balas)
 				end
 			end
 		end
+
 		shot_timer = 0.05
 	end
 	self.engineShot:update(dt, player)
@@ -388,8 +398,7 @@ function Enemy:vaciar_enemigos()
 
 end
 
-function Enemy:render()
-	self.engineShot:render()	
+function Enemy:render()	
 	for i, asteroideG in pairs(self.asteroidesG) do
 		asteroideG:render()
 	end
@@ -417,6 +426,9 @@ function Enemy:render()
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
 	end
+
+	self.engineShot:render()
+
 end
 
 function Enemy:render_nebulosas()
