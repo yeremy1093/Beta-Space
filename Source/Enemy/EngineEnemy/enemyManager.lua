@@ -148,18 +148,18 @@ function Enemy:cambio_stage()
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
-		--self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
-		--self.chance_naveBasic = 10 + self.nivel * 2
+		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_naveBasic = 10 + self.nivel * 2
 
-		--self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
-		--self.chance_drones = 5 + self.nivel * 2
-		--self.velodron = 80 + self.nivel * 10
+		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_drones = 5 + self.nivel * 2
+		self.velodron = 80 + self.nivel * 10
 
-		--self.max_on_screen_lancers = 2 + love.math.random(self.nivel, self.nivel * 2)
-		--self.chance_lancers = 5 + self.nivel * 2
+		self.max_on_screen_lancers = 2 + love.math.random(self.nivel, self.nivel * 2)
+		self.chance_lancers = 5 + self.nivel * 2
 		
-		self.max_on_screen_cruceros = 3
-		self.chance_cruceros = 50 + self.nivel * 2
+		self.max_on_screen_cruceros = 2
+		self.chance_cruceros = 10 + self.nivel * 2
 
 		if self.nivel >= 6 then
 			self.max_on_screen_huntersSlaves = self.nivel - 5
