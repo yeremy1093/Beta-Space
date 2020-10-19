@@ -155,11 +155,15 @@ function Enemy:cambio_stage()
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
 
-		self.max_on_screen_lancers = 2 + love.math.random(self.nivel, self.nivel * 2)
-		self.chance_lancers = 5 + self.nivel * 2
+		if self.nivel >= 2 then
+			self.max_on_screen_lancers = 2 + self.nivel
+			self.chance_lancers = 5 + self.nivel * 2
+		end
 		
-		self.max_on_screen_cruceros = 2
-		self.chance_cruceros = 10 + self.nivel * 2
+		if self.nivel >= 3 then
+			self.max_on_screen_cruceros = 3
+			self.chance_cruceros = 10 + self.nivel * 2
+		end
 
 		if self.nivel >= 6 then
 			self.max_on_screen_huntersSlaves = self.nivel - 5

@@ -40,8 +40,8 @@ function EngineShot:update(dt, player)
         end
     end
     for i, PhEnemy in pairs(self.listPhEnemy) do
-        PhEnemy:update(dt, player)
-        if (PhEnemy.x > WINDOW_WIDTH or PhEnemy.x < 0) or
+        if not PhEnemy:update(dt, player) or 
+        (PhEnemy.x > WINDOW_WIDTH or PhEnemy.x < 0) or
         (PhEnemy.y > WINDOW_HEIGHT or PhEnemy.y < 0) then
             table.remove(self.listPhEnemy, i)
         end
@@ -172,7 +172,7 @@ function EngineShot:collidesShots(player, balas)
 				player.escudo:golpe_escudo(10)
 				TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
 			end
-            table.remove(self.listWissil, i)
+            Wisil.destruible = true
             return true
         end
         for i, bala in pairs(balas) do
@@ -186,7 +186,15 @@ function EngineShot:collidesShots(player, balas)
     for i, PhEnemy in pairs(self.listPhEnemy) do
         if PhEnemy:collides(player) then
             --Animacion final de objecto
-            table.remove(self.listPhEnemy, i)
+            if escudo_nave == false then
+                puntaje = puntaje - 10
+                HPnave = HPnave + 2
+                TEsound.play('Soundtrack/Effect/HIT normal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
+            else
+                player.escudo:golpe_escudo(20)
+                TEsound.play({'Soundtrack/Effect/HIT normal.wav'}, 'static', {'effect'},  VOLUMEN_EFECTOS)
+            end
+            PhEnemy.destruible = true
             return true
         end
         for i, bala in pairs(balas) do
