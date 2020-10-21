@@ -17,7 +17,7 @@ function Rayo:init(x, y, xspeed, speed, level)
 	self.speed = speed
 	self.level = level
 	self.sprite_sheet = imgLaser
-	self.width = 1
+	self.width = 10
 	self.height = 12
 	self.angulo = 90
 	self.contador = 0
@@ -41,19 +41,13 @@ function Rayo:update(dt, player)
 			return false
 		end
 
-		if self.contador == 0 then
-			self.x = player.x - (70 * 2 * self.level)
-			self.y = player.y - 12
-			self.contador = self.contador + 1
-		else
-			self.contador = self.contador + 1
-			self.x = self.x + (20 * self.level)
-			self.angulo = self.angulo + 10
-			self.y = player.y - (math.sin((self.contador/20) * math.pi) * (70 * 2 * self.level))
-			self.width = 1
-			self.height = player.y - self.y
+		
+		self.x = player.x + (self.contador * ((70 * 4 * self.level)/18)) - (70 * 2 * self.level)
+		self.angulo = self.angulo + 10
+		self.y = player.y - (math.sin((self.contador/20) * math.pi) * (70 * 2 * self.level))
+		self.height = player.y - self.y
+		self.contador = self.contador + 1
 
-		end
 
 		self.sprite:setViewport(12 * self.contador, 0, 12, 70)
 
@@ -65,4 +59,5 @@ end
 function Rayo:render()
 	--los valores de draw son: imagen, quad (si hay), x, y, rotacion, escala en x, escala en y
 	love.graphics.draw(self.sprite_sheet, self.sprite, self.imagex + 5, self.imagey, math.rad(self.angulo), 1, 2 * self.level)
+	love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end
