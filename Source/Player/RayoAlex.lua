@@ -40,14 +40,12 @@ function Rayo:update(dt, player)
 		if self.contador == 20 then
 			return false
 		end
-
 		
 		self.x = player.x + (self.contador * ((70 * 4 * self.level)/18)) - (70 * 2 * self.level)
 		self.angulo = self.angulo + 10
 		self.y = player.y - (math.sin((self.contador/20) * math.pi) * (70 * 2 * self.level))
 		self.height = player.y - self.y
 		self.contador = self.contador + 1
-
 
 		self.sprite:setViewport(12 * self.contador, 0, 12, 70)
 
