@@ -17,7 +17,7 @@ function Rayo:init(x, y, xspeed, speed, level)
 	self.speed = speed
 	self.level = level
 	self.sprite_sheet = imgLaser
-	self.width = 1
+	self.width = 10
 	self.height = 12
 	self.angulo = 90
 	self.contador = 0
@@ -50,7 +50,6 @@ function Rayo:update(dt, player)
 			self.x = self.x + (20 * self.level)
 			self.angulo = self.angulo + 10
 			self.y = player.y - (math.sin((self.contador/20) * math.pi) * (70 * 2 * self.level))
-			self.width = 1
 			self.height = player.y - self.y
 
 		end
