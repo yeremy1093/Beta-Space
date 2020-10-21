@@ -175,17 +175,17 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 			end
 
 			if nave.x + nave.width <= asteroide.x + 10 then --La nave esta a la izquierda
-				nave.x = nave.x - 2
+				nave.x = asteroide.x - nave.width - 2
 				nave.dirX = -SHIP_SPEED /2
 			elseif nave.x >= asteroide.x + asteroide.width - 10 then --La nave esta a la derecha
-				nave.x = nave.x + 2
+				nave.x = asteroide.x + asteroide.width + 2
 				nave.dirX = SHIP_SPEED /2
 			end
 			if nave.y + nave.height <= asteroide.y + 10 then --La nave esta arriba
-				nave.y = nave.y - 2
+				nave.y = asteroide.y - nave.height - 2
 				nave.dirY = -SHIP_SPEED /2
 			elseif nave.y >= asteroide.y + asteroide.height - 10 then --La nave abajo
-				nave.y = nave.y + 2
+				nave.y = asteroide.y + asteroide.height + 2
 				nave.dirY = SHIP_SPEED /2
 			end
 			break
