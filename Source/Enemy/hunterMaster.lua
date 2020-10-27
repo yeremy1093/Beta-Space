@@ -25,6 +25,9 @@ function HunterMaster:init(x, y, player, spacex, spacey, velocity)
     self.newx = (self.spacex - self.width) * (math.random(10,90)/100)
     self.newy = (self.spacey - self.height) * (math.random(10,70)/100)
 
+    --Una lista vacía de balas, que se llena con balas del jugador que ya no nos deben hacer daño
+    self.balas_usadas = {}
+
     self.combatState = idleState
     self.balasCredentials = {}
 

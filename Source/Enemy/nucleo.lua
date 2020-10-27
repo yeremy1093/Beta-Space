@@ -34,30 +34,17 @@ function Nucleo:update(dt, x, y)
 	if self.hp <= 0 then
 	 	self.destruible = true
 	end
+	self.y = y + self.yoffset
+	self.x = x + self.xoffset
 
 
-	if self.destruible == false then 
-		self.y = y + self.yoffset
-		self.x = x + self.xoffset
+	if self.destruible == false then
 
-		if self.wasCollides then
-			self.wasCollides = false
-			self.sprite:setViewport(self.width * 4, 0, self.width, self.height)
-		elseif self.hp >= 9 then
-			self.sprite:setViewport(0, 0, self.width, self.height)
-		elseif self.hp >= 6 then
-			self.sprite:setViewport(self.width, 0, self.width, self.height)
-		elseif self.hp >= 3 then
-			self.sprite:setViewport(self.width * 2, 0, self.width, self.height)
-		elseif self.hp > 0 then
-			self.sprite:setViewport(self.width * 3, 0, self.width, self.height)
-		end
+		self.anim:update(dt, self.sprite)
 
 	else
 
-		if self.destruido then
-			self.sprite:setViewport(120, 0, self.width, self.height)
-		else
+		if self.destruido == false then
 			local anim_frame = self.anim_ex:update(dt, self.sprite_ex)
 
 			if 1 == anim_frame then
@@ -66,6 +53,8 @@ function Nucleo:update(dt, x, y)
 						{'effect'},	VOLUMEN_EFECTOS / 2)
 			
 			elseif 7 == anim_frame then
+				self.sprite:setViewport(120, 0, self.width, self.height)
+				self.destruido = true
 				return false
 			end
 		end
@@ -103,6 +92,7 @@ function Nucleo:render()
 		if self.destruido then
 			love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
 		else
+			love.graphics.draw(self.sprite_sheet, self.sprite, self.x, self.y)
 			love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x - 50, self.y, 0, 2, 2)
 		end
 	end

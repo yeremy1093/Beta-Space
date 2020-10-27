@@ -210,37 +210,79 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 	for i, bala in pairs(balas) do
 		for j, enemigo in pairs(enemigos) do
 			if enemigo:collides(bala) and enemigo.destruible == false and bala.destruible == false then
-				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' or enemigo.clase == 'Lancer' or enemigo.clase == 'hunterMenso'then
+				if enemigo.clase == 'caza' or enemigo.clase == 'Lancer' or enemigo.clase == 'hunterMenso'then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
 					enemigo.hp = enemigo.hp - bala.damage
-				elseif enemigo.clase == 'dron' or enemigo.clase == 'crucero' then
+					TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
+					'static',
+					{'effect'},	VOLUMEN_EFECTOS / 2)
+				elseif enemigo.clase == 'dron' then
 					puntaje = puntaje + 150
 					stage_checkpoint = stage_checkpoint - 150
 					enemigo.hp = enemigo.hp - bala.damage
+					TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
+					'static',
+					{'effect'},	VOLUMEN_EFECTOS / 2)
 				elseif enemigo.clase == 'capital' then
-					puntaje = puntaje + 250
-					stage_checkpoint = stage_checkpoint - 250
-					local vulnerable = true
-					for i, nucleo in pairs(enemigo.nucleos) do
-						if nucleo.destruido == false then 
-							vulnerable = false
+					local bala_en_lista = false
+					for i, bala_usada in pairs(enemigo.balas_usadas) do
+						if bala == bala_usada then
+							bala_en_lista = true
 							break
 						end
 					end
+					if bala_en_lista == false then
+						TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
+					'static',
+					{'effect'},	VOLUMEN_EFECTOS / 2)
+						puntaje = puntaje + 250
+						stage_checkpoint = stage_checkpoint - 250
+						local vulnerable = true
+						for i, nucleo in pairs(enemigo.nucleos) do
+							if nucleo.destruido == false then 
+								vulnerable = false
+								break
+							end
+						end
 
-					if vulnerable then 
+						if vulnerable then 
+							enemigo.hp = enemigo.hp - bala.damage
+						end
+					end
+				elseif enemigo.clase == 'crucero' or enemigo.clase == 'hunter' then
+					local bala_en_lista = false
+					for i, bala_usada in pairs(enemigo.balas_usadas) do
+						if bala == bala_usada then
+							bala_en_lista = true
+							break
+						end
+					end
+					if bala_en_lista == false then
+						TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
+					'static',
+					{'effect'},	VOLUMEN_EFECTOS / 2)
+						puntaje = puntaje + 100
+						stage_checkpoint = stage_checkpoint - 100
 						enemigo.hp = enemigo.hp - bala.damage
 					end
 
 				end
+				if enemigo.clase == 'capital' or enemigo.clase == 'crucero' or enemigo.clase == 'hunter' then
+					local bala_en_lista = false
+					for i, bala_usada in pairs(enemigo.balas_usadas) do
+						if bala == bala_usada then
+							bala_en_lista = true
+							break
+						end
+					end
+					if bala_en_lista == false then
+						table.insert(enemigo.balas_usadas, bala)
+					end
+				end
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
 					bala.destruible = true
 				end
-				
-				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
-					'static',
-					{'effect'},	VOLUMEN_EFECTOS / 2)
 				break
 			end
 		end

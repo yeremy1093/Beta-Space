@@ -28,6 +28,10 @@ function Capital:init(dy)
 				['explosion'] = Anim(0, 0, 200, 200, 9, 9, self.fps)}
 
 
+	--Una lista vacía de balas, que se llena con balas del jugador que ya no nos deben hacer daño
+	self.balas_usadas = {}
+
+
 	self.piezas = {}
 	table.insert(self.piezas, Pieza(self.x, self.y, 164, 300, 'C-front'))
 	table.insert(self.piezas, Pieza(self.x, self.y, -5, 80, 'C-D'))
@@ -149,6 +153,14 @@ function Capital:collides(objeto)
 		if pieza:collides(objeto) and pieza.destruible == false and objeto.destruible == false then
 			pieza.hp = pieza.hp - objeto.damage
 			pieza.wasCollides = true
+			if objeto.clase ~= 'pulsar' and objeto.clase ~= 'pulso' and objeto.clase ~= 'rayo' then
+				objeto.destruible = true
+			end
+		end
+	end
+	for i, nucleo in pairs(self.nucleos) do
+		if nucleo:collides(objeto) and nucleo.destruible == false and objeto.destruible == false then
+			nucleo.hp = nucleo.hp - objeto.damage
 			if objeto.clase ~= 'pulsar' and objeto.clase ~= 'pulso' and objeto.clase ~= 'rayo' then
 				objeto.destruible = true
 			end
