@@ -222,7 +222,5 @@ function Capital:render()
 		end 
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y, 0, 3, 3)
-		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
-		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x + 200, self.y + 200)
 	end
 end
