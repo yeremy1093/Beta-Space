@@ -165,7 +165,7 @@ function Enemy:cambio_stage()
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
-		self.max_on_screen_naveBasic = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.max_on_screen_naveBasic = 5 + self.nivel
 		self.chance_naveBasic = 10 + self.nivel * 2
 
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
@@ -176,7 +176,7 @@ function Enemy:cambio_stage()
 		self.chance_ingenieros = 10 + self.nivel * 2
 
 		if self.nivel >= 2 then
-			self.max_on_screen_lancers = 2 + self.nivel
+			self.max_on_screen_lancers = self.nivel
 			self.chance_lancers = 5 + self.nivel * 2
 		end
 
@@ -338,7 +338,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'crucero' then
 			if table.getn(self.cruceros) < self.max_on_screen_cruceros then
 				if (MAX_CHANCE - self.chance_cruceros) < love.math.random(MAX_CHANCE) then
-					table.insert(self.cruceros, Crucero(love.math.random(10, 50)))
+					table.insert(self.cruceros, Crucero(love.math.random(50, 100)))
 				end
 			end
 		end
@@ -346,7 +346,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'capital' then
 			if table.getn(self.capitales) < self.max_on_screen_capital then
 				if (MAX_CHANCE - self.chance_capital) < love.math.random(MAX_CHANCE) then
-					table.insert(self.capitales, Capital(love.math.random(10, 30)))
+					table.insert(self.capitales, Capital(love.math.random(50, 100)))
 				end
 			end
 		end

@@ -138,6 +138,16 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 			if asteroide:collides(bala) and bala.destruible == false then
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
 					bala.destruible = true
+					if bala.y > asteroide.y + asteroide.height-10 then
+						asteroide.dy = asteroide.dy - 20
+					elseif bala.y < asteroide.y + 10 then
+						asteroide.dy = asteroide.dy + 20
+					end
+					if bala.x > asteroide.x + asteroide.width-10 then
+						asteroide.dx = asteroide.dx - 20
+					elseif bala.x < asteroide.x + 10 then
+						asteroide.dx = asteroide.dx + 20
+					end
 				end
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
@@ -164,14 +174,18 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 					VOLUMEN_EFECTOS)
 			end
 
-			if nave.x + nave.width < asteroide.x then --La nave esta a la izquierda
+			if nave.x + nave.width <= asteroide.x + 10 then --La nave esta a la izquierda
+				nave.x = asteroide.x - nave.width - 2
 				nave.dirX = -SHIP_SPEED /2
-			else --La nave esta a la derecha
+			elseif nave.x >= asteroide.x + asteroide.width - 10 then --La nave esta a la derecha
+				nave.x = asteroide.x + asteroide.width + 2
 				nave.dirX = SHIP_SPEED /2
 			end
-			if nave.y + nave.height < asteroide.y then --La nave esta arriba
+			if nave.y + nave.height <= asteroide.y + 10 then --La nave esta arriba
+				nave.y = asteroide.y - nave.height - 2
 				nave.dirY = -SHIP_SPEED /2
-			else --La nave abajo
+			elseif nave.y >= asteroide.y + asteroide.height - 10 then --La nave abajo
+				nave.y = asteroide.y + asteroide.height + 2
 				nave.dirY = SHIP_SPEED /2
 			end
 			break

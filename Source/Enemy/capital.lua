@@ -11,6 +11,8 @@ function Capital:init(dy)
 	self.corex = self.x + 232
 	self.corey = self.y + 242
 	self.dy = dy
+	self.on_screen = false
+	self.direccion = love.math.random(0, 1)
 	self.width = 576
 	self.height = 600
 	self.corewidth = 111
@@ -27,42 +29,55 @@ function Capital:init(dy)
 
 
 	self.piezas = {}
-	table.insert(self.piezas, Pieza(self.x + 164, self.y + 300, 0, self.dy, 'C-front'))
-	table.insert(self.piezas, Pieza(self.x - 5, self.y + 80, 0, self.dy, 'C-D'))
-	table.insert(self.piezas, Pieza(self.x + 387, self.y + 80, 0, self.dy, 'C-I'))
-	table.insert(self.piezas, Pieza(self.x + 167, self.y + 55, 0, self.dy, 'C-back'))
+	table.insert(self.piezas, Pieza(self.x, self.y, 164, 300, 'C-front'))
+	table.insert(self.piezas, Pieza(self.x, self.y, -5, 80, 'C-D'))
+	table.insert(self.piezas, Pieza(self.x, self.y, 387, 80, 'C-I'))
+	table.insert(self.piezas, Pieza(self.x, self.y, 167, 55, 'C-back'))
 
 	self.torretas = {}
-	table.insert(self.torretas, Torreta(self.x + 88, self.y + 160, 0, self.dy, 'torreta_cannon', 'C-D'))
-	table.insert(self.torretas, Torreta(self.x + 108, self.y + 140, 0, self.dy, 'torreta_cannon', 'C-D'))
-	table.insert(self.torretas, Torreta(self.x + 108, self.y + 180, 0, self.dy, 'torreta_cannon', 'C-D'))
-	table.insert(self.torretas, Torreta(self.x + 128, self.y + 380, 0, self.dy, 'torreta_cannon', 'C-D'))
-	table.insert(self.torretas, Torreta(self.x + 148, self.y + 400, 0, self.dy, 'torreta_cannon', 'C-D'))
-	table.insert(self.torretas, Torreta(self.x + 208, self.y + 120, 0, self.dy, 'torreta_cannon', 'C-back'))
-	table.insert(self.torretas, Torreta(self.x + 208, self.y + 160, 0, self.dy, 'torreta_cannon', 'C-back'))
-	table.insert(self.torretas, Torreta(self.x + 348, self.y + 120, 0, self.dy, 'torreta_cannon', 'C-back'))
-	table.insert(self.torretas, Torreta(self.x + 348, self.y + 160, 0, self.dy, 'torreta_cannon', 'C-back'))
-	table.insert(self.torretas, Torreta(self.x + 468, self.y + 160, 0, self.dy, 'torreta_cannon', 'C-I'))
-	table.insert(self.torretas, Torreta(self.x + 448, self.y + 140, 0, self.dy, 'torreta_cannon', 'C-I'))
-	table.insert(self.torretas, Torreta(self.x + 448, self.y + 180, 0, self.dy, 'torreta_cannon', 'C-I'))
-	table.insert(self.torretas, Torreta(self.x + 428, self.y + 380, 0, self.dy, 'torreta_cannon', 'C-I'))
-	table.insert(self.torretas, Torreta(self.x + 408, self.y + 400, 0, self.dy, 'torreta_cannon', 'C-I'))
-	table.insert(self.torretas, Torreta(self.x + 228, self.y + 140, 0, self.dy, 'torreta_photon', 'C-back'))
-	table.insert(self.torretas, Torreta(self.x + 328, self.y + 140, 0, self.dy, 'torreta_photon', 'C-back'))
-	table.insert(self.torretas, Torreta(self.x + 248, self.y + 320, 0, self.dy, 'torreta_photon', 'C-front'))
-	table.insert(self.torretas, Torreta(self.x + 308, self.y + 320, 0, self.dy, 'torreta_photon', 'C-front'))
-	table.insert(self.torretas, Torreta(self.x + 268, self.y + 400, 0, self.dy, 'torreta_photon', 'C-front'))
-	table.insert(self.torretas, Torreta(self.x + 288, self.y + 400, 0, self.dy, 'torreta_photon', 'C-front'))
-	table.insert(self.torretas, Torreta(self.x + 228, self.y + 200, 0, self.dy, 'torreta_disco', 'core'))
-	table.insert(self.torretas, Torreta(self.x + 308, self.y + 200, 0, self.dy, 'torreta_disco', 'core'))
-	table.insert(self.torretas, Torreta(self.x + 148, self.y + 320, 0, self.dy, 'torreta_disco', 'core'))
-	table.insert(self.torretas, Torreta(self.x + 388, self.y + 320, 0, self.dy, 'torreta_disco', 'core'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 88, 160, 'torreta_cannon', 'C-D'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 108, 140, 'torreta_cannon', 'C-D'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 108, 180, 'torreta_cannon', 'C-D'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 128, 380, 'torreta_cannon', 'C-D'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 148, 400, 'torreta_cannon', 'C-D'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 208, 120, 'torreta_cannon', 'C-back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 208, 160, 'torreta_cannon', 'C-back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 348, 120, 'torreta_cannon', 'C-back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 348, 160, 'torreta_cannon', 'C-back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 468, 160, 'torreta_cannon', 'C-I'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 448, 140, 'torreta_cannon', 'C-I'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 448, 180, 'torreta_cannon', 'C-I'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 428, 380, 'torreta_cannon', 'C-I'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 408, 400, 'torreta_cannon', 'C-I'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 228, 140, 'torreta_photon', 'C-back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 328, 140, 'torreta_photon', 'C-back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 248, 320, 'torreta_photon', 'C-front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 308, 320, 'torreta_photon', 'C-front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 268, 400, 'torreta_photon', 'C-front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 288, 400, 'torreta_photon', 'C-front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 228, 200, 'torreta_disco', 'core'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 308, 200, 'torreta_disco', 'core'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 148, 320, 'torreta_disco', 'core'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 388, 320, 'torreta_disco', 'core'))
 	
 end
 
 --Funcion de update
 function Capital:update(dt)
-	self.y = self.y + self.dy * dt
+	if self.in_screen == false then
+		self.y = self.y + self.dy * dt
+		if self.y > 20 then
+			self.in_screen = true
+		end
+	else
+		if self.direccion == 1 then
+			self.x = self.x + self.dy * dt
+			if self.x + self.width > WINDOW_WIDTH - 20 then self.direccion = 0 end
+		else
+			self.x = self.x - self.dy * dt
+			if self.x < 20 then self.direccion = 1 end
+		end
+	end
 
 	self.corex = self.x + 232
 	self.corey = self.y + 242
@@ -76,7 +91,7 @@ function Capital:update(dt)
 			end
 		end
 		
-		if false == pieza:update(dt) then
+		if false == pieza:update(dt, self.x, self.y) then
 			table.remove(self.piezas, i)
 		end
 		
@@ -87,7 +102,7 @@ function Capital:update(dt)
 
 	for i, torreta in pairs(self.torretas) do
 		
-		if false == torreta:update(dt) then
+		if false == torreta:update(dt, self.x, self.y) then
 			table.remove(self.torretas, i)
 		end
 		

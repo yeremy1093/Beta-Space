@@ -5,14 +5,14 @@ local img_torreta_disco = love.graphics.newImage('Imagen/SpritesEnemys/Torret-Di
 local img_torreta_photon = love.graphics.newImage('Imagen/SpritesEnemys/Torret Ph-Ball.png')
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
 
-function Torreta:init(x, y, dx, dy, tipo, pieza)
+function Torreta:init(x, y, xoffset, yoffset, tipo, pieza)
 	self.clase = 'torreta'
 	self.pieza = pieza
 	self.hp = 1
 	self.x = x
 	self.y = y
-	self.dx = dx
-	self.dy = dy
+	self.xoffset = xoffset
+	self.yoffset = yoffset
 	self.tipo = tipo
 	self.disparo = false
 	self.cooldown = false
@@ -47,7 +47,7 @@ function Torreta:init(x, y, dx, dy, tipo, pieza)
 end
 
 --Funcion de update
-function Torreta:update(dt)
+function Torreta:update(dt, x, y)
 
 	if self.hp <= 0 then
 	 	self.destruible = true
@@ -55,8 +55,8 @@ function Torreta:update(dt)
 
 
 	if self.destruible == false then 
-		self.y = self.y + self.dy * dt
-		self.x = self.x + self.dx * dt
+		self.y = y + self.yoffset
+		self.x = x + self.xoffset
 
 		if self.tipo == 'torreta_cannon' then
 			local anim_frame = self.anim:update(dt, self.sprite)

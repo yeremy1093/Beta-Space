@@ -11,6 +11,8 @@ function Crucero:init(dy)
 	self.corex = self.x + 13
 	self.corey = self.y + 105
 	self.dy = dy
+	self.dx = 0
+	self.in_screen = false
 	self.width = 60
 	self.height = 261
 	self.corewidth = 34
@@ -27,26 +29,32 @@ function Crucero:init(dy)
 
 
 	self.piezas = {}
-	table.insert(self.piezas, Pieza(self.x - 14, self.y + 4, 0, self.dy, 'back'))
-	table.insert(self.piezas, Pieza(self.x, self.y + 93, 0, self.dy, 'mid'))
-	table.insert(self.piezas, Pieza(self.x - 20, self.y + 152, 0, self.dy, 'front'))
+	table.insert(self.piezas, Pieza(self.x, self.y, -14, 4, 'back'))
+	table.insert(self.piezas, Pieza(self.x, self.y, 0, 93, 'mid'))
+	table.insert(self.piezas, Pieza(self.x, self.y, -20, 152, 'front'))
 
 	self.torretas = {}
-	table.insert(self.torretas, Torreta(self.x, self.y + 192, 0, self.dy, 'torreta_cannon', 'front'))
-	table.insert(self.torretas, Torreta(self.x, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
-	table.insert(self.torretas, Torreta(self.x + 40, self.y + 192, 0, self.dy, 'torreta_cannon', 'front'))
-	table.insert(self.torretas, Torreta(self.x + 40, self.y + 212, 0, self.dy, 'torreta_cannon', 'front'))
-	table.insert(self.torretas, Torreta(self.x + 20, self.y + 132, 0, self.dy, 'torreta_cannon', 'mid'))
-	table.insert(self.torretas, Torreta(self.x + 20, self.y + 152, 0, self.dy, 'torreta_cannon', 'mid'))
-	table.insert(self.torretas, Torreta(self.x, self.y + 52, 0, self.dy, 'torreta_photon', 'back'))
-	table.insert(self.torretas, Torreta(self.x + 20, self.y + 72, 0, self.dy, 'torreta_photon', 'back'))
-	table.insert(self.torretas, Torreta(self.x + 40, self.y + 52, 0, self.dy, 'torreta_photon', 'back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 0, 192, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 0, 212, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 40, 192, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 40, 212, 'torreta_cannon', 'front'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 20, 132, 'torreta_cannon', 'mid'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 20, 152, 'torreta_cannon', 'mid'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 0, 52, 'torreta_photon', 'back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 20, 72, 'torreta_photon', 'back'))
+	table.insert(self.torretas, Torreta(self.x, self.y, 40, 52, 'torreta_photon', 'back'))
 end
 
 --Funcion de update
 function Crucero:update(dt)
-	self.y = self.y + self.dy * dt
-
+	if self.in_screen == false then
+		self.y = self.y + self.dy * dt
+		if self.y > 20 then
+			self.in_screen = true
+		end
+	else
+		self.y = self.y + (self.dy / 2) * dt
+	end
 	self.corex = self.x + 13
 	self.corey = self.y + 105
 
@@ -59,7 +67,7 @@ function Crucero:update(dt)
 			end
 		end
 		
-		if false == pieza:update(dt) then
+		if false == pieza:update(dt, self.x, self.y) then
 			table.remove(self.piezas, i)
 		end
 		
@@ -70,7 +78,7 @@ function Crucero:update(dt)
 
 	for i, torreta in pairs(self.torretas) do
 		
-		if false == torreta:update(dt) then
+		if false == torreta:update(dt, self.x, self.y) then
 			table.remove(self.torretas, i)
 		end
 		
