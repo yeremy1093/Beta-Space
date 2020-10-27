@@ -11,7 +11,7 @@ local img_capital_back = love.graphics.newImage('Imagen/SpritesEnemys/CP1-Cubier
 
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
-function Pieza:init(x, xoffset, yoffset, y, tipo)
+function Pieza:init(x, y, xoffset, yoffset, tipo)
 	self.clase = 'pieza'
 	self.hp = 12
 	self.x = x

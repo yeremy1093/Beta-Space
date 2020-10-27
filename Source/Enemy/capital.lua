@@ -59,6 +59,12 @@ function Capital:init(dy)
 	table.insert(self.torretas, Torreta(self.x, self.y, 308, 200, 'torreta_disco', 'core'))
 	table.insert(self.torretas, Torreta(self.x, self.y, 148, 320, 'torreta_disco', 'core'))
 	table.insert(self.torretas, Torreta(self.x, self.y, 388, 320, 'torreta_disco', 'core'))
+
+	self.nucleos = {}
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
 	
 end
 

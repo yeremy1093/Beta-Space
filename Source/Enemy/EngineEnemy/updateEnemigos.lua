@@ -213,14 +213,27 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 				if enemigo.clase == 'caza' or enemigo.clase == 'hunter' or enemigo.clase == 'Lancer' or enemigo.clase == 'hunterMenso'then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
+					enemigo.hp = enemigo.hp - bala.damage
 				elseif enemigo.clase == 'dron' or enemigo.clase == 'crucero' then
 					puntaje = puntaje + 150
 					stage_checkpoint = stage_checkpoint - 150
+					enemigo.hp = enemigo.hp - bala.damage
 				elseif enemigo.clase == 'capital' then
 					puntaje = puntaje + 250
 					stage_checkpoint = stage_checkpoint - 250
+					local vulnerable = true
+					for i, nucleo in pairs(enemigo.nucleos) do
+						if nucleo.destruido = false then 
+							vulnerable = false
+							break
+						end
+					end
+
+					if vulnerable then 
+						enemigo.hp = enemigo.hp - bala.damage
+					end
+
 				end
-				enemigo.hp = enemigo.hp - bala.damage
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
 					bala.destruible = true
 				end
