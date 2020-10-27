@@ -1,6 +1,6 @@
 Nucleo = Class{}
 
-local img_nucleo = love.graphics.newImage('Imagen/SpritesEnemys/Cubierta Frontal C-1.png')
+local img_nucleo = love.graphics.newImage('Imagen/SpritesEnemys/Nodo-shield.png')
 
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 

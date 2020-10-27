@@ -61,10 +61,10 @@ function Capital:init(dy)
 	table.insert(self.torretas, Torreta(self.x, self.y, 388, 320, 'torreta_disco', 'core'))
 
 	self.nucleos = {}
-	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
-	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
-	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
-	table.insert(self.nucleos, Nucleo(self.x, self.y, 0, 0))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 108, 120))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 228, 120))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 308, 120))
+	table.insert(self.nucleos, Nucleo(self.x, self.y, 428, 120))
 	
 end
 
@@ -116,6 +116,13 @@ function Capital:update(dt)
 			table.remove(self.piezas, i)
 		end
 	end 
+
+	for i, nucleo in pairs(self.nucleos) do
+		nucleo:update(dt, self.x, self.y)
+		if nucleo.y > WINDOW_HEIGHT or nucleo.x > WINDOW_WIDTH or nucleo.x + nucleo.width < 0 or nucleo.y + self.height < 0 then
+			table.remove(self.nucleos, i)
+		end
+	end
 
 	if self.hp <= 0 then
 	 	self.destruible = true
@@ -170,6 +177,9 @@ end
 function Capital:render()
 	if self.destruible == false then
 		love.graphics.draw(img_capital_core, self.sprite, self.x, self.y)
+		for i, nucleo in pairs(self.nucleos) do
+			nucleo:render()
+		end
 
 		for i, pieza in pairs(self.piezas) do
 			pieza:render()
