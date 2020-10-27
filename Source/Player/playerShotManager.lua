@@ -16,7 +16,7 @@ end
 
 --Funciones que tienen que ver con listas de objetos en distintos estados
 function PlayerShot:mover_balas_jugador(dt, player, enemigos)
-		--Hacemos un ciclo en el que se haga update de todas las balas
+        --Hacemos un ciclo en el que se haga update de todas las balas
 	for i, bala in pairs(self.balas) do
         if bala:update(dt, player, enemigos) == false then
             table.remove(self.balas, i)
@@ -70,74 +70,76 @@ function PlayerShot:disparo_jugador(player, dt)
 end
 
 function PlayerShot:disparo_normal(player)
+    self.credential = self.credential + 1
     if player.power_laser == 1 then
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED))
+        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED, self.credential))
     elseif player.power_laser == 2 then
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED))
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED))
+        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED, self.credential))
+        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED, self.credential))
     elseif player.power_laser == 3 then
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED))
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED))
-        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED))
+        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, 0, BULLET_SPEED, self.credential))
+        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, BULLET_XSPEED, BULLET_SPEED, self.credential))
+        table.insert(self.balas, Bala(player.x + player.width/2 - 3, player.y, -BULLET_XSPEED, BULLET_SPEED, self.credential))
     end
     TEsound.play('Soundtrack/Effect/Bullet Principal.wav', 'static', {'effect'}, VOLUMEN_EFECTOS)
 end
 
 function PlayerShot:disparo_direccional(player)
+    self.credential = self.credential + 1
     if player.power_level == 1 then
         if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8, self.credential))
         elseif love.keyboard.isDown('up') and  love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5, self.credential))
         elseif love.keyboard.isDown('down') and  love.keyboard.isDown('left') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7, self.credential))
         elseif love.keyboard.isDown('down') and  love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6, self.credential))
         elseif love.keyboard.isDown('up') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
         elseif love.keyboard.isDown('down') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
         elseif love.keyboard.isDown('left') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
         elseif love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
         else
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
         end
     elseif player.power_level == 2 then
         if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right')) then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6, self.credential))
         elseif (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7, self.credential))
         elseif love.keyboard.isDown('up') or love.keyboard.isDown('down') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
         elseif love.keyboard.isDown('left') or love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
         else
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
         end
     elseif player.power_level == 3 then
         if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right'))
             or (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7, self.credential))
         elseif love.keyboard.isDown('up') or love.keyboard.isDown('down') or love.keyboard.isDown('left') or love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
         else
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
+            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
         end
     end
 
@@ -145,24 +147,26 @@ function PlayerShot:disparo_direccional(player)
 end
 
 function PlayerShot:disparo_pulsar(player)
+    self.credential = self.credential + 1
     if self.pulsar == 'activado' then 
-        table.insert(self.balas, Pulsar(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
+        table.insert(self.balas, Pulsar(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level, self.credential))
         TEsound.play('Soundtrack/Effect/Attk 2 Pulsar.wav', 'static', {'effect'},  VOLUMEN_EFECTOS)
         self.pulsar = 'desactivado'
     end
 end
 
 function PlayerShot:disparo_tercer_disparo(player, dt)
+    self.credential = self.credential + 1
     if self.tercer_disparo == 'activado' then
         if player.nave == 1 then
-            table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level))
+            table.insert(self.balas, Pulso(player.x + player.width/2, player.y, BULLET_SPEED/2, player.power_level, self.credential))
             TEsound.play('Soundtrack/Effect/Attk 2 Pulsar.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
         elseif player.nave == 3 then
             table.insert(self.balas, Misil(player.x + player.width/2, player.y, BULLET_SPEED/2, love.math.random(-100, 100), self.credential))
             TEsound.play('Soundtrack/Effect/Launch Missil.wav', 'static', {'effect'},  VOLUMEN_EFECTOS / 2)
             self:disparar_misiles(player, dt)
         elseif player.nave == 2 then
-            table.insert(self.balas, Rayo(player.x + 30, player.y, BULLET_SPEED, BULLET_SPEED, player.power_level))
+            table.insert(self.balas, Rayo(player.x + 30, player.y, BULLET_SPEED, BULLET_SPEED, player.power_level, self.credential))
             TEsound.play('Soundtrack/Effect/Light saber.wav', 'static', {'effect'},   VOLUMEN_EFECTOS)
         end
         self.tercer_disparo = 'desactivado'
@@ -170,6 +174,7 @@ function PlayerShot:disparo_tercer_disparo(player, dt)
 end
 
 function PlayerShot:disparar_misiles(player, dt)
+    self.credential = self.credential + 1
     if self.misiles > 0 then
         self.timer_misiles = self.timer_misiles - dt
         if self.timer_misiles <= 0 then

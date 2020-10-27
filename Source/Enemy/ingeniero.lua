@@ -32,7 +32,7 @@ function Ingeniero:init(x, y, velocity)
     self.comportamiento = lineaRecta
 
     if lineRecta == self.comportamiento then
-        local angle = math.pi / love.math.random(45, 135)
+        local angle = (math.pi / 180) * love.math.random(45, 135)
         self.velx = -velocity * math.cos(angle)
         self.vely = -velocity * math.sin(angle)
     else
@@ -103,5 +103,9 @@ function Ingeniero:render()
         love.graphics.draw(sprite_sheet_inge, self.sprite, self.x, self.y)
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
-	end
+    end
+    love.graphics.print(self.x, 300, 200)
+    love.graphics.print(self.y, 400, 200)
+    love.graphics.print(self.x, 200, 300)
+    love.graphics.print(self.y, 300, 300)
 end
