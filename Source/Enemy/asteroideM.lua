@@ -21,6 +21,9 @@ function AsteroideM:init(x, y, dx, dy)
 	self.destruible = false
 	self.spawn_asteroides = true
 	--Aqui van todas las animaciones posibles
+
+	self.balas_usadas = {}
+
 	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 8, 8, self.fps),
 				['explosion'] = Anim(0, 0, 200, 200, 8, 8, self.fps)}
 end
