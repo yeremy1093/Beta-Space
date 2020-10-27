@@ -52,6 +52,10 @@ function Enemy:init()
 	self.max_on_screen_capital = 0
 	self.chance_capital = 0
 
+	self.ingenieros = {}
+	self.max_on_screen_ingenieros = 0
+	self.chance_ingenieros = 0
+
 	self.engineShot = EngineShot()
 
 	--Tags para los tipos de stage: cint_ast, hunters, enjambre, nebulosa, normal
@@ -114,6 +118,9 @@ function Enemy:update(dt, puntuacion, balas, player)
 	--Checamos cuando debemos remover or mover la nave capital
 	update_nave_enemiga(dt, self.capitales, balas, player)
 
+	--Checamos cuando debemos remover or mover los ingenieros
+	update_nave_enemiga(dt, self.ingenieros, balas, player)
+
 	self:updateShots(dt, player, balas)
 
 	--Funcion encargada de ver que solo se creen enemigos que falten por completar, y si ya no hay, cambia el stage regresando true
@@ -132,6 +139,7 @@ function Enemy:check_stage(dt, player)
 			self:create_enemy(dt, player, 'HunterSlave')
 			self:create_enemy(dt, player, 'crucero')
 			self:create_enemy(dt, player, 'capital')
+			self:create_enemy(dt, player, 'ingeniero')
 		elseif self.tag_stage == 'enjambre' then
 			self:create_enemy(dt, player, 'dron')
 		elseif self.tag_stage == 'cint_ast' then
@@ -144,6 +152,7 @@ function Enemy:check_stage(dt, player)
 			self:create_enemy(dt, player, 'nebulosa')
 			self:create_enemy(dt, player, 'naveBasic')
 			self:create_enemy(dt, player, 'dron')
+			self:create_enemy(dt, player, 'ingeniero')
 		end
 	end
 	return false
@@ -162,6 +171,9 @@ function Enemy:cambio_stage()
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
+
+		self.max_on_screen_ingenieros = 1
+		self.chance_ingenieros = 10 + self.nivel * 2
 
 		if self.nivel >= 2 then
 			self.max_on_screen_lancers = self.nivel
@@ -214,6 +226,9 @@ function Enemy:cambio_stage()
 		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
+
+		self.max_on_screen_ingenieros = 1
+		self.chance_ingenieros = 10 + self.nivel * 2
 	end
 
 	return self.tag_stage
@@ -295,7 +310,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'HunterMaster' then
 			if table.getn(self.huntersMasters) < self.max_on_screen_huntersMasters then
 				if (MAX_CHANCE - self.chance_huntersMasters) < love.math.random(MAX_CHANCE) then
-					table.insert(self.huntersMasters, HunterMaster(math.random(0, WINDOW_WIDTH -50), -34, player, WINDOW_WIDTH, WINDOW_HEIGHT, 300))
+					table.insert(self.huntersMasters, HunterMaster(love.math.random(0, WINDOW_WIDTH -50), -34, player, WINDOW_WIDTH, WINDOW_HEIGHT, 300))
 				end
 			end
 		end
@@ -303,7 +318,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'HunterSlave' then
 			if table.getn(self.huntersSlaves) < self.max_on_screen_huntersSlaves then
 				if (MAX_CHANCE - self.chance_huntersSlaves) < love.math.random(MAX_CHANCE) then
-					table.insert(self.huntersSlaves, HunterSlave(math.random(0, WINDOW_WIDTH), -34, 200, WINDOW_WIDTH, WINDOW_HEIGHT))
+					table.insert(self.huntersSlaves, HunterSlave(love.math.random(0, WINDOW_WIDTH), -34, 200, WINDOW_WIDTH, WINDOW_HEIGHT))
 				end
 			end
 		end
@@ -332,6 +347,14 @@ function Enemy:create_enemy(dt, player, tipo)
 			if table.getn(self.capitales) < self.max_on_screen_capital then
 				if (MAX_CHANCE - self.chance_capital) < love.math.random(MAX_CHANCE) then
 					table.insert(self.capitales, Capital(love.math.random(50, 100)))
+				end
+			end
+		end
+		--Creacion de Ingenieros
+		if tipo == 'ingeniero' then
+			if table.getn(self.ingenieros) < self.max_on_screen_ingenieros then
+				if (MAX_CHANCE - self.chance_ingenieros) < love.math.random(MAX_CHANCE) then
+					table.insert(self.ingenieros, Ingeniero(love.math.random(0, WINDOW_WIDTH), -65, 100))
 				end
 			end
 		end
@@ -449,6 +472,9 @@ function Enemy:vaciar_enemigos()
 	for i, capital in pairs(self.capitales) do
 		table.remove(self.capital, i)
 	end
+	for i, ingeniero in pairs(self.ingenieros) do
+		table.remove(self.ingenieros, i)
+	end
 
 end
 
@@ -482,6 +508,9 @@ function Enemy:render()
 	end
 	for i, Lancer in pairs(self.lancers) do
 		Lancer:render()
+	end
+	for i, Ingeniero in pairs(self.ingenieros) do
+		Ingeniero:render()
 	end
 
 	self.engineShot:render()

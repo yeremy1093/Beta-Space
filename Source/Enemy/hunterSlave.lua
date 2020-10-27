@@ -18,8 +18,6 @@ function HunterSlave:init(x, y, velocity, spacex, spacey)
     self.spacey = spacey
 	self.width = 58
     self.height = 40
-    self.spacex = spacex
-    self.spacey = spacey
     self.velocity = velocity
 	self.sprite = love.graphics.newQuad(0, 0, 58, 40, sprite_sheet_hunter:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 25, 25, sprite_sheet_explosion:getDimensions())
