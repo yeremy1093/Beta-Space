@@ -165,36 +165,34 @@ function Enemy:cambio_stage()
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
-		self.max_on_screen_capital = 1
-		self.chance_capital = 50
-		--self.max_on_screen_naveBasic = 5 + self.nivel
+		self.max_on_screen_naveBasic = 5 + self.nivel
 		self.chance_naveBasic = 10 + self.nivel * 2
 
-		--self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
+		self.max_on_screen_drones = 5 + love.math.random(self.nivel, self.nivel * 2)
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
 
-		--self.max_on_screen_ingenieros = 1
+		self.max_on_screen_ingenieros = 1
 		self.chance_ingenieros = 10 + self.nivel * 2
 
 		if self.nivel >= 2 then
-			--self.max_on_screen_lancers = self.nivel
+			self.max_on_screen_lancers = self.nivel
 			self.chance_lancers = 5 + self.nivel * 2
 		end
 
 		if self.nivel >= 3 then
-			--self.max_on_screen_cruceros = 3 - (#self.capitales * 2)
+			self.max_on_screen_cruceros = 3 - (#self.capitales * 2)
 			self.chance_cruceros = 10 + self.nivel * 2
 		end
 
 		if self.nivel >= 5 then
-			--self.max_on_screen_capital = 1
+			self.max_on_screen_capital = 1
 			self.chance_capital = 5
 		end
 		
 
 		if self.nivel >= 6 then
-			--self.max_on_screen_huntersSlaves = self.nivel - 5
+			self.max_on_screen_huntersSlaves = self.nivel - 5
 			self.chance_huntersSlaves = 10 + self.nivel * 2
 		end
 
@@ -356,8 +354,8 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'ingeniero' then
 			if table.getn(self.ingenieros) < self.max_on_screen_ingenieros then
 				if (MAX_CHANCE - self.chance_ingenieros) < love.math.random(MAX_CHANCE) then
-					table.insert(self.ingenieros, Ingeniero(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 100))
-					--love.math.random(WINDOW_WIDTH/2, WINDOW_WIDTH/2)
+					table.insert(self.ingenieros, Ingeniero(love.math.random(0, WINDOW_WIDTH/2), -65, 200))
+					--love.math.random(0, WINDOW_WIDTH/2)
 				end
 			end
 		end
@@ -517,7 +515,6 @@ function Enemy:render()
 	end
 
 	self.engineShot:render()
-	love.graphics.print(#self.ingenieros, 200, 200)
 
 end
 

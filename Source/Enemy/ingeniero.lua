@@ -9,8 +9,6 @@ local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bull
 local lineaRecta = 0
 local lineaCurva = 1
 
-local Freq = 1/5
-
 function Ingeniero:init(x, y, velocity)
     self.clase = 'ingeniero'
     self.hp = 4
@@ -18,26 +16,20 @@ function Ingeniero:init(x, y, velocity)
     self.y = y
 	self.width = 94
     self.height = 66
-    self.velocity = velocity
     self.velx = 0
     self.vely = 0
-    self.orinx = 0
-    self.oriny = 0
-    self.axisx = 0 
-    self.axisy = 0
 	self.sprite = love.graphics.newQuad(0, 0, 94, 66, sprite_sheet_inge:getDimensions())
 	self.sprite_ex = love.graphics.newQuad(0, 0, 94, 66, sprite_sheet_explosion:getDimensions())
     self.fps = love.math.random(6, 10)
-    --self.comportamiento = love.math.random(lineaRecta, lineaCurva)
-    self.comportamiento = lineaRecta
+    self.comportamiento = love.math.random(lineaRecta, lineaCurva)
 
-    if lineRecta == self.comportamiento then
-        local angle = (math.pi / 180) * love.math.random(45, 135)
-        self.velx = -velocity * math.cos(angle)
-        self.vely = -velocity * math.sin(angle)
+    if lineaRecta == self.comportamiento then
+        local angle = (math.pi / 180) * love.math.random(20, 150)
+        self.velx = velocity * math.cos(angle)
+        self.vely = velocity * math.sin(angle)
     else
-        self.orinx = self.x
-        self.oriny = self.y
+        self.velx = (velocity / 4) * love.math.random(-1,1)
+        self.vely = velocity
     end
     --variable para saber cuando el asteroide explotó y se puede borrar
     self.destruible = false
@@ -55,20 +47,11 @@ function Ingeniero:update(dt)
     if self.destruible == false then
         self.anim['idle']:update(dt, self.sprite)
 
-        if self.comportamiento == lineaRecta then
-            self.y = self.y + self.vely * dt 
-            self.x = self.x + self.velx * dt
-        else -- lineaCurva
-            local angle = 2*math.pi*Freq*dt
-            local v = self.velocity
-            if angle >= math.pi*0.9 and angle <= 2*math.pi*0.1 then
-                v = v * 0.2
-            end
-            self.axisx = self.axisx + v * dt
-            self.axisy = self.axisx * math.sin(angle)
-            self.x = self.orinx + self.axisx
-            self.y = self.oriny + self.axisy
+        if self.comportamiento == lineaCurva then
+            self.vely = self.vely - 50 * dt
         end
+        self.y = self.y + self.vely * dt 
+        self.x = self.x + self.velx * dt
 	else
 		if 4 == self.anim['explosion']:update(dt, self.sprite_ex) then
 			return false
@@ -104,8 +87,4 @@ function Ingeniero:render()
 	else
 		love.graphics.draw(sprite_sheet_explosion, self.sprite_ex, self.x, self.y)
     end
-    love.graphics.print(self.x, 300, 200)
-    love.graphics.print(self.y, 400, 200)
-    love.graphics.print(self.x, 200, 300)
-    love.graphics.print(self.y, 300, 300)
 end

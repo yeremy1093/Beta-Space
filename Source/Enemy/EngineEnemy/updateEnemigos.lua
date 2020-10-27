@@ -75,7 +75,7 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 		for j, asteroide in pairs(asteroides) do
 			if asteroide:collides(bala) and asteroide.destruible == false and bala.destruible == false then
 				local bala_en_lista = false
-				for i, bala_usada in pairs(enemigo.balas_usadas) do
+				for i, bala_usada in pairs(asteroide.balas_usadas) do
 					if bala.credential == bala_usada then
 						bala_en_lista = true
 						break
@@ -85,10 +85,10 @@ function update_asteroidesM(dt, asteroides, balas, nave, asteroides_small)
 					TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 				'static',
 				{'effect'},	VOLUMEN_EFECTOS / 2)
-					table.insert(enemigo.balas_usadas, bala.credential)
+					table.insert(asteroide.balas_usadas, bala.credential)
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
-					enemigo.hp = enemigo.hp - bala.damage
+					asteroide.hp = asteroide.hp - bala.damage
 				end
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
 					bala.destruible = true
