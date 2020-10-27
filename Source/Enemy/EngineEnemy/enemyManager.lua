@@ -165,8 +165,8 @@ function Enemy:cambio_stage()
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
-		--self.max_on_screen_capital = 1
-		--self.chance_capital = 50
+		self.max_on_screen_capital = 1
+		self.chance_capital = 50
 		--self.max_on_screen_naveBasic = 5 + self.nivel
 		self.chance_naveBasic = 10 + self.nivel * 2
 
@@ -174,7 +174,7 @@ function Enemy:cambio_stage()
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
 
-		self.max_on_screen_ingenieros = 1
+		--self.max_on_screen_ingenieros = 1
 		self.chance_ingenieros = 10 + self.nivel * 2
 
 		if self.nivel >= 2 then

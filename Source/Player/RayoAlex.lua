@@ -58,5 +58,5 @@ end
 function Rayo:render()
 	--los valores de draw son: imagen, quad (si hay), x, y, rotacion, escala en x, escala en y
 	love.graphics.draw(self.sprite_sheet, self.sprite, self.imagex + 5, self.imagey, math.rad(self.angulo), 1, 2 * self.level)
-	love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
+	--love.graphics.rectangle('fill', self.x, self.y, self.width, self.height)
 end

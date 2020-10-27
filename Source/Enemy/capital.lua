@@ -151,8 +151,19 @@ function Capital:collides(objeto)
 
 	for i, pieza in pairs(self.piezas) do
 		if pieza:collides(objeto) and pieza.destruible == false and objeto.destruible == false then
-			pieza.hp = pieza.hp - objeto.damage
-			pieza.wasCollides = true
+			local bala_en_lista = false
+			for i, bala_usada in pairs(pieza.balas_usadas) do
+				if objeto.credential == bala_usada then
+					bala_en_lista = true
+					break
+				end
+			end
+			if bala_en_lista == false then
+				pieza.hp = pieza.hp - objeto.damage
+				pieza.wasCollides = true
+				table.insert(pieza.balas_usadas, objeto.credential)
+			end
+			
 			if objeto.clase ~= 'pulsar' and objeto.clase ~= 'pulso' and objeto.clase ~= 'rayo' then
 				objeto.destruible = true
 			end
@@ -160,7 +171,17 @@ function Capital:collides(objeto)
 	end
 	for i, nucleo in pairs(self.nucleos) do
 		if nucleo:collides(objeto) and nucleo.destruible == false and objeto.destruible == false then
-			nucleo.hp = nucleo.hp - objeto.damage
+			local bala_en_lista = false
+			for i, bala_usada in pairs(nucleo.balas_usadas) do
+				if objeto.credential == bala_usada then
+					bala_en_lista = true
+					break
+				end
+			end
+			if bala_en_lista == false then
+				nucleo.hp = nucleo.hp - objeto.damage
+				table.insert(nucleo.balas_usadas, objeto.credential)
+			end
 			if objeto.clase ~= 'pulsar' and objeto.clase ~= 'pulso' and objeto.clase ~= 'rayo' then
 				objeto.destruible = true
 			end

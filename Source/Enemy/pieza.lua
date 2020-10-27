@@ -66,6 +66,8 @@ function Pieza:init(x, y, xoffset, yoffset, tipo)
 	--variable para saber cuando el asteroide explotó y se puede borrar
 	self.destruible = false
 	self.wasCollides = false
+
+	self.balas_usadas = {}
 	
 end
 

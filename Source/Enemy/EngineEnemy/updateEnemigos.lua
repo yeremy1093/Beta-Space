@@ -210,7 +210,8 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 	for i, bala in pairs(balas) do
 		for j, enemigo in pairs(enemigos) do
 			if enemigo:collides(bala) and enemigo.destruible == false and bala.destruible == false then
-				if enemigo.clase == 'caza' or enemigo.clase == 'Lancer' or enemigo.clase == 'hunterMenso'then
+				if enemigo.clase == 'caza' or enemigo.clase == 'Lancer' 
+					or enemigo.clase == 'hunterMenso' or enemigo.clase == 'ingeniero' then
 					puntaje = puntaje + 100
 					stage_checkpoint = stage_checkpoint - 100
 					enemigo.hp = enemigo.hp - bala.damage
@@ -227,7 +228,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 				elseif enemigo.clase == 'capital' then
 					local bala_en_lista = false
 					for i, bala_usada in pairs(enemigo.balas_usadas) do
-						if bala == bala_usada then
+						if bala.credential == bala_usada then
 							bala_en_lista = true
 							break
 						end
@@ -236,6 +237,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 						TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
+						table.insert(enemigo.balas_usadas, bala.credential)
 						puntaje = puntaje + 250
 						stage_checkpoint = stage_checkpoint - 250
 						local vulnerable = true
@@ -253,7 +255,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 				elseif enemigo.clase == 'crucero' or enemigo.clase == 'hunter' then
 					local bala_en_lista = false
 					for i, bala_usada in pairs(enemigo.balas_usadas) do
-						if bala == bala_usada then
+						if bala.credential == bala_usada then
 							bala_en_lista = true
 							break
 						end
@@ -262,23 +264,12 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 						TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
 					'static',
 					{'effect'},	VOLUMEN_EFECTOS / 2)
+						table.insert(enemigo.balas_usadas, bala.credential)
 						puntaje = puntaje + 100
 						stage_checkpoint = stage_checkpoint - 100
 						enemigo.hp = enemigo.hp - bala.damage
 					end
 
-				end
-				if enemigo.clase == 'capital' or enemigo.clase == 'crucero' or enemigo.clase == 'hunter' then
-					local bala_en_lista = false
-					for i, bala_usada in pairs(enemigo.balas_usadas) do
-						if bala == bala_usada then
-							bala_en_lista = true
-							break
-						end
-					end
-					if bala_en_lista == false then
-						table.insert(enemigo.balas_usadas, bala)
-					end
 				end
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
 					bala.destruible = true

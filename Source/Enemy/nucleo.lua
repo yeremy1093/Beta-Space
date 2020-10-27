@@ -25,6 +25,8 @@ function Nucleo:init(x, y, xoffset, yoffset)
 	self.destruible = false
 	self.destruido = false
 	self.wasCollides = false
+
+	self.balas_usadas = {}
 	
 end
 
