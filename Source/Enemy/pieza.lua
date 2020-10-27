@@ -11,13 +11,13 @@ local img_capital_back = love.graphics.newImage('Imagen/SpritesEnemys/CP1-Cubier
 
 local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion2.png')
 
-function Pieza:init(x, y, dx, dy, tipo)
+function Pieza:init(x, xoffset, yoffset, y, tipo)
 	self.clase = 'pieza'
 	self.hp = 12
 	self.x = x
 	self.y = y
-	self.dx = dx
-	self.dy = dy
+	self.xoffset = xoffset
+	self.yoffset = yoffset
 	self.tipo = tipo
 	if tipo == 'front' then
 		self.sprite_sheet = img_crucero_front
@@ -35,7 +35,7 @@ function Pieza:init(x, y, dx, dy, tipo)
 		self.width = 88
 		self.height = 89
 	elseif tipo == 'C-front' then
-		self.hp = 18
+		self.hp = 24
 		self.sprite_sheet = img_capital_front
 		self.sprite = love.graphics.newQuad(0, 0, 88, 89, img_capital_front:getDimensions())
 		self.width = 248
@@ -70,7 +70,7 @@ function Pieza:init(x, y, dx, dy, tipo)
 end
 
 --Funcion de update
-function Pieza:update(dt)
+function Pieza:update(dt, x, y)
 
 	if self.hp <= 0 then
 	 	self.destruible = true
@@ -78,8 +78,8 @@ function Pieza:update(dt)
 
 
 	if self.destruible == false then 
-		self.y = self.y + self.dy * dt
-		self.x = self.x + self.dx * dt
+		self.y = y + self.yoffset
+		self.x = x + self.xoffset
 
 		if self.wasCollides then
 			self.wasCollides = false

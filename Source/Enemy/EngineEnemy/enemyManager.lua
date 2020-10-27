@@ -323,7 +323,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'crucero' then
 			if table.getn(self.cruceros) < self.max_on_screen_cruceros then
 				if (MAX_CHANCE - self.chance_cruceros) < love.math.random(MAX_CHANCE) then
-					table.insert(self.cruceros, Crucero(love.math.random(10, 50)))
+					table.insert(self.cruceros, Crucero(love.math.random(50, 100)))
 				end
 			end
 		end
@@ -331,7 +331,7 @@ function Enemy:create_enemy(dt, player, tipo)
 		if tipo == 'capital' then
 			if table.getn(self.capitales) < self.max_on_screen_capital then
 				if (MAX_CHANCE - self.chance_capital) < love.math.random(MAX_CHANCE) then
-					table.insert(self.capitales, Capital(love.math.random(10, 30)))
+					table.insert(self.capitales, Capital(love.math.random(50, 100)))
 				end
 			end
 		end
