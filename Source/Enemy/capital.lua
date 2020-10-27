@@ -70,10 +70,10 @@ end
 
 --Funcion de update
 function Capital:update(dt)
-	if self.in_screen == false then
+	if self.on_screen == false then
 		self.y = self.y + self.dy * dt
 		if self.y > 20 then
-			self.in_screen = true
+			self.on_screen = true
 		end
 	else
 		if self.direccion == 1 then
@@ -177,10 +177,10 @@ end
 function Capital:render()
 	if self.destruible == false then
 		love.graphics.draw(img_capital_core, self.sprite, self.x, self.y)
+
 		for i, nucleo in pairs(self.nucleos) do
 			nucleo:render()
 		end
-
 		for i, pieza in pairs(self.piezas) do
 			pieza:render()
 		end 

@@ -223,7 +223,7 @@ function update_nave_enemiga(dt, enemigos, balas, nave)
 					stage_checkpoint = stage_checkpoint - 250
 					local vulnerable = true
 					for i, nucleo in pairs(enemigo.nucleos) do
-						if nucleo.destruido = false then 
+						if nucleo.destruido == false then 
 							vulnerable = false
 							break
 						end

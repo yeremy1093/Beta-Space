@@ -134,6 +134,8 @@ function Nave:update(dt)
 				{'effect'},	VOLUMEN_EFECTOS)
 			HPnave = 0
 			Numvidas = Numvidas - 1
+			self.stun_timer = STUN_TIMER
+			self.stun = false
 			self.power_level = 1
 			self.power_state = 0
 			self.power_laser = 1
