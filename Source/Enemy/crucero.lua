@@ -28,6 +28,8 @@ function Crucero:init(dy)
 				['explosion'] = Anim(0, 0, 200, 200, 9, 9, self.fps)}
 
 
+	--Una lista vacía de balas, que se llena con balas del jugador que ya no nos deben hacer daño
+	self.balas_usadas = {}
 	self.piezas = {}
 	table.insert(self.piezas, Pieza(self.x, self.y, -14, 4, 'back'))
 	table.insert(self.piezas, Pieza(self.x, self.y, 0, 93, 'mid'))

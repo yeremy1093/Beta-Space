@@ -473,7 +473,7 @@ function Enemy:vaciar_enemigos()
 		table.remove(self.cruceros, i)
 	end
 	for i, capital in pairs(self.capitales) do
-		table.remove(self.capital, i)
+		table.remove(self.capitales, i)
 	end
 	for i, ingeniero in pairs(self.ingenieros) do
 		table.remove(self.ingenieros, i)
