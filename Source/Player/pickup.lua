@@ -5,7 +5,7 @@ Pickup = Class{}
 --Variables para guardar los sprite sheet de las animaciones
 local sprite_sheet = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 
-function Pickup:init(x, y, dx, dy)
+function Pickup:init(x, y, dx, dy, num)
 	self.x = x
 	self.y = y
 	self.dx = dx
@@ -14,7 +14,9 @@ function Pickup:init(x, y, dx, dy)
 	self.width = 60
 	self.height = 60
 	self.fps = math.random(6, 10)
-	local num = love.math.random(1, 7)
+	if num == nil then
+		num = love.math.random(1, 7)	
+	end
 	if num == 1 then
 		self.tipo = 'laser'
 	elseif num == 2 then
@@ -22,11 +24,11 @@ function Pickup:init(x, y, dx, dy)
 	elseif num == 3 then
 		self.tipo = 'vida'
 	elseif num == 4 then
-		self.tipo = 'direccional'
+		self.tipo = 'escudo'
 	elseif num == 5 then
 		self.tipo = 'pulsar'
 	elseif num == 6 then
-		self.tipo = 'escudo'
+		self.tipo = 'direccional'
 	elseif num == 7 then
 		self.tipo = 'tercer_disparo'
 	end

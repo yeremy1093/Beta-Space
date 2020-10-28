@@ -4,7 +4,7 @@
 Ingeniero = Class{}
 
 local sprite_sheet_inge = love.graphics.newImage('Imagen/SpritesEnemys/Enginier.png')
-local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explo-Bullet.png')
+local sprite_sheet_explosion = love.graphics.newImage('Imagen/Sprites/Explosion.png')
 
 local lineaRecta = 0
 local lineaCurva = 1
@@ -19,7 +19,7 @@ function Ingeniero:init(x, y, velocity)
     self.velx = 0
     self.vely = 0
 	self.sprite = love.graphics.newQuad(0, 0, 94, 66, sprite_sheet_inge:getDimensions())
-	self.sprite_ex = love.graphics.newQuad(0, 0, 94, 66, sprite_sheet_explosion:getDimensions())
+	self.sprite_ex = love.graphics.newQuad(0, 0, 76, 76, sprite_sheet_explosion:getDimensions())
     self.fps = love.math.random(6, 10)
     self.comportamiento = love.math.random(lineaRecta, lineaCurva)
 
@@ -36,7 +36,7 @@ function Ingeniero:init(x, y, velocity)
 
 	--Aqui van todas las animaciones posibles
 	self.anim = {['idle'] = Anim(0, 0, self.width, self.height, 6, 6, self.fps),
-                ['explosion'] = Anim(0, 0, 25, 25, 4, 4, self.fps)} 
+                ['explosion'] = Anim(0, 0, 76, 76, 5, 5, self.fps)} 
 end
 
 --Funcion de update

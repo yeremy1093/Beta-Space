@@ -106,7 +106,7 @@ function Play:update(dt)
     end
 
 	--Hacemos el update de los enemigos
-	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) and self.cambio_stage == false then
+	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player, self.pickups) and self.cambio_stage == false then
         self.cambio_stage = true
         local cambio_background = love.math.random(1, 3)
         if cambio_background == 3 then
