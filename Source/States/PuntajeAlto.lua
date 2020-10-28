@@ -60,6 +60,7 @@ function PuntajeAlto:enter(params)
 
     self.sprite = love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet:getDimensions())
     self.animNave = Anim(0, 0, 58, 40, 2, 2, 10)
+    self.timer_no_touch = 0.3
 end
 
 
@@ -85,17 +86,24 @@ function PuntajeAlto:update(dt)
     end
 
     -- scroll through characters
-    if mouseX >= 410 and mouseX <= 480 and love.mouse.isDown(1) then
-        chars[self.highlightedChar] = chars[self.highlightedChar] + 1
-        if chars[self.highlightedChar] > 90 then
-            chars[self.highlightedChar] = 65
-        end
-    elseif mouseX >= 785 and mouseX <= 855 and love.mouse.isDown(1) then
-        chars[self.highlightedChar] = chars[self.highlightedChar] - 1
-        if chars[self.highlightedChar] < 65 then
-            chars[self.highlightedChar] = 90
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+        if mouseX >= 410 and mouseX <= 480 and love.mouse.isDown(1) then
+            self.timer_no_touch = 0.1
+            chars[self.highlightedChar] = chars[self.highlightedChar] + 1
+            if chars[self.highlightedChar] > 90 then
+                chars[self.highlightedChar] = 65
+            end
+        elseif mouseX >= 785 and mouseX <= 855 and love.mouse.isDown(1) then
+            self.timer_no_touch = 0.1
+            chars[self.highlightedChar] = chars[self.highlightedChar] - 1
+            if chars[self.highlightedChar] < 65 then
+                chars[self.highlightedChar] = 90
+            end
         end
     end
+    
 
     self.siglas = Escribir(string.char(chars[1]) .. string.char(chars[2]).. string.char(chars[3]))
     self.sigla1 = Escribir(string.char(chars[1]))
@@ -157,11 +165,11 @@ function PuntajeAlto:render()
 
     --Dibujamos el target
     love.graphics.draw(self.target_sheet, self.target_sprite, 410, 480)
-    love.graphics.draw(self.target_sheet, self.target_sprite, 845, 480, 0, -1, 0)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 855, 480, 0, -1, 1)
     love.graphics.draw(self.target_sheet, self.target_sprite, 410, 540)
-    love.graphics.draw(self.target_sheet, self.target_sprite, 845, 540, 0, -1, 0)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 855, 540, 0, -1, 1)
     love.graphics.draw(self.target_sheet, self.target_sprite, 410, 600)
-    love.graphics.draw(self.target_sheet, self.target_sprite, 845, 600, 0, -1, 0)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 855, 600, 0, -1, 1)
 
     --Dibujamos la nave del jugador
     love.graphics.draw(self.sprite_sheet, self.sprite, 720, 320)
