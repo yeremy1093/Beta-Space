@@ -5,10 +5,10 @@ function love.load()
 	--Por si se ofrece
 	math.randomseed(os.time())
 	--Ponemos lo de los parametros de la pantalla
-	love.window.setMode( WINDOW_WIDTH, WINDOW_HEIGHT, {
-        fullscreen = false,
-        resizable = true,
-        vsync = true
+	push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+        vsync = true,
+        fullscreen = true,
+        resizable = true
     })
 
     --Ponemos el titulo de la ventana
@@ -73,6 +73,10 @@ function love.update(dt)
 	love.keyboard.keysPressed = {}
 end
 
+function love.resize(w, h)
+    push:resize(w, h)
+end
+
 function  love.keypressed(key)
 	--Ponemos con el valor de true la tecla que fue oprimida
 	love.keyboard.keysPressed[key] = true
@@ -88,9 +92,9 @@ function love.keyboard.wasPressed(key)
 end
 
 function love.draw()
-
+    push:start()
 	gStateMachine:render()
-
+    push:finish()
 end
 
 --[[

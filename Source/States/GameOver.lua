@@ -21,14 +21,12 @@ function GameOver:enter(params)
     --Cargar Menu de Estado
     self.menu = love.graphics.newImage('Imagen/Menus/GameOver.png')
 
-    --Cargar Selector de menu
-    self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
-    self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
-    self.target = Anim(0,0,60,60,5,5,10)
     TEsound.stop('musica_play')
     TEsound.stop('musica_menu')
     TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
     TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
+
+    self.timer_no_touch = 0.3
 
 end
 
@@ -40,13 +38,29 @@ function GameOver:update(dt)
 	--cargamos las estrellas de alex
     sky:update (dt)
 
-    self.target:update(dt, self.target_sprite)
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
         TEsound.stop('musica_menu')
 
         gStateMachine:change('inicio', {highScores = self.highScores})
 
+    end
+
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+        --obtenemos la posicion del mouse y reaccionamos al click 
+        --los botones estan en x de 545 a 720
+        --en y son: 485/540, 545/600, 605/660
+        local x, y = love.mouse.getPosition()
+        local mouseX, mouseY = push:toGame(x, y)
+        if love.mouse.isDown(1) then
+            if mouseX >= 575 and mouseX <= 750 then
+                if mouseY >= 565 and mouseY <= 620 then
+                    gStateMachine:change('inicio', {highScores = self.highScores})
+                end
+            end
+        end
     end
 
 end
@@ -63,7 +77,5 @@ function GameOver:render()
     --Dibujamos los puntos en pantalla
     self.puntos:render(480, 400, 2, 2)
 
-    --Dibujamos el target
-    love.graphics.draw(self.target_sheet, self.target_sprite, 440, 560)
 
 end

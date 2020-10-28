@@ -228,8 +228,6 @@ function Play:render()
 
     --Dibujamos la interfaz de usuario
     self:UI_render()
-
-
 end
 
 function Play:generar_pickup(dt)

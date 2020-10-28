@@ -52,6 +52,7 @@ require 'Source/Util/animacion'
 require 'Source/Util/escudos'
 require 'Source/Util/tesound'
 require 'Source/Util/escribir'
+push = require 'Source/Util/push'
 
 --Archivos de la maquina de estados
 require 'Source/States/StateMachine'

@@ -18,12 +18,7 @@ function Menu:enter(params)
     --Cargar Menu Inicio
     self.menu = love.graphics.newImage('Imagen/Menus/menu.png')
 
-    --Cargar Selector de menu
-    self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
-	self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
-    self.target = Anim(0,0,60,60,5,5,10)
-    self.opc = 'puntajes'
-    self.targetY = 480
+    self.timer_no_touch = 0.3
 
 end
 
@@ -35,43 +30,35 @@ function Menu:update(dt)
 	--cargamos las estrellas de alex
     sky:update (dt)
     
-    --Animacion de target
-    self.target:update(dt, self.target_sprite)
-
-	if love.keyboard.wasPressed('up') then
-        self.targetY = self.targetY - 60
-        if self.targetY < 480 then
-            self.targetY = 480
+   
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+        --obtenemos la posicion del mouse y reaccionamos al click 
+        --los botones estan en x de 545 a 720
+        --en y son: 485/540, 545/600, 605/660
+        local x, y = love.mouse.getPosition()
+        local mouseX, mouseY = push:toGame(x, y)
+        if mouseX >= 545 and mouseX <= 720 then
+            if mouseY >= 485 and mouseY <= 540 then
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('lista_puntajes', {highScores = self.highScores})
+                end
+            elseif mouseY >= 545 and mouseY <= 600 then
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('config', {highScores = self.highScores, ultimoEstado = 'menu'})
+                end
+            elseif mouseY >= 605 and mouseY <= 660 then
+                if love.mouse.isDown(1) then
+                    TEsound.stop('musica_menu')
+                    TEsound.stop('musica_play')
+                    gStateMachine:change('inicio', {highScores = self.highScores})
+                end
+            end
         end
-    end
-    if love.keyboard.wasPressed('down') then
-    	self.targetY = self.targetY + 60
-        if self.targetY > 600 then
-            self.targetY = 600
-        end
-    end
 
-    if self.targetY == 480 then
-        self.opc = 'puntajes'
-    elseif self.targetY == 540 then
-        self.opc = 'config'
-    elseif self.targetY == 600 then
-        self.opc = 'salir'
-    end
 
-    if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        if self.opc == 'puntajes' then
-            gStateMachine:change('lista_puntajes', {highScores = self.highScores})
-        elseif self.opc == 'config' then
-            gStateMachine:change('config', {highScores = self.highScores, ultimoEstado = 'menu'})
-        elseif self.opc == 'salir' then
-            TEsound.stop('musica_menu')
-            TEsound.stop('musica_play')
-            gStateMachine:change('inicio', {highScores = self.highScores})
-        end 
     end
-
-    --ponemos la musica del menu
 
 end
 
@@ -82,7 +69,5 @@ function Menu:render()
     sky:render()
 
     love.graphics.draw(self.menu, 0, 0)
-
-    love.graphics.draw(self.target_sheet, self.target_sprite, 420, self.targetY)
 
 end

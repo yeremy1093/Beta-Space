@@ -22,12 +22,7 @@ function Charselect:enter(params)
     --Cargar Menu Inicio
     self.menu = love.graphics.newImage('Imagen/Menus/charselect.png')
 
-    --Cargar Selector de menu
-    self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
-	self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
-    self.target = Anim(0,0,60,60,5,5,10)
-    self.opc = jugar
-    self.targetY = 480
+    
     -- Agregamos las naves como seleccionables
     self.sprite_sheet = sprite1
     self.sprite = love.graphics.newQuad(0, 0, 58, 40, self.sprite_sheet:getDimensions())
@@ -37,6 +32,8 @@ function Charselect:enter(params)
 
     --creamos una lista de letras para poner en pantalla
     self.player_name = Escribir("D10")
+
+    self.timer_no_touch = 0.3
 
 end
 
@@ -50,40 +47,41 @@ function Charselect:update(dt)
 
     --Cargamos las animaciones de las naves
     self.nave:update (dt,self.sprite)
-    
-    --Animacion de target
-    self.target:update(dt, self.target_sprite)
 
-	if love.keyboard.wasPressed('up') then
-        self.targetY = self.targetY - 60
-        if self.targetY < 480 then
-            self.targetY = 480
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+        --obtenemos la posicion del mouse y reaccionamos al click 
+        --los botones estan en x de 545 a 720
+        --en y son: 485/540, 545/600, 605/660
+        local x, y = love.mouse.getPosition()
+        local mouseX, mouseY = push:toGame(x, y)
+        if mouseX >= 545 and mouseX <= 720 then
+            if mouseY >= 485 and mouseY <= 540 then
+                self.sprite_sheet = sprite1
+                self.player = player1
+                self.player_name = Escribir("D10")
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+                end
+            elseif mouseY >= 545 and mouseY <= 600 then
+                self.sprite_sheet = sprite2
+                self.player = player2
+                self.player_name = Escribir("AX2")
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+                end
+            elseif mouseY >= 605 and mouseY <= 660 then
+                self.sprite_sheet = sprite3
+                self.player = player3
+                self.player_name = Escribir("YM9")
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+                end
+            end
         end
-    end
-    if love.keyboard.wasPressed('down') then
-    	self.targetY = self.targetY + 60
-        if self.targetY > 600 then
-            self.targetY = 600
-        end
-    end
 
-    if self.targetY == 480 then
-        self.sprite_sheet = sprite1
-        self.player = player1
-        self.player_name = Escribir("D10")
-    elseif self.targetY == 540 then
-        self.sprite_sheet = sprite2
-        self.player = player2
-        self.player_name = Escribir("AX2")
-    elseif self.targetY == 600 then
-        self.sprite_sheet = sprite3
-        self.player = player3
-        self.player_name = Escribir("YM9")
-    end
 
-    if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        gStateMachine:change('play', {type=self.player, highScores=self.highScores})
-        
     end
 
 end
@@ -96,7 +94,6 @@ function Charselect:render()
 
     love.graphics.draw(self.menu, 0, 0)
 
-    love.graphics.draw(self.target_sheet, self.target_sprite, 420, self.targetY)
     love.graphics.draw(self.sprite_sheet, self.sprite, 540, 200, 0, 3, 3)
 
     --dibujamos las letras del nombre sobre la nave

@@ -65,39 +65,32 @@ end
 
 --Lo que se va a calcular frame a frame
 function PuntajeAlto:update(dt)
+    local x, y = love.mouse.getPosition()
+    local mouseX, mouseY = push:toGame(x, y)
 
 	
 	--cargamos las estrellas de alex
     sky:update (dt)
 
     self.target:update(dt, self.target_sprite)
-    if love.keyboard.wasPressed('up') then
-        self.targetY = self.targetY - 60
-        if self.targetY < 480 then
-            self.targetY = 480
-        end
-    end
-    if love.keyboard.wasPressed('down') then
-        self.targetY = self.targetY + 60
-        if self.targetY > 600 then
-            self.targetY = 600
-        end
-    end
-    if self.targetY == 480 then
+    
+    if mouseY >= 480 and mouseY < 540 then
         self.highlightedChar = 1
-    elseif self.targetY == 540 then
+    elseif mouseY >= 540 and mouseY < 600 then
         self.highlightedChar = 2
-    elseif self.targetY == 600 then
+    elseif mouseY >= 600 and mouseY < 660 then
         self.highlightedChar = 3
+    else
+        self.highlightedChar = 0
     end
 
     -- scroll through characters
-    if love.keyboard.wasPressed('right') then
+    if mouseX >= 410 and mouseX <= 480 and love.mouse.isDown(1) then
         chars[self.highlightedChar] = chars[self.highlightedChar] + 1
         if chars[self.highlightedChar] > 90 then
             chars[self.highlightedChar] = 65
         end
-    elseif love.keyboard.wasPressed('left') then
+    elseif mouseX >= 785 and mouseX <= 855 and love.mouse.isDown(1) then
         chars[self.highlightedChar] = chars[self.highlightedChar] - 1
         if chars[self.highlightedChar] < 65 then
             chars[self.highlightedChar] = 90
@@ -109,7 +102,7 @@ function PuntajeAlto:update(dt)
     self.sigla2 = Escribir(string.char(chars[2]))
     self.sigla3 = Escribir(string.char(chars[3]))
 
-    if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
+    if self.highlightedChar == 0 and love.mouse.isDown(1) then
          -- update scores table
         local name = string.char(chars[1]) .. string.char(chars[2]) .. string.char(chars[3]) .. tostring(self.nave)
 
@@ -163,7 +156,12 @@ function PuntajeAlto:render()
     self.sigla3:render(600, 610, 2, 2)
 
     --Dibujamos el target
-    love.graphics.draw(self.target_sheet, self.target_sprite, 410, self.targetY)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 410, 480)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 845, 480, 0, -1, 0)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 410, 540)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 845, 540, 0, -1, 0)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 410, 600)
+    love.graphics.draw(self.target_sheet, self.target_sprite, 845, 600, 0, -1, 0)
 
     --Dibujamos la nave del jugador
     love.graphics.draw(self.sprite_sheet, self.sprite, 720, 320)

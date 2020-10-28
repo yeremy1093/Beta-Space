@@ -19,15 +19,11 @@ function Inicio:enter(params)
     --Cargar Menu Inicio
     self.menu = love.graphics.newImage('Imagen/Menus/Inicio.png')
 
-    --Cargar Selector de menu
-    self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
-	self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
-    self.target = Anim(0,0,60,60,5,5,10)
-    self.opc = jugar
-    self.targetY = 480
 
     TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
     TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
+
+    self.timer_no_touch = 0.3
 
 end
 
@@ -40,41 +36,26 @@ function Inicio:update(dt)
 	--cargamos las estrellas de alex
     sky:update (dt)
     
-    --Animacion de target
-    self.target:update(dt, self.target_sprite)
-
-	if love.keyboard.wasPressed('up') then
-        self.targetY = self.targetY - 60
-        if self.targetY < 480 then
-            self.targetY = 480
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+        --obtenemos la posicion del mouse y reaccionamos al click 
+        --los botones estan en x de 545 a 720
+        --en y son: 485/540, 545/600, 605/660
+        local x, y = love.mouse.getPosition()
+        local mouseX, mouseY = push:toGame(x, y)
+        if love.mouse.isDown(1) then
+            if mouseX >= 545 and mouseX <= 720 then
+                if mouseY >= 485 and mouseY <= 540 then
+                    gStateMachine:change('charselect', {highScores = self.highScores})
+                elseif mouseY >= 545 and mouseY <= 600 then
+                    gStateMachine:change('menu', {highScores = self.highScores})
+                elseif mouseY >= 605 and mouseY <= 660 then
+                    love.event.quit()
+                end
+            end
         end
     end
-    if love.keyboard.wasPressed('down') then
-    	self.targetY = self.targetY + 60
-        if self.targetY > 600 then
-            self.targetY = 600
-        end
-    end
-
-    if self.targetY == 480 then
-        self.opc = jugar
-    elseif self.targetY == 540 then
-        self.opc = menu
-    elseif self.targetY == 600 then
-        self.opc = salir
-    end
-
-    if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        if self.opc == jugar then
-            gStateMachine:change('charselect', {highScores = self.highScores})
-        elseif self.opc == menu then
-            gStateMachine:change('menu', {highScores = self.highScores})
-        elseif self.opc == salir then
-            love.event.quit()
-        end 
-    end
-
-    --ponemos la musica del menu
 
 end
 
@@ -85,7 +66,5 @@ function Inicio:render()
     sky:render()
 
     love.graphics.draw(self.menu, 0, 0)
-
-    love.graphics.draw(self.target_sheet, self.target_sprite, 420, self.targetY)
 
 end

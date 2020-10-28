@@ -66,6 +66,8 @@ function ListaPuntajes:enter(params)
         end
     end
 
+    self.timer_no_touch = 0.3
+
 end
 
 
@@ -84,11 +86,16 @@ function ListaPuntajes:update(dt)
         self.naves_anim[i]:update(dt, self.sprite_nave[i])
     end
 
-    if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        TEsound.stop('musica_menu')
-        TEsound.stop('musica_play')
-        gStateMachine:change('inicio', {highScores = loadHighScores()})
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+       if love.mouse.isDown(1) then
+            TEsound.stop('musica_menu')
+            TEsound.stop('musica_play')
+            gStateMachine:change('inicio', {highScores = loadHighScores()})
+        end
     end
+
 end
 
 function ListaPuntajes:render()

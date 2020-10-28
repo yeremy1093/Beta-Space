@@ -32,24 +32,20 @@ function Config:enter(params)
     self.textoControles2 = ""
     self.textoControles3 = ""
 
-    --Cargar Selector de menu
-    self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
-	self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
-    self.target = Anim(0,0,60,60,5,5,10)
-    self.opc = 'puntajes'
-    self.targetY = 480
-
     --Cargar Selector de menu de audio
     self.target_audio_sheet = love.graphics.newImage('Imagen/Menus/Target small.png')
     self.target_audio_sprite = love.graphics.newQuad(0, 0, 30, 30, self.target_audio_sheet:getDimensions())
     self.target_audio = Anim(0,0,30,30,4,4,10)
     self.targetX1 = 912 - ((1 - VOLUMEN_MUSICA) * 250)
     self.targetX2 = 912 - ((1 - VOLUMEN_EFECTOS) * 250)
-    self.targetY2 = 242
+    self.targetY1 = 242
+    self.targetY2 = 348
 
     self.tagMenu1 = Escribir("Sonido")
     self.tagMenu2 = Escribir("Botones")
     self.tagMenu3 = Escribir("Salir")
+
+    self.timer_no_touch = 0.3
 
 end
 
@@ -57,33 +53,11 @@ end
 --Lo que se va a calcular frame a frame
 function Config:update(dt)
 
+    local x, y = love.mouse.getPosition()
+    local mouseX, mouseY = push:toGame(x, y)
 	
 	--cargamos las estrellas de alex
     sky:update (dt)
-    
-    --Animacion de target
-    self.target:update(dt, self.target_sprite)
-
-	if love.keyboard.wasPressed('up') then
-        self.targetY = self.targetY - 60
-        if self.targetY < 480 then
-            self.targetY = 480
-        end
-    end
-    if love.keyboard.wasPressed('down') then
-    	self.targetY = self.targetY + 60
-        if self.targetY > 600 then
-            self.targetY = 600
-        end
-    end
-
-    if self.targetY == 480 then
-        self.opc = 'sonido'
-    elseif self.targetY == 540 then
-        self.opc = 'controles'
-    elseif self.targetY == 600 then
-        self.opc = 'regresar'
-    end
 
     if self.pantallaControles then
         self.timerControler = self.timerControler - dt
@@ -117,79 +91,103 @@ function Config:update(dt)
 
     if self.pantallaSonido then
         self.target_audio:update(dt, self.target_audio_sprite)
-        if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-            if 242 == self.targetY2 then
-                self.targetY2 = 348
-            else
-                self.targetY2 = 242
-            end
-        end
 
-        if 242 == self.targetY2 then
-            if love.keyboard.wasPressed('left') then
-                self.targetX1 = self.targetX1 - 25
-                if self.targetX1 < 662 then
+        if mouseY >= 190 and mouseY <= 300 then
+            if love.mouse.isDown(1) then
+                if mouseX > 650 and mouseX <= 675 then
                     self.targetX1 = 662
-                end
-
-                VOLUMEN_MUSICA = VOLUMEN_MUSICA - 0.1
-                if VOLUMEN_MUSICA <= 0 then VOLUMEN_MUSICA = 0 end
-
-                TEsound.volume('musica_menu', VOLUMEN_MUSICA)
-                TEsound.volume('musica_play', VOLUMEN_MUSICA)
-            end
-            if love.keyboard.wasPressed('right') then
-                self.targetX1 = self.targetX1 + 25
-                if self.targetX1 > 912 then
+                elseif mouseX > 675 and mouseX <= 700 then
+                    self.targetX1 = 687
+                elseif mouseX > 700 and mouseX <= 725 then
+                    self.targetX1 = 712
+                elseif mouseX > 725 and mouseX <= 750 then
+                    self.targetX1 = 737
+                elseif mouseX > 750 and mouseX <= 775 then
+                    self.targetX1 = 762
+                elseif mouseX > 775 and mouseX <= 800 then
+                    self.targetX1 = 787
+                elseif mouseX > 800 and mouseX <= 825 then
+                    self.targetX1 = 812
+                elseif mouseX > 825 and mouseX <= 850 then
+                    self.targetX1 = 837
+                elseif mouseX > 850 and mouseX <= 875 then
+                    self.targetX1 = 862
+                elseif mouseX > 875 and mouseX <= 900 then
+                    self.targetX1 = 887
+                elseif mouseX > 900 and mouseX <= 925 then
                     self.targetX1 = 912
                 end
-                VOLUMEN_MUSICA = VOLUMEN_MUSICA + 0.1
-                if VOLUMEN_MUSICA >= 1 then VOLUMEN_MUSICA = 1 end
+            
+                VOLUMEN_MUSICA = (self.targetX1 - 662)/250
 
                 TEsound.volume('musica_menu', VOLUMEN_MUSICA)
                 TEsound.volume('musica_play', VOLUMEN_MUSICA)
+
             end
-        else
-            if love.keyboard.wasPressed('left') then
-                self.targetX2 = self.targetX2 - 25
-                if self.targetX2 < 662 then
+
+        elseif mouseY >= 295 and mouseY <= 405 then
+            if love.mouse.isDown(1) then
+                if mouseX > 650 and mouseX <= 675 then
                     self.targetX2 = 662
-                end
-                VOLUMEN_EFECTOS = VOLUMEN_EFECTOS - 0.1
-                if VOLUMEN_EFECTOS <= 0 then VOLUMEN_EFECTOS = 0 end
-            end
-            if love.keyboard.wasPressed('right') then
-                self.targetX2 = self.targetX2 + 25
-                if self.targetX2 > 912 then
+                elseif mouseX > 675 and mouseX <= 700 then
+                    self.targetX2 = 687
+                elseif mouseX > 700 and mouseX <= 725 then
+                    self.targetX2 = 712
+                elseif mouseX > 725 and mouseX <= 750 then
+                    self.targetX2 = 737
+                elseif mouseX > 750 and mouseX <= 775 then
+                    self.targetX2 = 762
+                elseif mouseX > 775 and mouseX <= 800 then
+                    self.targetX2 = 787
+                elseif mouseX > 800 and mouseX <= 825 then
+                    self.targetX2 = 812
+                elseif mouseX > 825 and mouseX <= 850 then
+                    self.targetX2 = 837
+                elseif mouseX > 850 and mouseX <= 875 then
+                    self.targetX2 = 862
+                elseif mouseX > 875 and mouseX <= 900 then
+                    self.targetX2 = 887
+                elseif mouseX > 900 and mouseX <= 925 then
                     self.targetX2 = 912
                 end
-                VOLUMEN_EFECTOS = VOLUMEN_EFECTOS + 0.1
-                if VOLUMEN_EFECTOS >= 1 then VOLUMEN_EFECTOS = 1 end
+                
+                VOLUMEN_EFECTOS = (self.targetX2 - 662)/250
             end
+
         end
     end
 
-    if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
-        if self.opc == 'sonido' then
-           self.menu_sprite:setViewport(WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-           self.pantallaSonido = true
-           self.pantallaControles = false
-        elseif self.opc == 'controles' then
-            self.menu_sprite:setViewport(WINDOW_WIDTH * 2, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-            self.pantallaSonido = false
-            self.pantallaControles = true
-            self.contador = 0
-            self.textoControles1 = "Usa las flechas y ASD"
-            self.textoControles2 = "Destruye enemigos y gana puntos"
-            self.textoControles3 = "Obten el mayor puntaje"
-        elseif self.opc == 'regresar' then
-            self.pantallaSonido = false
-            self.pantallaControles = false
-            gStateMachine:change(self.ultimoEstado, self.params)
-        end 
-    end
+    if self.timer_no_touch > 0 then
+        self.timer_no_touch = self.timer_no_touch - dt
+    else
+        --obtenemos la posicion del mouse y reaccionamos al click 
+        --los botones estan en x de 545 a 720
+        --en y son: 485/540, 545/600, 605/660
+        if mouseX >= 545 and mouseX <= 720 then
+            if mouseY >= 485 and mouseY <= 540 then
+                self.menu_sprite:setViewport(WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                self.pantallaSonido = true
+                self.pantallaControles = false
+            elseif mouseY >= 545 and mouseY <= 600 then
+                self.menu_sprite:setViewport(WINDOW_WIDTH * 2, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                self.pantallaSonido = false
+                self.pantallaControles = true
+                self.contador = 0
+                self.textoControles1 = "Usa las flechas y ASD"
+                self.textoControles2 = "Destruye enemigos y gana puntos"
+                self.textoControles3 = "Obten el mayor puntaje"
+            elseif mouseY >= 605 and mouseY <= 660 then
+                self.menu_sprite:setViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                self.pantallaSonido = false
+                self.pantallaControles = false
+                if love.mouse.isDown(1) then
+                    gStateMachine:change(self.ultimoEstado, self.params)
+                end
+            end
+        end
 
-    --ponemos la musica del menu
+
+    end
 
 end
 
@@ -200,8 +198,6 @@ function Config:render()
     sky:render()
 
     love.graphics.draw(self.menu_sheet, self.menu_sprite, 0, 0)
-
-    love.graphics.draw(self.target_sheet, self.target_sprite, 420, self.targetY)
 
     --imprimimos las opciones del menu
     self.tagMenu1:render(560, 500)
@@ -219,11 +215,8 @@ function Config:render()
         self.tagSonido:render(430, 130)
         love.graphics.setFont(gFonts['medium'])
         love.graphics.print("Volumen de Musica", 330, 205)
-        if 242 == self.targetY2 then
-            love.graphics.draw(self.target_audio_sheet, self.target_audio_sprite, self.targetX1 - 15, self.targetY2)
-        else
-            love.graphics.draw(self.target_audio_sheet, self.target_audio_sprite, self.targetX2 - 15, self.targetY2)
-        end
+        love.graphics.draw(self.target_audio_sheet, self.target_audio_sprite, self.targetX1 - 15, self.targetY1)
+        love.graphics.draw(self.target_audio_sheet, self.target_audio_sprite, self.targetX2 - 15, self.targetY2)
         love.graphics.print("Volumen de Efectos", 330, 315)
         love.graphics.setFont(gFonts['large'])
     else
