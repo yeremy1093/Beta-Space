@@ -63,7 +63,7 @@ function Enemy:init()
 
 end
 
-function Enemy:update(dt, puntuacion, balas, player)
+function Enemy:update(dt, puntuacion, balas, player, pickups)
 
 	if puntuacion >= 1024000 then
 		self.nivel = 11
@@ -119,7 +119,7 @@ function Enemy:update(dt, puntuacion, balas, player)
 	update_nave_enemiga(dt, self.capitales, balas, player)
 
 	--Checamos cuando debemos remover or mover los ingenieros
-	update_nave_enemiga(dt, self.ingenieros, balas, player)
+	update_nave_enemiga(dt, self.ingenieros, balas, player, pickups)
 
 	self:updateShots(dt, player, balas)
 
@@ -476,7 +476,6 @@ function Enemy:vaciar_enemigos()
 	for i, ingeniero in pairs(self.ingenieros) do
 		table.remove(self.ingenieros, i)
 	end
-
 end
 
 function Enemy:render()	

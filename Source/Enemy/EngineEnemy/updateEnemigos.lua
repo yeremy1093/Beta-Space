@@ -202,11 +202,14 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 	end
 end
 
-function update_nave_enemiga(dt, enemigos, balas, nave)
+function update_nave_enemiga(dt, enemigos, balas, nave, pickup)
 	--checamos si el enemigo salio de la pantalla y la borramos
 	for i, enemigo in pairs(enemigos) do
 		
 		if false == enemigo:update(dt, nave, balas) then
+			if enemigo.clase == 'ingeniero' then
+				table.insert(pickup, Pickup((enemigo.x + enemigo.width/2), (enemigo.y + enemigo.height/2), love.math.random(-50, 50), love.math.random(20, 100), love.math.random(2, 4)))
+			end
 			table.remove(enemigos, i)
 		end
 		
