@@ -133,9 +133,16 @@ function Play:update(dt)
             self.mensaje_stage2 = Escribir('Enjambre de Drones')
             self.mensaje2X = 300
         elseif random_stage <= 90 then
-            self.enemyManager.tag_stage = 'hunters'
-            self.mensaje_stage2 = Escribir('Escuadron Elite')
-            self.mensaje2X = 340
+            if self.enemyManager.nivel > 6 then
+                self.enemyManager.tag_stage = 'hunters'
+                self.mensaje_stage2 = Escribir('Escuadron Elite')
+                self.mensaje2X = 340
+            else 
+                self.enemyManager.tag_stage = 'normal'
+                self.mensaje_stage2 = Escribir('Vienen Enemigos')
+                self.mensaje2X = 340
+
+            end
         else
             self.enemyManager.tag_stage = 'nebulosa'
             self.mensaje_stage2 = Escribir('Entrando a Nebulosa')

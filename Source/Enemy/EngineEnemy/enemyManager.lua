@@ -161,7 +161,7 @@ end
 function Enemy:cambio_stage()
 
 	--Asignamos un nuevo puntaje que tenemos que alcanzar para cambiar de stage
-	stage_checkpoint = 5000 * self.nivel
+	stage_checkpoint = 10000
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
@@ -172,29 +172,29 @@ function Enemy:cambio_stage()
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
 
-		if self.nivel >= 2 then
-			self.max_on_screen_lancers = self.nivel
-			self.chance_lancers = 5 + self.nivel * 2
-		end
-
 		if self.nivel >= 3 then
-
-			self.max_on_screen_ingenieros = 1
-			self.chance_ingenieros = 10 + self.nivel * 2
-
-			self.max_on_screen_cruceros = 3 - (#self.capitales * 2)
-			self.chance_cruceros = 5 + self.nivel * 2
+			self.max_on_screen_lancers = self.nivel
+			self.chance_lancers = 1 + self.nivel * 2
 		end
 
 		if self.nivel >= 5 then
+
+			self.max_on_screen_ingenieros = 1
+			self.chance_ingenieros = 1 + self.nivel * 2
+
+			self.max_on_screen_cruceros = 1 - (#self.capitales * 2)
+			self.chance_cruceros = 1 + self.nivel * 2
+		end
+
+		if self.nivel >= 8 then
 			self.max_on_screen_capital = 1
 			self.chance_capital = 3
 		end
 		
 
-		if self.nivel >= 6 then
+		if self.nivel >= 9 then
 			self.max_on_screen_huntersSlaves = self.nivel - 5
-			self.chance_huntersSlaves = 10 + self.nivel * 2
+			self.chance_huntersSlaves = 2 + self.nivel * 2
 		end
 
 		
@@ -214,8 +214,8 @@ function Enemy:cambio_stage()
 		self.velodron = 160 + self.nivel * 10
 
 	elseif self.tag_stage == 'hunters' then
-		self.max_on_screen_huntersMasters = self.nivel
-		self.chance_huntersMasters = 10 + self.nivel * 2
+		self.max_on_screen_huntersMasters = 3
+		self.chance_huntersMasters = 3 + self.nivel * 2
 
 	elseif self.tag_stage == 'nebulosa' then
 		self.max_on_screen_nebulosas = 4
@@ -228,8 +228,10 @@ function Enemy:cambio_stage()
 		self.chance_drones = 5 + self.nivel * 2
 		self.velodron = 80 + self.nivel * 10
 
-		self.max_on_screen_ingenieros = 1
-		self.chance_ingenieros = 10 + self.nivel * 2
+		if self.nivel >= 5 then	
+			self.max_on_screen_ingenieros = 1
+			self.chance_ingenieros = 10 + self.nivel * 2
+		end
 	end
 
 	return self.tag_stage
