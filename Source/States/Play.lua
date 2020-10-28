@@ -106,7 +106,7 @@ function Play:update(dt)
     end
 
 	--Hacemos el update de los enemigos
-	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player) and self.cambio_stage == false then
+	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player, self.pickups) and self.cambio_stage == false then
         self.cambio_stage = true
         local cambio_background = love.math.random(1, 3)
         if cambio_background == 3 then
@@ -133,9 +133,16 @@ function Play:update(dt)
             self.mensaje_stage2 = Escribir('Enjambre de Drones')
             self.mensaje2X = 300
         elseif random_stage <= 90 then
-            self.enemyManager.tag_stage = 'hunters'
-            self.mensaje_stage2 = Escribir('Escuadron Elite')
-            self.mensaje2X = 340
+            if self.enemyManager.nivel > 6 then
+                self.enemyManager.tag_stage = 'hunters'
+                self.mensaje_stage2 = Escribir('Escuadron Elite')
+                self.mensaje2X = 340
+            else 
+                self.enemyManager.tag_stage = 'normal'
+                self.mensaje_stage2 = Escribir('Vienen Enemigos')
+                self.mensaje2X = 340
+
+            end
         else
             self.enemyManager.tag_stage = 'nebulosa'
             self.mensaje_stage2 = Escribir('Entrando a Nebulosa')
