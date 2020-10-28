@@ -148,14 +148,14 @@ function update_asteroidesG(dt, asteroides, balas, nave)
 				if bala.clase ~= 'pulsar' and bala.clase ~= 'pulso' and bala.clase ~= 'rayo' then
 					bala.destruible = true
 					if bala.y > asteroide.y + asteroide.height-10 then
-						asteroide.dy = asteroide.dy - 20
+						asteroide.dy = asteroide.dy - 5
 					elseif bala.y < asteroide.y + 10 then
-						asteroide.dy = asteroide.dy + 20
+						asteroide.dy = asteroide.dy + 5
 					end
 					if bala.x > asteroide.x + asteroide.width-10 then
-						asteroide.dx = asteroide.dx - 20
+						asteroide.dx = asteroide.dx - 5
 					elseif bala.x < asteroide.x + 10 then
-						asteroide.dx = asteroide.dx + 20
+						asteroide.dx = asteroide.dx + 5
 					end
 				end
 				TEsound.play({'Soundtrack/Effect/Explosion Small.wav','Soundtrack/Effect/Explosion Medium.wav'},
