@@ -66,22 +66,15 @@ function control:render()
 			love.graphics.setColor(0.607,0.607,0.607,0.4)
 			love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
 		end
-
-		for _,button in ipairs(widget.buttons) do
-			if button.isDown then
-				love.graphics.setColor(0.607,0.607,0.607,1)
-				love.graphics.rectangle("fill", 
-					button.x+widget.padding, 
-					button.y+widget.padding, 
-					control.buttonw-widget.padding*2, 
-					control.buttonh-widget.padding*2,
-					10
-				)
-			end
-		end
 	
 	end
 	love.graphics.setColor(1, 1, 1, 1)
+
+	for _,id in ipairs(control.touched) do
+		local x,y = love.touch.getPosition(id)
+		local tx, ty = push:toGame(x, y)
+		love.graphics.circle("fill",tx,ty,20)
+	end
 end
 
 function control:isDown(key)
@@ -100,12 +93,22 @@ function control:update(dt)
 		for _,button in ipairs(widget.buttons) do
 			button.isDown = false
 			for _,id in ipairs(control.touched) do	
-				local tx,ty = love.touch.getPosition(id)
-				if  tx >= widget.x+button.x 
-				and tx <= widget.x+button.x+control.buttonw 
-				and ty >= widget.y+button.y 
-				and ty <= widget.y+button.y+control.buttonh then
-					button.isDown = true
+				local x,y = love.touch.getPosition(id)
+				local tx, ty = push:toGame(x, y)
+				if widget.name == 'dpad' then
+					if  tx >= widget.x+button.x 
+					and tx <= widget.x+button.x+control.buttonw 
+					and ty >= widget.y+button.y 
+					and ty <= widget.y+button.y+control.buttonh then
+						button.isDown = true
+					end
+				else
+					if  tx >= button.x 
+					and tx <= button.x+control.buttonw 
+					and ty >= button.y 
+					and ty <= button.y+control.buttonh then
+						button.isDown = true
+					end
 				end
 			end
 		end

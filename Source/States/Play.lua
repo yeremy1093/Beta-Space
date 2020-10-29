@@ -81,6 +81,7 @@ end
 
 --Lo que se va a calcular frame a frame
 function Play:update(dt)
+    control:update(dt)
     self.background:update(dt)
 	--cargamos las estrellas de alex
 	self.sky:update (dt)
@@ -236,6 +237,7 @@ function Play:render()
 
     --Dibujamos la interfaz de usuario
     self:UI_render()
+    control:render()
 end
 
 function Play:generar_pickup(dt)
