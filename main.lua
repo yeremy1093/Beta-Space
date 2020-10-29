@@ -32,6 +32,7 @@ function love.load()
 
     --Creamos una tabla vacía de teclas oprimidas para poder usarlas en otros archivos
     love.keyboard.keysPressed = {}
+    love.mouse.keysPressed = {}
 
     --creamos una lista de efectos de sonido
     list_sounds = {
@@ -71,6 +72,7 @@ function love.update(dt)
 
 	--Vaciamos la lista de teclas orpimidas
 	love.keyboard.keysPressed = {}
+    love.mouse.keysPressed = {}
 end
 
 function love.resize(w, h)
@@ -80,6 +82,14 @@ end
 function  love.keypressed(key)
 	--Ponemos con el valor de true la tecla que fue oprimida
 	love.keyboard.keysPressed[key] = true
+end
+
+function love.mousepressed(x, y, button, isTouch)
+    love.mouse.keysPressed[button] = true
+end
+
+function love.mouse.wasPressed(key)
+    return love.mouse.keysPressed[key]
 end
 
 --Esta funcion puede ser usada en otros archicos para ver si fue oprimida una tecla

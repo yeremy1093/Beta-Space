@@ -50,10 +50,10 @@ end
 
 function PlayerShot:disparo_jugador(player, dt)
     self.power_up = player.power_up
-	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') then
+	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') or control:isDown("shoot") then
         self:disparo_normal(player)
     end
-    if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') then
+    if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') or control:isDown("shoot2") then
         if self.power_up == 'direccional' then
             self:disparo_direccional(player)
         elseif self.power_up == 'pulsar' then

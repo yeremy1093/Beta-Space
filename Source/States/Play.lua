@@ -188,6 +188,7 @@ function Play:update(dt)
         gStateMachine:change('pause', {state = self})
     end
 
+
 end
 
 function Play:render()

@@ -75,20 +75,25 @@ function Nave:init(x, y, player)
 end
 
 function Nave:update(dt)
+	control:update(dt)
 	--Checamos las teclas oprimidas
-	if love.keyboard.isDown('up') and not self.stun then
+	if (love.keyboard.isDown('up') or control:isDown("up") or control:isDown("up-left") or control:isDown("up-right")) 
+		and not self.stun then
 		--Se le agrega la velocidad de la nave, por el dt para que el numero sea escalable, y negativo que es hacia arriba
 		self.dirY = math.max(self.dirY - (SHIP_SPEED * 2) * dt, -SHIP_SPEED)
-	elseif love.keyboard.isDown('down') and not self.stun then
+	elseif (love.keyboard.isDown('down') or control:isDown("down") or control:isDown("down-left") or control:isDown("down-right"))
+		and not self.stun then
 		self.dirY = math.min(self.dirY+  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
 	else
 		self.dirY = self.dirY + ((0 - self.dirY) * 5 * dt)
 	end
 
 	--Hacemos lo mismo con el eje de las x 
-	if love.keyboard.isDown('right') and not self.stun then
+	if (love.keyboard.isDown('right') or control:isDown("right") or control:isDown("down-right") or control:isDown("up-right"))
+		and not self.stun then
 		self.dirX = math.min(self.dirX +  (SHIP_SPEED * 2) * dt, SHIP_SPEED)
-	elseif love.keyboard.isDown('left') and not self.stun then
+	elseif (love.keyboard.isDown('left') or control:isDown("left") or control:isDown("down-left") or control:isDown("up-left"))
+		and not self.stun then
 		self.dirX = math.max(self.dirX - (SHIP_SPEED * 2) * dt, -SHIP_SPEED)
 	else
 		self.dirX = self.dirX + ((0 - self.dirX) * 5 * dt)
@@ -200,10 +205,11 @@ function Nave:render()
 	if self.stun then
 		love.graphics.draw(sprite_sheet_stun, self.stun_sprite, self.x - 6, self.y - 15)
 	end
+	control:render()
 end
 
 function Nave:manager_escudo(dt)
-	if love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') then
+	if love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') or control:isDown("shield") then
 		if escudo_nave == false and self.escudo.estado == 'disponible' then
 			escudo_nave = true
 			self.escudo:iniciar_escudo()
