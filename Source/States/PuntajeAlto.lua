@@ -32,7 +32,7 @@ function PuntajeAlto:enter(params)
     sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
 
     --Cargar Menu de Estado
-    self.menu = love.graphics.newImage('Imagen/Menus/Clean Menu.png')
+    self.menu = love.graphics.newImage('Imagen/Menus/Clean menu.png')
 
     --Cargar Selector de menu
     self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
