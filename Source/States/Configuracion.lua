@@ -91,69 +91,70 @@ function Config:update(dt)
 
     if self.pantallaSonido then
         self.target_audio:update(dt, self.target_audio_sprite)
-
-        if mouseY >= 190 and mouseY <= 300 then
-            if love.mouse.isDown(1) then
-                if mouseX > 650 and mouseX <= 675 then
-                    self.targetX1 = 662
-                elseif mouseX > 675 and mouseX <= 700 then
-                    self.targetX1 = 687
-                elseif mouseX > 700 and mouseX <= 725 then
-                    self.targetX1 = 712
-                elseif mouseX > 725 and mouseX <= 750 then
-                    self.targetX1 = 737
-                elseif mouseX > 750 and mouseX <= 775 then
-                    self.targetX1 = 762
-                elseif mouseX > 775 and mouseX <= 800 then
-                    self.targetX1 = 787
-                elseif mouseX > 800 and mouseX <= 825 then
-                    self.targetX1 = 812
-                elseif mouseX > 825 and mouseX <= 850 then
-                    self.targetX1 = 837
-                elseif mouseX > 850 and mouseX <= 875 then
-                    self.targetX1 = 862
-                elseif mouseX > 875 and mouseX <= 900 then
-                    self.targetX1 = 887
-                elseif mouseX > 900 and mouseX <= 925 then
-                    self.targetX1 = 912
-                end
-            
-                VOLUMEN_MUSICA = (self.targetX1 - 662)/250
-
-                TEsound.volume('musica_menu', VOLUMEN_MUSICA)
-                TEsound.volume('musica_play', VOLUMEN_MUSICA)
-
-            end
-
-        elseif mouseY >= 295 and mouseY <= 405 then
-            if love.mouse.isDown(1) then
-                if mouseX > 650 and mouseX <= 675 then
-                    self.targetX2 = 662
-                elseif mouseX > 675 and mouseX <= 700 then
-                    self.targetX2 = 687
-                elseif mouseX > 700 and mouseX <= 725 then
-                    self.targetX2 = 712
-                elseif mouseX > 725 and mouseX <= 750 then
-                    self.targetX2 = 737
-                elseif mouseX > 750 and mouseX <= 775 then
-                    self.targetX2 = 762
-                elseif mouseX > 775 and mouseX <= 800 then
-                    self.targetX2 = 787
-                elseif mouseX > 800 and mouseX <= 825 then
-                    self.targetX2 = 812
-                elseif mouseX > 825 and mouseX <= 850 then
-                    self.targetX2 = 837
-                elseif mouseX > 850 and mouseX <= 875 then
-                    self.targetX2 = 862
-                elseif mouseX > 875 and mouseX <= 900 then
-                    self.targetX2 = 887
-                elseif mouseX > 900 and mouseX <= 925 then
-                    self.targetX2 = 912
-                end
+        if mouseY ~= nil and mouseX ~= nil then
+            if mouseY >= 190 and mouseY <= 300 then
+                if love.mouse.isDown(1) then
+                    if mouseX > 650 and mouseX <= 675 then
+                        self.targetX1 = 662
+                    elseif mouseX > 675 and mouseX <= 700 then
+                        self.targetX1 = 687
+                    elseif mouseX > 700 and mouseX <= 725 then
+                        self.targetX1 = 712
+                    elseif mouseX > 725 and mouseX <= 750 then
+                        self.targetX1 = 737
+                    elseif mouseX > 750 and mouseX <= 775 then
+                        self.targetX1 = 762
+                    elseif mouseX > 775 and mouseX <= 800 then
+                        self.targetX1 = 787
+                    elseif mouseX > 800 and mouseX <= 825 then
+                        self.targetX1 = 812
+                    elseif mouseX > 825 and mouseX <= 850 then
+                        self.targetX1 = 837
+                    elseif mouseX > 850 and mouseX <= 875 then
+                        self.targetX1 = 862
+                    elseif mouseX > 875 and mouseX <= 900 then
+                        self.targetX1 = 887
+                    elseif mouseX > 900 and mouseX <= 925 then
+                        self.targetX1 = 912
+                    end
                 
-                VOLUMEN_EFECTOS = (self.targetX2 - 662)/250
-            end
+                    VOLUMEN_MUSICA = (self.targetX1 - 662)/250
 
+                    TEsound.volume('musica_menu', VOLUMEN_MUSICA)
+                    TEsound.volume('musica_play', VOLUMEN_MUSICA)
+
+                end
+
+            elseif mouseY >= 295 and mouseY <= 405 then
+                if love.mouse.isDown(1) then
+                    if mouseX > 650 and mouseX <= 675 then
+                        self.targetX2 = 662
+                    elseif mouseX > 675 and mouseX <= 700 then
+                        self.targetX2 = 687
+                    elseif mouseX > 700 and mouseX <= 725 then
+                        self.targetX2 = 712
+                    elseif mouseX > 725 and mouseX <= 750 then
+                        self.targetX2 = 737
+                    elseif mouseX > 750 and mouseX <= 775 then
+                        self.targetX2 = 762
+                    elseif mouseX > 775 and mouseX <= 800 then
+                        self.targetX2 = 787
+                    elseif mouseX > 800 and mouseX <= 825 then
+                        self.targetX2 = 812
+                    elseif mouseX > 825 and mouseX <= 850 then
+                        self.targetX2 = 837
+                    elseif mouseX > 850 and mouseX <= 875 then
+                        self.targetX2 = 862
+                    elseif mouseX > 875 and mouseX <= 900 then
+                        self.targetX2 = 887
+                    elseif mouseX > 900 and mouseX <= 925 then
+                        self.targetX2 = 912
+                    end
+                    
+                    VOLUMEN_EFECTOS = (self.targetX2 - 662)/250
+                end
+
+            end
         end
     end
 
@@ -163,30 +164,30 @@ function Config:update(dt)
         --obtenemos la posicion del mouse y reaccionamos al click 
         --los botones estan en x de 545 a 720
         --en y son: 485/540, 545/600, 605/660
-        if mouseX >= 545 and mouseX <= 720 then
-            if mouseY >= 485 and mouseY <= 540 then
-                self.menu_sprite:setViewport(WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-                self.pantallaSonido = true
-                self.pantallaControles = false
-            elseif mouseY >= 545 and mouseY <= 600 then
-                self.menu_sprite:setViewport(WINDOW_WIDTH * 2, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-                self.pantallaSonido = false
-                self.pantallaControles = true
-                self.contador = 0
-                self.textoControles1 = "Usa las flechas y ASD"
-                self.textoControles2 = "Destruye enemigos y gana puntos"
-                self.textoControles3 = "Obten el mayor puntaje"
-            elseif mouseY >= 605 and mouseY <= 660 then
-                self.menu_sprite:setViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
-                self.pantallaSonido = false
-                self.pantallaControles = false
-                if love.mouse.isDown(1) then
-                    gStateMachine:change(self.ultimoEstado, self.params)
+        if mouseX ~= nil and mouseY ~= nil then
+            if mouseX >= 545 and mouseX <= 720 then
+                if mouseY >= 485 and mouseY <= 540 then
+                    self.menu_sprite:setViewport(WINDOW_WIDTH, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                    self.pantallaSonido = true
+                    self.pantallaControles = false
+                elseif mouseY >= 545 and mouseY <= 600 then
+                    self.menu_sprite:setViewport(WINDOW_WIDTH * 2, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                    self.pantallaSonido = false
+                    self.pantallaControles = true
+                    self.contador = 0
+                    self.textoControles1 = "Usa las flechas y ASD"
+                    self.textoControles2 = "Destruye enemigos y gana puntos"
+                    self.textoControles3 = "Obten el mayor puntaje"
+                elseif mouseY >= 605 and mouseY <= 660 then
+                    self.menu_sprite:setViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                    self.pantallaSonido = false
+                    self.pantallaControles = false
+                    if love.mouse.isDown(1) then
+                        gStateMachine:change(self.ultimoEstado, self.params)
+                    end
                 end
             end
         end
-
-
     end
 
 end

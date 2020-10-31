@@ -39,25 +39,25 @@ function Menu:update(dt)
         --en y son: 485/540, 545/600, 605/660
         local x, y = love.mouse.getPosition()
         local mouseX, mouseY = push:toGame(x, y)
-        if mouseX >= 545 and mouseX <= 720 then
-            if mouseY >= 485 and mouseY <= 540 then
-                if love.mouse.isDown(1) then
-                    gStateMachine:change('lista_puntajes', {highScores = self.highScores})
-                end
-            elseif mouseY >= 545 and mouseY <= 600 then
-                if love.mouse.isDown(1) then
-                    gStateMachine:change('config', {highScores = self.highScores, ultimoEstado = 'menu'})
-                end
-            elseif mouseY >= 605 and mouseY <= 660 then
-                if love.mouse.isDown(1) then
-                    TEsound.stop('musica_menu')
-                    TEsound.stop('musica_play')
-                    gStateMachine:change('inicio', {highScores = self.highScores})
+        if mouseX ~= nil and mouseX ~= nil then
+            if mouseX >= 545 and mouseX <= 720 then
+                if mouseY >= 485 and mouseY <= 540 then
+                    if love.mouse.isDown(1) then
+                        gStateMachine:change('lista_puntajes', {highScores = self.highScores})
+                    end
+                elseif mouseY >= 545 and mouseY <= 600 then
+                    if love.mouse.isDown(1) then
+                        gStateMachine:change('config', {highScores = self.highScores, ultimoEstado = 'menu'})
+                    end
+                elseif mouseY >= 605 and mouseY <= 660 then
+                    if love.mouse.isDown(1) then
+                        TEsound.stop('musica_menu')
+                        TEsound.stop('musica_play')
+                        gStateMachine:change('inicio', {highScores = self.highScores})
+                    end
                 end
             end
         end
-
-
     end
 
 end

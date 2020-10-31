@@ -54,10 +54,12 @@ function GameOver:update(dt)
         --en y son: 485/540, 545/600, 605/660
         local x, y = love.mouse.getPosition()
         local mouseX, mouseY = push:toGame(x, y)
-        if love.mouse.isDown(1) then
-            if mouseX >= 575 and mouseX <= 750 then
-                if mouseY >= 565 and mouseY <= 620 then
-                    gStateMachine:change('inicio', {highScores = self.highScores})
+        if mouseX ~= nil and mouseY ~= nil then
+            if love.mouse.isDown(1) then
+                if mouseX >= 575 and mouseX <= 750 then
+                    if mouseY >= 565 and mouseY <= 620 then
+                        gStateMachine:change('inicio', {highScores = self.highScores})
+                    end
                 end
             end
         end

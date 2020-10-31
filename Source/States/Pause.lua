@@ -34,28 +34,29 @@ function Pause:update(dt)
         --en y son: 485/540, 545/600, 605/660
         local x, y = love.mouse.getPosition()
         local mouseX, mouseY = push:toGame(x, y)
-
-        if mouseY >= (WINDOW_HEIGHT / 2) and mouseY <= (WINDOW_HEIGHT / 2) + 60 then
-            if love.mouse.isDown(1) then
-                gStateMachine:change('play', {pickup_timer = self.play.pickup_timer,
-                                          pickups = self.play.pickups,
-                                          vidas = Numvidas,
-                                          player = self.play.player,
-                                          shotManager = self.play.shotManager,
-                                          enemyManager = self.play.enemyManager,
-                                          background = self.play.background,
-                                          sky = self.play.sky,
-                                          highScores = self.play.highScores})
-            end
-        elseif mouseY >= (WINDOW_HEIGHT / 2) + 70 and mouseY <= (WINDOW_HEIGHT / 2) + 130 then
-            if love.mouse.isDown(1) then
-                gStateMachine:change('config', self.params)
-            end
-        elseif mouseY >= (WINDOW_HEIGHT / 2) + 140 and mouseY <= (WINDOW_HEIGHT / 2) + 200 then
-            if love.mouse.isDown(1) then
-                TEsound.stop('musica_menu')
-                TEsound.stop('musica_play')
-                gStateMachine:change('inicio', {highScores = self.highScores})
+        if mouseX ~= nil and mouseY ~= nil then
+            if mouseY >= (WINDOW_HEIGHT / 2) and mouseY <= (WINDOW_HEIGHT / 2) + 60 then
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('play', {pickup_timer = self.play.pickup_timer,
+                                              pickups = self.play.pickups,
+                                              vidas = Numvidas,
+                                              player = self.play.player,
+                                              shotManager = self.play.shotManager,
+                                              enemyManager = self.play.enemyManager,
+                                              background = self.play.background,
+                                              sky = self.play.sky,
+                                              highScores = self.play.highScores})
+                end
+            elseif mouseY >= (WINDOW_HEIGHT / 2) + 70 and mouseY <= (WINDOW_HEIGHT / 2) + 130 then
+                if love.mouse.isDown(1) then
+                    gStateMachine:change('config', self.params)
+                end
+            elseif mouseY >= (WINDOW_HEIGHT / 2) + 140 and mouseY <= (WINDOW_HEIGHT / 2) + 200 then
+                if love.mouse.isDown(1) then
+                    TEsound.stop('musica_menu')
+                    TEsound.stop('musica_play')
+                    gStateMachine:change('inicio', {highScores = self.highScores})
+                end
             end
         end
     end

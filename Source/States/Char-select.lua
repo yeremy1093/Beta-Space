@@ -56,32 +56,32 @@ function Charselect:update(dt)
         --en y son: 485/540, 545/600, 605/660
         local x, y = love.mouse.getPosition()
         local mouseX, mouseY = push:toGame(x, y)
-        if mouseX >= 545 and mouseX <= 720 then
-            if mouseY >= 485 and mouseY <= 540 then
-                self.sprite_sheet = sprite1
-                self.player = player1
-                self.player_name = Escribir("D10")
-                if love.mouse.isDown(1) then
-                    gStateMachine:change('play', {type=self.player, highScores=self.highScores})
-                end
-            elseif mouseY >= 545 and mouseY <= 600 then
-                self.sprite_sheet = sprite2
-                self.player = player2
-                self.player_name = Escribir("AX2")
-                if love.mouse.isDown(1) then
-                    gStateMachine:change('play', {type=self.player, highScores=self.highScores})
-                end
-            elseif mouseY >= 605 and mouseY <= 660 then
-                self.sprite_sheet = sprite3
-                self.player = player3
-                self.player_name = Escribir("YM9")
-                if love.mouse.isDown(1) then
-                    gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+        if mouseX ~= nil and mouseY ~= nil then
+            if mouseX >= 545 and mouseX <= 720 then
+                if mouseY >= 485 and mouseY <= 540 then
+                    self.sprite_sheet = sprite1
+                    self.player = player1
+                    self.player_name = Escribir("D10")
+                    if love.mouse.isDown(1) then
+                        gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+                    end
+                elseif mouseY >= 545 and mouseY <= 600 then
+                    self.sprite_sheet = sprite2
+                    self.player = player2
+                    self.player_name = Escribir("AX2")
+                    if love.mouse.isDown(1) then
+                        gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+                    end
+                elseif mouseY >= 605 and mouseY <= 660 then
+                    self.sprite_sheet = sprite3
+                    self.player = player3
+                    self.player_name = Escribir("YM9")
+                    if love.mouse.isDown(1) then
+                        gStateMachine:change('play', {type=self.player, highScores=self.highScores})
+                    end
                 end
             end
         end
-
-
     end
 
 end
