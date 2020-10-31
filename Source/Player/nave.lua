@@ -72,6 +72,9 @@ function Nave:init(x, y, player)
 	self.escudo_quad = love.graphics.newQuad(0, 180, 60, 60, quad_util:getDimensions())
 	self.hp_quad = love.graphics.newQuad(0, self.offset_hp , 60, 60, quad_util:getDimensions())
 	self.equip_quad = love.graphics.newQuad(0, 300, 60, 60, quad_util:getDimensions())
+
+	self.touch_escudo = false
+	self.timer_touch_escudo = 0.5
 end
 
 function Nave:update(dt)
@@ -207,12 +210,21 @@ function Nave:render()
 end
 
 function Nave:manager_escudo(dt)
-	if love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') or control:isDown("shield") then
+	if love.keyboard.wasPressed('d') or love.keyboard.wasPressed('D') or control:isDown("shield") and self.touch_escudo == false then
 		if escudo_nave == false and self.escudo.estado == 'disponible' then
 			escudo_nave = true
 			self.escudo:iniciar_escudo()
 		elseif self.escudo.estado ~= 'desactivado' then
 			self.escudo:desactivar_escudo()
+		end
+		self.touch_escudo = true
+	end
+
+	if self.touch_escudo then
+		self.timer_touch_escudo = self.timer_touch_escudo - dt
+		if self.timer_touch_escudo <= 0 then
+			self.timer_touch_escudo = 0.5
+			self.touch_escudo = false
 		end
 	end
 
