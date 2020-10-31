@@ -67,6 +67,7 @@ end
 
 function love.update(dt)
 	TEsound.cleanup()
+    control:update(dt)
 	--Hacemos el update segun lo que corresponda del StateMachine
 	gStateMachine:update(dt)
 
@@ -85,11 +86,11 @@ function  love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button, isTouch)
-    love.mouse.keysPressed[button] = true
+    love.mouse.keysPressed[button] = {true, x, y}
 end
 
 function love.mouse.wasPressed(key)
-    return love.mouse.keysPressed[key]
+    return love.mouse.keysPressed[key][1]
 end
 
 --Esta funcion puede ser usada en otros archicos para ver si fue oprimida una tecla

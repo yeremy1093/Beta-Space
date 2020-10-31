@@ -8,8 +8,8 @@ control.touched = {}
 
 --Tamaño de los botones:
 
-control.buttonw = 75
-control.buttonh = 75
+control.buttonw = 100
+control.buttonh = 100
 
 --se crea el widget del dpad
 control.dpad = {}
@@ -41,16 +41,16 @@ control.buttons = {}
 control.buttons.name = 'buttons'
 
 --Creamos el canvas de los botones, que solo será el área en donde estan
-control.buttons.w = 240
-control.buttons.h = 240
+control.buttons.w = WINDOW_WIDTH - 1035
+control.buttons.h = WINDOW_HEIGHT - 440
 control.buttons.x = 1035
-control.buttons.y = 470
+control.buttons.y = 440
 
 --nombre y posiciones de los botones para disparar
 control.buttons.buttons = {
-	{ name="shoot",   x=1195, y=455 },
-	{ name="shoot2", x=1195, y=595 },
-	{ name="shield",x=1075, y=595 },
+	{ name="shoot",   x=1183, y=443 },
+	{ name="shoot2", x=1183, y=583 },
+	{ name="shield",x=1063, y=583 },
 }
 
 control.buttons.opacity = 200
@@ -73,7 +73,7 @@ function control:render()
 	for _,id in ipairs(control.touched) do
 		local x,y = love.touch.getPosition(id)
 		local tx, ty = push:toGame(x, y)
-		love.graphics.circle("fill",tx,ty,20)
+		if tx ~= nil and ty ~= nil then love.graphics.circle("fill",tx,ty,20) end
 	end
 end
 
@@ -95,19 +95,22 @@ function control:update(dt)
 			for _,id in ipairs(control.touched) do	
 				local x,y = love.touch.getPosition(id)
 				local tx, ty = push:toGame(x, y)
-				if widget.name == 'dpad' then
-					if  tx >= widget.x+button.x 
-					and tx <= widget.x+button.x+control.buttonw 
-					and ty >= widget.y+button.y 
-					and ty <= widget.y+button.y+control.buttonh then
-						button.isDown = true
-					end
-				else
-					if  tx >= button.x 
-					and tx <= button.x+control.buttonw 
-					and ty >= button.y 
-					and ty <= button.y+control.buttonh then
-						button.isDown = true
+				if tx ~= nil and ty ~= nil then
+
+					if widget.name == 'dpad' then
+						if  tx >= widget.x+button.x 
+						and tx <= widget.x+button.x+control.buttonw 
+						and ty >= widget.y+button.y 
+						and ty <= widget.y+button.y+control.buttonh then
+							button.isDown = true
+						end
+					else
+						if  tx >= button.x 
+						and tx <= button.x+control.buttonw 
+						and ty >= button.y 
+						and ty <= button.y+control.buttonh then
+							button.isDown = true
+						end
 					end
 				end
 			end
