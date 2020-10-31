@@ -12,6 +12,8 @@ function PlayerShot:init()
     self.misiles = 2
     self.timer_misiles = 0.5
     self.credential = -1
+    self.timer_disparo = 0.1
+    self.disparo_hecho = false
 end
 
 --Funciones que tienen que ver con listas de objetos en distintos estados
@@ -50,12 +52,15 @@ end
 
 function PlayerShot:disparo_jugador(player, dt)
     self.power_up = player.power_up
-	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') or control:isDown("shoot") then
+	if love.keyboard.wasPressed('a') or love.keyboard.wasPressed('A') or control:isDown("shoot")
+    and self.disparo_hecho == false then
         self:disparo_normal(player)
+        self.disparo_hecho = true
     end
     if love.keyboard.wasPressed('s') or love.keyboard.wasPressed('S') or control:isDown("shoot2") then
-        if self.power_up == 'direccional' then
+        if self.power_up == 'direccional' and self.disparo_hecho == false then
             self:disparo_direccional(player)
+            self.disparo_hecho = true
         elseif self.power_up == 'pulsar' then
              self:disparo_pulsar(player)
         elseif self.power_up == 'tercer_disparo' then
@@ -65,6 +70,14 @@ function PlayerShot:disparo_jugador(player, dt)
 
     if self.tercer_disparo == 'desactivado' and player.nave == 3 and self.misiles > 0 then
         self:disparar_misiles(player, dt)
+    end
+
+    if self.disparo_hecho then
+        self.timer_disparo = self.timer_disparo - dt
+        if self.timer_disparo <= 0 then
+            self.timer_disparo = 0.1
+            self.disparo_hecho = false
+        end
     end
 
 end

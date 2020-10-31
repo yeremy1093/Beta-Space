@@ -44,7 +44,7 @@ function Inicio:update(dt)
         --en y son: 485/540, 545/600, 605/660
         local x, y = love.mouse.getPosition()
         local mouseX, mouseY = push:toGame(x, y)
-        if love.mouse.isDown(1) then
+        if love.mouse.isDown(1) and mouseX ~= nil and mouseY ~= nil then
             if mouseX >= 545 and mouseX <= 720 then
                 if mouseY >= 485 and mouseY <= 540 then
                     gStateMachine:change('charselect', {highScores = self.highScores})
