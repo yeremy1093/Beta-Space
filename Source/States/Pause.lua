@@ -35,7 +35,8 @@ function Pause:update(dt)
         local x, y = love.mouse.getPosition()
         local mouseX, mouseY = push:toGame(x, y)
         if mouseX ~= nil and mouseY ~= nil then
-            if mouseY >= (WINDOW_HEIGHT / 2) and mouseY <= (WINDOW_HEIGHT / 2) + 60 then
+            if mouseY >= (WINDOW_HEIGHT / 2) + 15 and mouseY <= (WINDOW_HEIGHT / 2) + 60
+            and mouseX >= (WINDOW_WIDTH / 2) - 100 and mouseX <= (WINDOW_WIDTH / 2) + 200 then
                 if love.mouse.isDown(1) then
                     gStateMachine:change('play', {pickup_timer = self.play.pickup_timer,
                                               pickups = self.play.pickups,
@@ -47,11 +48,13 @@ function Pause:update(dt)
                                               sky = self.play.sky,
                                               highScores = self.play.highScores})
                 end
-            elseif mouseY >= (WINDOW_HEIGHT / 2) + 70 and mouseY <= (WINDOW_HEIGHT / 2) + 130 then
+            elseif mouseY >= (WINDOW_HEIGHT / 2) + 75 and mouseY <= (WINDOW_HEIGHT / 2) + 120 
+              and mouseX >= (WINDOW_WIDTH / 2) - 100 and mouseX <= (WINDOW_WIDTH / 2) + 200 then
                 if love.mouse.isDown(1) then
                     gStateMachine:change('config', self.params)
                 end
-            elseif mouseY >= (WINDOW_HEIGHT / 2) + 140 and mouseY <= (WINDOW_HEIGHT / 2) + 200 then
+            elseif mouseY >= (WINDOW_HEIGHT / 2) + 135 and mouseY <= (WINDOW_HEIGHT / 2) + 180 
+              and mouseX >= (WINDOW_WIDTH / 2) - 100 and mouseX <= (WINDOW_WIDTH / 2) + 200 then
                 if love.mouse.isDown(1) then
                     TEsound.stop('musica_menu')
                     TEsound.stop('musica_play')
