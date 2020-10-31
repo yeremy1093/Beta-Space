@@ -74,32 +74,36 @@ function PuntajeAlto:update(dt)
     sky:update (dt)
 
     self.target:update(dt, self.target_sprite)
-    
-    if mouseY >= 480 and mouseY < 540 then
-        self.highlightedChar = 1
-    elseif mouseY >= 540 and mouseY < 600 then
-        self.highlightedChar = 2
-    elseif mouseY >= 600 and mouseY < 660 then
-        self.highlightedChar = 3
-    else
-        self.highlightedChar = 0
+
+    if mouseY ~= nil and mouseX ~= nil then
+        if mouseY >= 480 and mouseY < 540 then
+            self.highlightedChar = 1
+        elseif mouseY >= 540 and mouseY < 600 then
+            self.highlightedChar = 2
+        elseif mouseY >= 600 and mouseY < 660 then
+            self.highlightedChar = 3
+        else
+            self.highlightedChar = 0
+        end
     end
 
     -- scroll through characters
     if self.timer_no_touch > 0 then
         self.timer_no_touch = self.timer_no_touch - dt
     else
-        if mouseX >= 410 and mouseX <= 480 and love.mouse.isDown(1) then
-            self.timer_no_touch = 0.1
-            chars[self.highlightedChar] = chars[self.highlightedChar] + 1
-            if chars[self.highlightedChar] > 90 then
-                chars[self.highlightedChar] = 65
-            end
-        elseif mouseX >= 785 and mouseX <= 855 and love.mouse.isDown(1) then
-            self.timer_no_touch = 0.1
-            chars[self.highlightedChar] = chars[self.highlightedChar] - 1
-            if chars[self.highlightedChar] < 65 then
-                chars[self.highlightedChar] = 90
+        if mouseY ~= nil and mouseX ~= nil then
+            if mouseX >= 410 and mouseX <= 480 and love.mouse.isDown(1) then
+                self.timer_no_touch = 0.1
+                chars[self.highlightedChar] = chars[self.highlightedChar] + 1
+                if chars[self.highlightedChar] > 90 then
+                    chars[self.highlightedChar] = 65
+                end
+            elseif mouseX >= 785 and mouseX <= 855 and love.mouse.isDown(1) then
+                self.timer_no_touch = 0.1
+                chars[self.highlightedChar] = chars[self.highlightedChar] - 1
+                if chars[self.highlightedChar] < 65 then
+                    chars[self.highlightedChar] = 90
+                end
             end
         end
     end
@@ -110,33 +114,35 @@ function PuntajeAlto:update(dt)
     self.sigla2 = Escribir(string.char(chars[2]))
     self.sigla3 = Escribir(string.char(chars[3]))
 
-    if self.highlightedChar == 0 and love.mouse.isDown(1) then
-         -- update scores table
-        local name = string.char(chars[1]) .. string.char(chars[2]) .. string.char(chars[3]) .. tostring(self.nave)
+    if love.mouse.isDown(1) and mouseX ~= nil and mouseY ~= nil then
+        if mouseX >= 1130 and mouseX <= 1230 and mouseY >= 580 and mouseY <= 680 then
+             -- update scores table
+                local name = string.char(chars[1]) .. string.char(chars[2]) .. string.char(chars[3]) .. tostring(self.nave)
 
-        -- go backwards through high scores table till this score, shifting scores
-        for i = 10, self.scoreIndex, -1 do
-            self.highScores[i + 1] = {
-                name = self.highScores[i].name,
-                score = self.highScores[i].score
-            }
+                -- go backwards through high scores table till this score, shifting scores
+                for i = 10, self.scoreIndex, -1 do
+                    self.highScores[i + 1] = {
+                        name = self.highScores[i].name,
+                        score = self.highScores[i].score
+                    }
+                end
+
+                self.highScores[self.scoreIndex].name = name
+                self.highScores[self.scoreIndex].score = self.score
+
+                -- write scores to file
+                local scoresStr = ''
+
+                for i = 1, 10 do
+                    scoresStr = scoresStr .. self.highScores[i].name .. '\n'
+                    scoresStr = scoresStr .. tostring(self.highScores[i].score) .. '\n'
+                end
+
+                love.filesystem.write('betaSpace.lst', scoresStr)
+
+                gStateMachine:change('lista_puntajes', {highScores = self.highScores})
+            end
         end
-
-        self.highScores[self.scoreIndex].name = name
-        self.highScores[self.scoreIndex].score = self.score
-
-        -- write scores to file
-        local scoresStr = ''
-
-        for i = 1, 10 do
-            scoresStr = scoresStr .. self.highScores[i].name .. '\n'
-            scoresStr = scoresStr .. tostring(self.highScores[i].score) .. '\n'
-        end
-
-        love.filesystem.write('betaSpace.lst', scoresStr)
-
-        gStateMachine:change('lista_puntajes', {highScores = self.highScores})
-    end
 
     self.animNave:update(dt, self.sprite)
 
@@ -170,6 +176,8 @@ function PuntajeAlto:render()
     love.graphics.draw(self.target_sheet, self.target_sprite, 855, 540, 0, -1, 1)
     love.graphics.draw(self.target_sheet, self.target_sprite, 410, 600)
     love.graphics.draw(self.target_sheet, self.target_sprite, 855, 600, 0, -1, 1)
+
+    love.graphics.draw(self.target_sheet, self.target_sprite, 1150, 600)
 
     --Dibujamos la nave del jugador
     love.graphics.draw(self.sprite_sheet, self.sprite, 720, 320)

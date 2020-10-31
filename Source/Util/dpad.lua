@@ -51,6 +51,7 @@ control.buttons.buttons = {
 	{ name="shoot",   x=1183, y=443 },
 	{ name="shoot2", x=1183, y=583 },
 	{ name="shield",x=1063, y=583 },
+	{ name="pause",x=1183, y=8 },
 }
 
 control.buttons.opacity = 200

@@ -4,6 +4,8 @@ Play = Class{__includes = BaseState}
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 local quad_level = love.graphics.newImage('Imagen/Menus/QuadLvlarma.png')
 local img_viaje_luz = love.graphics.newImage('Imagen/Background/Viaje Luz.png')
+local img_boton_disparo = love.graphics.newImage('Imagen/Menus/LaserBoton.png')
+local img_boton_pausa = love.graphics.newImage('Imagen/Menus/PAUSEBoton.png')
 
 
 function Play:enter(params)
@@ -81,6 +83,7 @@ end
 
 --Lo que se va a calcular frame a frame
 function Play:update(dt)
+    puntaje = 1000000
     self.background:update(dt)
 	--cargamos las estrellas de alex
 	self.sky:update (dt)
@@ -184,7 +187,7 @@ function Play:update(dt)
     self:update_pickups(dt)
 
     --Agregamos la boton para pausar el juego
-    if love.keyboard.wasPressed('escape') then
+    if love.keyboard.wasPressed('escape') or control:isDown("pause") then
         gStateMachine:change('pause', {state = self})
     end
 
@@ -236,6 +239,8 @@ function Play:render()
 
     --Dibujamos la interfaz de usuario
     self:UI_render()
+    love.graphics.draw(img_boton_disparo, 1195, 470)
+    love.graphics.draw(img_boton_pausa, 1195, 20)
     control:render()
 end
 

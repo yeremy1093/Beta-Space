@@ -66,6 +66,10 @@ function ListaPuntajes:enter(params)
         end
     end
 
+    self.target_sheet = love.graphics.newImage('Imagen/Menus/target.png')
+    self.target_sprite = love.graphics.newQuad(0, 0, 60, 60, self.target_sheet:getDimensions())
+    self.target = Anim(0,0,60,60,5,5,10)
+
     self.timer_no_touch = 0.3
 
 end
@@ -80,6 +84,7 @@ function ListaPuntajes:update(dt)
 
     --Hacemos la animacion del menu
     self.menu_anim:update(dt, self.menu_sprite)
+    self.target:update(dt, self.target_sprite)
 
     --animamos las naves de la Lista
     for i=1, 10 do
@@ -89,10 +94,14 @@ function ListaPuntajes:update(dt)
     if self.timer_no_touch > 0 then
         self.timer_no_touch = self.timer_no_touch - dt
     else
-       if love.mouse.isDown(1) then
-            TEsound.stop('musica_menu')
-            TEsound.stop('musica_play')
-            gStateMachine:change('inicio', {highScores = loadHighScores()})
+        local x, y = love.mouse.getPosition()
+        local mouseX, mouseY = push:toGame(x, y)
+        if love.mouse.isDown(1) and mouseX ~= nil and mouseY ~= nil then
+            if mouseX >= 590 and mouseX <= 690 and mouseY >= 530 and mouseY <= 630 then
+                TEsound.stop('musica_menu')
+                TEsound.stop('musica_play')
+                gStateMachine:change('inicio', {highScores = loadHighScores()})
+            end
         end
     end
 
@@ -121,5 +130,7 @@ function ListaPuntajes:render()
         love.graphics.draw(self.sprite_sheet[i], self.sprite_nave[i], 770, 240 + ((i-6) * 60),0 , 0.7, 0.7)
         self.puntajes[i]:render(820, 240 + ((i-6) * 60))
     end
+
+    love.graphics.draw(self.target_sheet, self.target_sprite, 610, 550)
 
 end
