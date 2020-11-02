@@ -100,36 +100,40 @@ end
 function PlayerShot:disparo_direccional(player)
     self.credential = self.credential + 1
     if player.power_level == 1 then
-        if love.keyboard.isDown('up') and  love.keyboard.isDown('left')then
+        if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or 
+            (control:isDown("up") and control:isDown("left")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8, self.credential))
-        elseif love.keyboard.isDown('up') and  love.keyboard.isDown('right') then
+        elseif (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or 
+            (control:isDown("up") and control:isDown("right")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5, self.credential))
-        elseif love.keyboard.isDown('down') and  love.keyboard.isDown('left') then
+        elseif (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) or 
+            (control:isDown("down") and control:isDown("left")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7, self.credential))
-        elseif love.keyboard.isDown('down') and  love.keyboard.isDown('right') then
+        elseif (love.keyboard.isDown('down') and  love.keyboard.isDown('right')) or 
+            (control:isDown("down") and control:isDown("right")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6, self.credential))
-        elseif love.keyboard.isDown('up') then
+        elseif love.keyboard.isDown('up') or control:isDown("up") then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
-        elseif love.keyboard.isDown('down') then
+        elseif love.keyboard.isDown('down') or control:isDown("down") then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
-        elseif love.keyboard.isDown('left') then
+        elseif love.keyboard.isDown('left') or control:isDown("left") then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
-        elseif love.keyboard.isDown('right') then
+        elseif love.keyboard.isDown('right') or control:isDown("right") then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
         else
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
         end
     elseif player.power_level == 2 then
-        if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right')) then
+        if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right')) or
+        (control:isDown("up") and  control:isDown("left")) or (control:isDown("down") and control:isDown("right")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6, self.credential))
-        elseif (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) then
+        elseif (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) or
+        (control:isDown("up") and  control:isDown("left")) or (control:isDown("down") and control:isDown("right")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7, self.credential))
-        elseif love.keyboard.isDown('up') or love.keyboard.isDown('down') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
-        elseif love.keyboard.isDown('left') or love.keyboard.isDown('right') then
+        elseif love.keyboard.isDown('left') or love.keyboard.isDown('right') or
+        control:isDown("left") or control:isDown("right") then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
         else
@@ -138,16 +142,13 @@ function PlayerShot:disparo_direccional(player)
         end
     elseif player.power_level == 3 then
         if (love.keyboard.isDown('up') and  love.keyboard.isDown('left')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('right'))
-            or (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) then
+            or (love.keyboard.isDown('up') and  love.keyboard.isDown('right')) or (love.keyboard.isDown('down') and  love.keyboard.isDown('left')) or
+            (control:isDown("up") and  control:isDown("left")) or (control:isDown("down") and  control:isDown("right"))
+            or (control:isDown("up") and  control:isDown("right")) or (control:isDown("down") and  control:isDown("left")) then
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 8, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 6, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 5, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 7, self.credential))
-        elseif love.keyboard.isDown('up') or love.keyboard.isDown('down') or love.keyboard.isDown('left') or love.keyboard.isDown('right') then
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 1, self.credential))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 2, self.credential))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
-            table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
         else
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 4, self.credential))
             table.insert(self.balas, Direccional(player.x + player.width/2 -10, player.y, BULLET_SPEED, 3, self.credential))
