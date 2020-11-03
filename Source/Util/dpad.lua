@@ -23,14 +23,14 @@ control.dpad.y = WINDOW_HEIGHT-60-control.dpad.h
 
 --Los nombres y posiciones de los botones del dpad
 control.dpad.buttons = {
-	{ name="up",   x=control.buttonw, y=0 },
-	{ name="left", x=0, y=control.buttonh },
-	{ name="right",x=control.buttonw*2, y=control.buttonh },
-	{ name="down", x=control.buttonw, y=control.buttonh*2 },
-	{ name="up-left",   x=0, y=0 },
-	{ name="up-right", x=control.buttonw*2, y=0 },
-	{ name="down-left",x=0, y=control.buttonh*2 },
-	{ name="down-right", x=control.buttonw*2, y=control.buttonh*2 }
+	{ name="up",   x=control.buttonw - 25, y= - 25 },
+	{ name="left", x= - 25, y=control.buttonh - 25 },
+	{ name="right",x=control.buttonw*2 - 25, y=control.buttonh - 25 },
+	{ name="down", x=control.buttonw -25, y=control.buttonh*2 -25},
+	{ name="up-left",   x= -25, y= -25 },
+	{ name="up-right", x=control.buttonw*2 -25, y= -25 },
+	{ name="down-left",x= -25, y=control.buttonh*2 -25},
+	{ name="down-right", x=control.buttonw*2 -25, y=control.buttonh*2 -25}
 }
 
 control.dpad.opacity = 200
@@ -66,6 +66,7 @@ function control:render()
 		if widget.name == 'dpad' then
 			love.graphics.setColor(0.607,0.607,0.607,0.4)
 			love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
+
 		end
 	
 	end
@@ -100,9 +101,9 @@ function control:update(dt)
 
 					if widget.name == 'dpad' then
 						if  tx >= widget.x+button.x 
-						and tx <= widget.x+button.x+control.buttonw 
+						and tx <= widget.x+button.x+control.buttonw + 50
 						and ty >= widget.y+button.y 
-						and ty <= widget.y+button.y+control.buttonh then
+						and ty <= widget.y+button.y+control.buttonh + 50 then
 							button.isDown = true
 						end
 					else
