@@ -67,6 +67,10 @@ function control:render()
 			love.graphics.setColor(0.607,0.607,0.607,0.4)
 			love.graphics.circle("fill", widget.x+widget.w/2,widget.y+widget.h/2,widget.w/2)
 		end
+		for _,button in ipairs(widget.buttons) do
+			love.graphics.setColor(1,0,0,0.4)
+			love.graphics.rectangle("fill", button.x + widget.x, button.y + widget.y, control.buttonw, control.buttonh)
+		end
 	
 	end
 	love.graphics.setColor(1, 1, 1, 1)
