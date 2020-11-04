@@ -19,7 +19,8 @@ function Inicio:enter(params)
     --Cargar Menu Inicio
     self.menu = love.graphics.newImage('Imagen/Menus/Inicio.png')
 
-
+    TEsound.stop('musica_menu')
+    TEsound.stop('musica_play')
     TEsound.playLooping({'Soundtrack/Songs/Menu1.wav', 'Soundtrack/Songs/Menu2.wav'}, "stream", {'musica_menu'})
     TEsound.volume({'musica_menu', 'musica_play'}, VOLUMEN_MUSICA)
 
