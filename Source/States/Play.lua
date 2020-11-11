@@ -105,17 +105,13 @@ function Play:update(dt)
 	--Hacemos el update de los enemigos
 	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player, self.pickups) and self.cambio_stage == false then
         self.cambio_stage = true
-        self.cambio_background = true
-        self.sky:change_speed(20)
-        self.enemyManager:vaciar_enemigos()
-        self.background:change_background()
-        --local cambio_background = love.math.random(1, 3)
-        --if cambio_background == 3 then
-            --self.cambio_background = true
-            --self.enemyManager:vaciar_enemigos()
-            --self.background:change_background()
-            --self.sky:change_speed(0, 200)
-        --end
+        local cambio_background = love.math.random(1, 3)
+        if cambio_background == 3 then
+            self.cambio_background = true
+            self.sky:change_speed(20)
+            self.enemyManager:vaciar_enemigos()
+            self.background:change_background()
+        end
         --Asignamos un nuevo tipo de stage
         --normal
         --cint_ast
@@ -210,12 +206,17 @@ function Play:render()
             end
             love.graphics.rectangle('fill', 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
             love.graphics.setColor(1,1,1,1)
-            self.sky:render()
         end
+        self.sky:render()
         self.mensaje_stage:render(400, 300, 2, 2)
         self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
         --Dibujamos la nave dependiendo de su posicion
         self.player:render()
+        --Ponemos el puntaje en la pantalla
+        love.graphics.print(tostring(puntaje), 30, 25)
+
+        --Dibujamos la interfaz de usuario
+        self:UI_render()
     else
         self.sky:render()
         for i, pickup in pairs(self.pickups) do

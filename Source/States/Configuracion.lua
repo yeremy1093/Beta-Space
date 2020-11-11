@@ -17,7 +17,7 @@ function Config:enter(params)
     self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0, 1)
 
     --Cargar Menu
-    self.menu_sheet = love.graphics.newImage('Imagen/Menus/Configuraciones.png')
+    self.menu_sheet = love.graphics.newImage('Imagen/Menus/ConfiguracionesCELL.png')
     self.menu_sprite = love.graphics.newQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, self.menu_sheet:getDimensions())
     self.pantallaControles = false
     self.timerControler = TIMER_CONTROLES
@@ -58,7 +58,7 @@ function Config:update(dt)
 	
 	--cargamos las estrellas de alex
     self.sky:update (dt)
-
+--[[
     if self.pantallaControles then
         self.timerControler = self.timerControler - dt
         if self.timerControler <= 0 then
@@ -88,6 +88,7 @@ function Config:update(dt)
             end
         end
     end
+]]
 
     if self.pantallaSonido then
         self.target_audio:update(dt, self.target_audio_sprite)
@@ -171,13 +172,13 @@ function Config:update(dt)
                     self.pantallaSonido = true
                     self.pantallaControles = false
                 elseif mouseY >= 545 and mouseY <= 600 then
-                    self.menu_sprite:setViewport(WINDOW_WIDTH * 2, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+                    self.menu_sprite:setViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
                     self.pantallaSonido = false
                     self.pantallaControles = true
                     self.contador = 0
-                    self.textoControles1 = "Usa las flechas y ASD"
-                    self.textoControles2 = "Destruye enemigos y gana puntos"
-                    self.textoControles3 = "Obten el mayor puntaje"
+                    self.textoControles1 = "Usa la pantalla para tocar el circulo"
+                    self.textoControles2 = "de movimiento y controlar la nave"
+                    self.textoControles3 = "Toca los iconos en pantalla para disparar"
                 elseif mouseY >= 605 and mouseY <= 660 then
                     self.menu_sprite:setViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
                     self.pantallaSonido = false
@@ -208,9 +209,9 @@ function Config:render()
     if self.pantallaControles then
         self.tagControles:render(440, 130)
         love.graphics.setFont(gFonts['small'])
-        love.graphics.print(self.textoControles1, 500, 200)
-        love.graphics.print(self.textoControles2, 500, 250)
-        love.graphics.print(self.textoControles3, 500, 300)
+        love.graphics.print(self.textoControles1, 400, 200)
+        love.graphics.print(self.textoControles2, 400, 250)
+        love.graphics.print(self.textoControles3, 400, 300)
         love.graphics.setFont(gFonts['large'])
     elseif self.pantallaSonido then
         self.tagSonido:render(430, 130)

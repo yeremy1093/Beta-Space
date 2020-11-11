@@ -161,7 +161,7 @@ end
 function Enemy:cambio_stage()
 
 	--Asignamos un nuevo puntaje que tenemos que alcanzar para cambiar de stage
-	stage_checkpoint = 1000
+	stage_checkpoint = 10000
 
 	--dependiendo del tipo de stage, asignamos los enemigos que se van a crear
 	if self.tag_stage == 'normal' then
