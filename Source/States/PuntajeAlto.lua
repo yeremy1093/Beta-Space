@@ -29,7 +29,7 @@ function PuntajeAlto:enter(params)
     self.background = Background()
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
+    self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0, 1)
 
     --Cargar Menu de Estado
     self.menu = love.graphics.newImage('Imagen/Menus/Clean menu.png')
@@ -71,7 +71,7 @@ function PuntajeAlto:update(dt)
 
 	
 	--cargamos las estrellas de alex
-    sky:update (dt)
+    self.sky:update (dt)
 
     self.target:update(dt, self.target_sprite)
 
@@ -152,7 +152,7 @@ function PuntajeAlto:render()
 	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
-    sky:render()
+    self.sky:render()
 
     --Dibujamos el menu de fondo
     love.graphics.draw(self.menu, 0, 0)
