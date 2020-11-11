@@ -116,7 +116,7 @@ function loadHighScores()
     love.filesystem.setIdentity('betaSpace')
 
     -- if the file doesn't exist, initialize it with some default scores
-    if not love.filesystem.exists('betaSpace.lst') then
+    if not love.filesystem.getInfo('betaSpace.lst') then
         local scores = ''
         for i = 10, 1, -1 do
             scores = scores .. '0001\n'
