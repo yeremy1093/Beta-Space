@@ -95,7 +95,7 @@ function Play:update(dt)
 
     --Mostramos el mensaje de cambio de stage
     if self.cambio_stage then
-        if self.cambio_stage then
+        if self.cambio_background then
             self.viaje_luz:update(dt, self.sprite_vl)
         end
         TIMER_CAMBIO_STAGE = TIMER_CAMBIO_STAGE - dt
@@ -212,7 +212,7 @@ function Play:render()
     if self.cambio_stage then
         if self.cambio_background then
             if TIMER_CAMBIO_STAGE > 1.5 then
-                love.graphics.setColor(0,0,0, 0 + (2 * math.abs(2 - TIMER_CAMBIO_STAGE)))
+                love.graphics.setColor(0,0,0,(2 * math.abs(2 - TIMER_CAMBIO_STAGE)))
             elseif TIMER_CAMBIO_STAGE > 0.5 then
                 self.enemyManager:vaciar_enemigos()
                 self.background:change_background()
