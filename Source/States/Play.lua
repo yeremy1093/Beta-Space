@@ -110,9 +110,14 @@ function Play:update(dt)
 	--Hacemos el update de los enemigos
 	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player, self.pickups) and self.cambio_stage == false then
         self.cambio_stage = true
+        self.cambio_background = true
+        self.enemyManager:vaciar_enemigos()
+        self.background:change_background()
         local cambio_background = love.math.random(1, 3)
         if cambio_background == 3 then
             self.cambio_background = true
+            self.enemyManager:vaciar_enemigos()
+            self.background:change_background()
         end
         --Asignamos un nuevo tipo de stage
         --normal
@@ -196,26 +201,12 @@ end
 function Play:render()
 	self.background:render_background()
 
-	--Dibujamos las estrellas de alex
-	self.sky:render()
-
-    for i, pickup in pairs(self.pickups) do
-        pickup:render()
-    end
-
-    self.enemyManager:render()
-
-    --Dibujamos las balas del jugador
-    self.shotManager:render()
-
      --Ponemos en pantalla el stage en el que vamos
     if self.cambio_stage then
         if self.cambio_background then
             if TIMER_CAMBIO_STAGE > 1.5 then
                 love.graphics.setColor(0,0,0,(2 * math.abs(2 - TIMER_CAMBIO_STAGE)))
             elseif TIMER_CAMBIO_STAGE > 0.5 then
-                self.enemyManager:vaciar_enemigos()
-                self.background:change_background()
                 love.graphics.setColor(0,0,0, 1)
             else
                 love.graphics.setColor(0,0,0,(2 * TIMER_CAMBIO_STAGE))
@@ -226,21 +217,32 @@ function Play:render()
         end
         self.mensaje_stage:render(400, 300, 2, 2)
         self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
+        --Dibujamos la nave dependiendo de su posicion
+        self.player:render()
+    else
+        --Dibujamos las estrellas de alex
+        self.sky:render()
+        for i, pickup in pairs(self.pickups) do
+            pickup:render()
+        end
+         --Dibujamos las balas del jugador
+        self.shotManager:render()
+        self.enemyManager:render()
+        --Dibujamos la nave dependiendo de su posicion
+        self.player:render()
+
+        self.enemyManager:render_nebulosas()
+
+        --Ponemos el puntaje en la pantalla
+        love.graphics.print(tostring(puntaje), 30, 25)
+
+        --Dibujamos la interfaz de usuario
+        self:UI_render()
+        love.graphics.draw(img_boton_disparo, 1195, 470)
+        love.graphics.draw(img_boton_pausa, 1195, 20)
+        control:render()
     end
 
-    --Dibujamos la nave dependiendo de su posicion
-    self.player:render()
-
-    self.enemyManager:render_nebulosas()
-
-    --Ponemos el puntaje en la pantalla
-    love.graphics.print(tostring(puntaje), 30, 25)
-
-    --Dibujamos la interfaz de usuario
-    self:UI_render()
-    love.graphics.draw(img_boton_disparo, 1195, 470)
-    love.graphics.draw(img_boton_pausa, 1195, 20)
-    control:render()
 end
 
 function Play:generar_pickup(dt)

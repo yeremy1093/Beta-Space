@@ -163,4 +163,3 @@ function loadHighScores()
 
     return scores
 end
-
