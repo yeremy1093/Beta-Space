@@ -207,22 +207,15 @@ function Play:render()
             love.graphics.rectangle('fill', 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
             love.graphics.setColor(1,1,1,1)
         end
-        self.sky:render()
         self.mensaje_stage:render(400, 300, 2, 2)
         self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
-        --Dibujamos la nave dependiendo de su posicion
-        self.player:render()
-        --Ponemos el puntaje en la pantalla
-        love.graphics.print(tostring(puntaje), 30, 25)
-
-        --Dibujamos la interfaz de usuario
-        self:UI_render()
-    else
+        
+    end
         self.sky:render()
         for i, pickup in pairs(self.pickups) do
             pickup:render()
         end
-         --Dibujamos las balas del jugador
+        --Dibujamos las balas del jugador
         self.shotManager:render()
         self.enemyManager:render()
         --Dibujamos la nave dependiendo de su posicion
@@ -238,7 +231,6 @@ function Play:render()
         love.graphics.draw(img_boton_disparo, 1195, 470)
         love.graphics.draw(img_boton_pausa, 1195, 20)
         control:render()
-    end
 
 end
 
