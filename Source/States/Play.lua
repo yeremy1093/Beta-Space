@@ -3,7 +3,7 @@ Play = Class{__includes = BaseState}
 
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 local quad_level = love.graphics.newImage('Imagen/Menus/QuadLvlarma.png')
-local img_viaje_luz = love.graphics.newImage('Imagen/Background/Viaje Luz.png')
+local img_viaje_luz = love.graphics.newImage('Imagen/Background/ViajeLuz.png')
 local img_boton_disparo = love.graphics.newImage('Imagen/Menus/LaserBoton.png')
 local img_boton_pausa = love.graphics.newImage('Imagen/Menus/PAUSEBoton.png')
 
