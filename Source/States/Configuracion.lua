@@ -14,7 +14,7 @@ function Config:enter(params)
     self.background = Background()
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
+    self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0, 1)
 
     --Cargar Menu
     self.menu_sheet = love.graphics.newImage('Imagen/Menus/Configuraciones.png')
@@ -57,7 +57,7 @@ function Config:update(dt)
     local mouseX, mouseY = push:toGame(x, y)
 	
 	--cargamos las estrellas de alex
-    sky:update (dt)
+    self.sky:update (dt)
 
     if self.pantallaControles then
         self.timerControler = self.timerControler - dt
@@ -196,7 +196,7 @@ function Config:render()
 	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
-    sky:render()
+    self.sky:render()
 
     love.graphics.draw(self.menu_sheet, self.menu_sprite, 0, 0)
 

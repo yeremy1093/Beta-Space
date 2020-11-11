@@ -3,7 +3,6 @@ Play = Class{__includes = BaseState}
 
 local quad_util = love.graphics.newImage('Imagen/Sprites/Quad-util.png')
 local quad_level = love.graphics.newImage('Imagen/Menus/QuadLvlarma.png')
-local img_viaje_luz = love.graphics.newImage('Imagen/Background/ViajeLuz.png')
 local img_boton_disparo = love.graphics.newImage('Imagen/Menus/LaserBoton.png')
 local img_boton_pausa = love.graphics.newImage('Imagen/Menus/PAUSEBoton.png')
 
@@ -61,7 +60,7 @@ function Play:enter(params)
     if params.sky then
         self.sky = params.sky
     else
-        self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 500, 0, 10)
+        self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 500, 0, 20, 1)
     end
 
     TEsound.stop('musica_menu')
@@ -75,8 +74,6 @@ function Play:enter(params)
     self.mensaje_stage2 = Escribir('Vienen Enemigos')
     self.mensaje2X = 400
     self.cambio_background = false
-    self.sprite_vl = love.graphics.newQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, img_viaje_luz:getDimensions())
-    self.viaje_luz = Anim(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 13, 13, 13)
 
 end
 
@@ -95,14 +92,12 @@ function Play:update(dt)
 
     --Mostramos el mensaje de cambio de stage
     if self.cambio_stage then
-        if self.cambio_background then
-            self.viaje_luz:update(dt, self.sprite_vl)
-        end
         TIMER_CAMBIO_STAGE = TIMER_CAMBIO_STAGE - dt
         if TIMER_CAMBIO_STAGE <= 0 then
             TIMER_CAMBIO_STAGE = 2
             self.cambio_stage = false
             self.cambio_background = false
+            self.sky:change_speed(1)
             self.enemyManager:cambio_stage(self.stage)
         end
     end
@@ -111,14 +106,16 @@ function Play:update(dt)
 	if self.enemyManager:update(dt, puntaje, self.shotManager.balas, self.player, self.pickups) and self.cambio_stage == false then
         self.cambio_stage = true
         self.cambio_background = true
+        self.sky:change_speed(20)
         self.enemyManager:vaciar_enemigos()
         self.background:change_background()
-        local cambio_background = love.math.random(1, 3)
-        if cambio_background == 3 then
-            self.cambio_background = true
-            self.enemyManager:vaciar_enemigos()
-            self.background:change_background()
-        end
+        --local cambio_background = love.math.random(1, 3)
+        --if cambio_background == 3 then
+            --self.cambio_background = true
+            --self.enemyManager:vaciar_enemigos()
+            --self.background:change_background()
+            --self.sky:change_speed(0, 200)
+        --end
         --Asignamos un nuevo tipo de stage
         --normal
         --cint_ast
@@ -213,14 +210,13 @@ function Play:render()
             end
             love.graphics.rectangle('fill', 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
             love.graphics.setColor(1,1,1,1)
-            love.graphics.draw(img_viaje_luz, self.sprite_vl, 0, 0)
+            self.sky:render()
         end
         self.mensaje_stage:render(400, 300, 2, 2)
         self.mensaje_stage2:render(self.mensaje2X, 400, 2, 2)
         --Dibujamos la nave dependiendo de su posicion
         self.player:render()
     else
-        --Dibujamos las estrellas de alex
         self.sky:render()
         for i, pickup in pairs(self.pickups) do
             pickup:render()

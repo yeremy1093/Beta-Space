@@ -16,7 +16,7 @@ function GameOver:enter(params)
     self.background = Background()
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
+    self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0, 1)
 
     --Cargar Menu de Estado
     self.menu = love.graphics.newImage('Imagen/Menus/GameOver.png')
@@ -36,7 +36,7 @@ function GameOver:update(dt)
 
 	
 	--cargamos las estrellas de alex
-    sky:update (dt)
+    self.sky:update (dt)
 
 
     if love.keyboard.wasPressed('space') or love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return')then
@@ -71,7 +71,7 @@ function GameOver:render()
 	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
-    sky:render()
+    self.sky:render()
 
     --Dibujamos el menu de fondo
     love.graphics.draw(self.menu, 0, 0)
