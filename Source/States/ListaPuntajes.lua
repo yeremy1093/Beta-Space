@@ -13,7 +13,7 @@ function ListaPuntajes:enter(params)
     self.background = Background()
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
+    self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0, 1)
 
     --Cargamos lo de la animacion del Menu
     self.menu_sprite = love.graphics.newQuad(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, img_menu:getDimensions())
@@ -80,7 +80,7 @@ function ListaPuntajes:update(dt)
 
 	
 	--cargamos las estrellas de alex
-    sky:update (dt)
+    self.sky:update (dt)
 
     --Hacemos la animacion del menu
     self.menu_anim:update(dt, self.menu_sprite)
@@ -111,7 +111,7 @@ function ListaPuntajes:render()
 	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
-    sky:render()
+    self.sky:render()
 
     love.graphics.draw(img_menu, self.menu_sprite, 0, 0)
 

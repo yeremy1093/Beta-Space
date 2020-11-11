@@ -6,7 +6,8 @@ local WHITE = {1, 1, 1, 0.9}
 local RED = {1, 0, 0, 0.8}
 local BLUE = {0, 0, 1, 0.8}
 
-function Star:init(x, y, dx, dy)
+function Star:init(x, y, dx, dy, speedM)
+    self.speedM = speedM
     self.x = x
     self.y = y
     self.dx = dx * love.math.random(1,3)
@@ -38,8 +39,10 @@ function Star:update(dt)
     end
 
     --Movimiento de estrella a traves del espacio en x y con velocidades dx dy
-    self.x = self.x + self.dx * dt
-    self.y = self.y + self.dy * dt
+    if self.speedM ~= nil then
+        self.x = self.x + self.dx * self.speedM * dt
+        self.y = self.y + self.dy * self.speedM * dt
+    end
 
 end
 

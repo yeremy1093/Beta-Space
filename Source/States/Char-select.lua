@@ -17,7 +17,7 @@ function Charselect:enter(params)
     self.background = Background()
 
     --cargamos estellas de alex
-    sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0)
+    self.sky = Sky (WINDOW_WIDTH, WINDOW_HEIGHT, 2000, 0, 0, 1)
 
     --Cargar Menu Inicio
     self.menu = love.graphics.newImage('Imagen/Menus/charselect.png')
@@ -43,7 +43,7 @@ function Charselect:update(dt)
 
 	
 	--cargamos las estrellas de alex
-    sky:update (dt)
+    self.sky:update (dt)
 
     --Cargamos las animaciones de las naves
     self.nave:update (dt,self.sprite)
@@ -90,7 +90,7 @@ function Charselect:render()
 	self.background:render_background()
 
 	--Dibujamos las estrellas de alex
-    sky:render()
+    self.sky:render()
 
     love.graphics.draw(self.menu, 0, 0)
 

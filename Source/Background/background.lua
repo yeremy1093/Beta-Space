@@ -1,23 +1,22 @@
 --imagenes de fondo
 Background = Class{}
 
-local blackhole = love.graphics.newImage('Imagen/Background/Black Hole.png')
-local azul = love.graphics.newImage('Imagen/Background/Azul.png')
-local bigeye = love.graphics.newImage('Imagen/Background/Gran OJO.png')
-local disco = love.graphics.newImage('Imagen/Background/Disco.png')
-
+local blackhole = 'Imagen/Background/Black Hole.png'
+local azul = 'Imagen/Background/Azul.png'
+local bigeye = 'Imagen/Background/Gran OJO.png'
+local disco = 'Imagen/Background/Disco.png'
 --Numero para saber cual imagen se queda hasta el final
 local Num = love.math.random(1, 4)
 
 function Background:init()
 	if Num == 1 then 
-		self.loopingStars = blackhole
+		self.loopingStars = love.graphics.newImage(blackhole)
 	elseif Num == 2 then
-		self.loopingStars = azul
+		self.loopingStars = love.graphics.newImage(azul)
 	elseif Num == 3 then
-		self.loopingStars = bigeye
+		self.loopingStars = love.graphics.newImage(bigeye)
 	elseif Num == 4 then
-		self.loopingStars = disco
+		self.loopingStars = love.graphics.newImage(disco)
 	end
 
 	self.planetas = {}
@@ -31,13 +30,13 @@ end
 function Background:change_background()
 	local random = love.math.random(1, 4)
 	if random == 1 then 
-		self.loopingStars = blackhole
+		self.loopingStars = love.graphics.newImage(blackhole)
 	elseif random == 2 then
-		self.loopingStars = azul
+		self.loopingStars = love.graphics.newImage(azul)
 	elseif random == 3 then
-		self.loopingStars = bigeye
+		self.loopingStars = love.graphics.newImage(bigeye)
 	elseif random == 4 then
-		self.loopingStars = disco
+		self.loopingStars = love.graphics.newImage(disco)
 	end
 	for i, planeta in pairs(self.planetas) do
         table.remove(self.planetas, i)
